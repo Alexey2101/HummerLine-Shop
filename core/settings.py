@@ -181,6 +181,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() == 'true'
 EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False').lower() == 'true'
 EMAIL_TIMEOUT = 10  # Секунд на попытку подключения
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
 
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'HummerLine <noreply@hummerline.kz>')
 EMAIL_SUBJECT_PREFIX = '[HummerLine] '

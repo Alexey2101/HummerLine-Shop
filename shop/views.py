@@ -58,20 +58,45 @@ def register_view(request):
             token_obj = EmailVerificationToken.objects.create(user=user, code=code)
             
             # Send verification email
-            send_mail(
-                subject='Код подтверждения — HummerLine',
-                message=(
-                    f"Привет, {user.username}!\n\n"
-                    f"Спасибо за регистрацию на HummerLine.\n"
-                    f"Ваш код для активации аккаунта:\n\n"
-                    f"   {code}\n\n"
-                    f"Код действителен 24 часа.\n\n"
-                    f"Если вы не регистрировались на нашей платформе, просто проигнорируйте это письмо."
-                ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
+            subject = 'Код подтверждения — HummerLine'
+            message = (
+                f"Привет, {user.username}!\n\n"
+                f"Спасибо за регистрацию на HummerLine.\n"
+                f"Ваш код для активации аккаунта:\n\n"
+                f"   {code}\n\n"
+                f"Код действителен 24 часа.\n\n"
+                f"Если вы не регистрировались на нашей платформе, просто проигнорируйте это письмо."
             )
+
+            if settings.RESEND_API_KEY:
+                # Используем API Resend (порт 443), так как SMTP порты в Railway закрыты
+                resend.api_key = settings.RESEND_API_KEY
+                try:
+                    resend.Emails.send({
+                        "from": settings.DEFAULT_FROM_EMAIL,
+                        "to": user.email,
+                        "subject": subject,
+                        "text": message
+                    })
+                except Exception as e:
+                    print(f"Ошибка отправки через Resend: {e}")
+                    # Fallback на обычный send_mail на случай если API упал
+                    send_mail(
+                        subject=subject,
+                        message=message,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[user.email],
+                        fail_silently=True,
+                    )
+            else:
+                # Обычный способ (будет работать в логах Railway или через SMTP если порты открыты)
+                send_mail(
+                    subject=subject,
+                    message=message,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[user.email],
+                    fail_silently=True,
+                )
             # Store email in session for the verification page
             request.session['verification_email'] = user.email
             return redirect('shop:verify_email')
