@@ -171,20 +171,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login/'
-
-# ─── Email ────────────────────────────────────────────────────────────────────
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_PORT = os.environ.get('EMAIL_PORT', 587)
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() == 'true'
-EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False').lower() == 'true'
-EMAIL_TIMEOUT = 10  # Секунд на попытку подключения
-RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
-
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'HummerLine <noreply@hummerline.kz>')
-EMAIL_SUBJECT_PREFIX = '[HummerLine] '
-
-# Domain used in verification links
-SITE_DOMAIN = os.environ.get('SITE_DOMAIN', 'https://hummerline-shop-production.up.railway.app').rstrip('/')

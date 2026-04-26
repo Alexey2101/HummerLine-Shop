@@ -1,18 +1,15 @@
 import json
-import random
-import resend
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .models import Category, Product, Order, OrderItem, Favorite, ProductImage, Chat, Message, DeliveryCompany, EmailVerificationToken
+from .models import Category, Product, Order, OrderItem, Favorite, ProductImage, Chat, Message, DeliveryCompany
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.utils.text import slugify
 from .forms import ProductForm, UserRegistrationForm, DeliveryCompanyRegistrationForm
-from django.core.mail import send_mail
-from django.conf import settings
+
 
 @login_required
 def product_create(request):
@@ -47,111 +44,13 @@ def register_view(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False  # disabled until email verified
-            user.save()
-
-            # Create verification code
-            code = str(random.randint(100000, 999999))
-            while EmailVerificationToken.objects.filter(code=code).exists():
-                code = str(random.randint(100000, 999999))
-            
-            token_obj = EmailVerificationToken.objects.create(user=user, code=code)
-            
-            # Send verification email
-            subject = 'Код подтверждения — HummerLine'
-            message = (
-                f"Привет, {user.username}!\n\n"
-                f"Спасибо за регистрацию на HummerLine.\n"
-                f"Ваш код для активации аккаунта:\n\n"
-                f"   {code}\n\n"
-                f"Код действителен 24 часа.\n\n"
-                f"Если вы не регистрировались на нашей платформе, просто проигнорируйте это письмо."
-            )
-
-            if settings.RESEND_API_KEY:
-                # Используем API Resend (порт 443), так как SMTP порты в Railway закрыты
-                resend.api_key = settings.RESEND_API_KEY
-                try:
-                    resend.Emails.send({
-                        "from": settings.DEFAULT_FROM_EMAIL,
-                        "to": user.email,
-                        "subject": subject,
-                        "text": message
-                    })
-                except Exception as e:
-                    print(f"Ошибка отправки через Resend: {e}")
-                    # Fallback на обычный send_mail на случай если API упал
-                    send_mail(
-                        subject=subject,
-                        message=message,
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        recipient_list=[user.email],
-                        fail_silently=True,
-                    )
-            else:
-                # Обычный способ (будет работать в логах Railway или через SMTP если порты открыты)
-                send_mail(
-                    subject=subject,
-                    message=message,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[user.email],
-                    fail_silently=True,
-                )
-            # Store email in session for the verification page
-            request.session['verification_email'] = user.email
-            return redirect('shop:verify_email')
+            user = form.save()
+            login(request, user)
+            messages.success(request, f'Аккаунт {user.username} успешно создан! Добро пожаловать!')
+            return redirect('shop:home')
     else:
         form = UserRegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
-
-
-def verify_email(request):
-    """View to enter and verify the 6-digit code."""
-    email = request.session.get('verification_email')
-    if not email:
-        return redirect('register')
-    
-    if request.method == 'POST':
-        code = request.POST.get('code')
-        try:
-            token_obj = EmailVerificationToken.objects.select_related('user').get(code=code)
-            
-            if token_obj.is_expired():
-                token_obj.delete()
-                messages.error(request, 'Срок действия кода истек. Пожалуйста, зарегистрируйтесь снова.')
-                return redirect('register')
-            
-            user = token_obj.user
-            if user.email != email:
-                messages.error(request, 'Неверный код для данного email.')
-                return render(request, 'registration/verify_email.html', {'email': email})
-
-            user.is_active = True
-            user.save()
-            token_obj.delete()
-            
-            login(request, user)
-            messages.success(request, f'Аккаунт {user.username} успешно активирован! Добро пожаловать!')
-            # Clean up session
-            del request.session['verification_email']
-            return redirect('shop:home')
-            
-        except EmailVerificationToken.DoesNotExist:
-            messages.error(request, 'Неверный код подтверждения.')
-    
-    return render(request, 'registration/verify_email.html', {'email': email})
-
-
-def email_verification_sent(request):
-    """Informational page shown right after registration."""
-    return render(request, 'registration/email_verification_sent.html')
-
-
-def activate_account(request, token):
-    # This view is now deprecated as we use codes, 
-    # but we keep it for backward compatibility or direct links if needed.
-    return redirect('shop:verify_email')
 
 def home(request):
     return render(request, 'shop/home.html')

@@ -21,6 +21,4 @@ urlpatterns = [
     path('chat/start/<int:product_id>/', views.start_chat, name='start_chat'),
     path('delivery/register/', views.delivery_register, name='delivery_register'),
     path('my-purchases/', views.my_purchases, name='my_purchases'),
-    path('email-verification/verify/', views.verify_email, name='verify_email'),
-    path('email-verification/sent/', views.email_verification_sent, name='email_verification_sent'),
 ]

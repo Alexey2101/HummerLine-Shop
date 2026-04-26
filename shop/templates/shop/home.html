@@ -13,30 +13,74 @@
   <div class="absolute top-1/2 -left-24 w-64 h-64 bg-pine-400/10 rounded-full blur-3xl"></div>
 
   <div class="container relative z-10">
-    <div class="max-w-4xl mx-auto text-center lg:text-left lg:mx-0 lg:max-w-3xl">
-      <div class="hero-reveal inline-flex items-center gap-2 rounded-full border border-ember-200/50 bg-white/60 px-5 py-2.5 text-sm font-bold text-ember-900 shadow-sm backdrop-blur-md mb-8">
-        <i data-lucide="sparkles" class="w-4 h-4 text-ember-600"></i>
-        <span>Премиальное оборудование для профи</span>
+    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
+      <div class="text-center lg:text-left">
+        <div class="hero-reveal inline-flex items-center gap-2 rounded-full border border-ember-200/50 bg-white/60 px-5 py-2.5 text-sm font-bold text-ember-900 shadow-sm backdrop-blur-md mb-8">
+          <i data-lucide="sparkles" class="w-4 h-4 text-ember-600"></i>
+          <span>Премиальное оборудование для профи</span>
+        </div>
+        
+        <h1 class="hero-reveal font-display text-6xl font-extrabold tracking-tight text-steel-950 sm:text-7xl lg:text-8xl leading-[1.1]">
+          Инструменты <br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-ember-600 to-amber-500">будущего</span> <br/>
+          уже здесь.
+        </h1>
+        
+        <p class="hero-reveal mt-8 max-w-2xl text-xl leading-relaxed text-steel-700 font-medium">
+          HummerLine Hardware — это синергия надежности и инноваций. Мы создаем экосистему для тех, кто ценит качество, скорость и профессиональный подход в каждом проекте.
+        </p>
+        
+        <div class="hero-reveal mt-12 flex flex-wrap gap-5 justify-center lg:justify-start">
+          <a href="{% url 'shop:product_list' %}" class="group relative inline-flex items-center justify-center rounded-2xl bg-steel-950 px-10 py-5 text-lg font-bold text-white shadow-display transition-all hover:bg-ember-500 hover:scale-105 active:scale-95 overflow-hidden">
+            <span class="relative z-10">Каталог товаров</span>
+            <div class="absolute inset-0 bg-gradient-to-r from-ember-500 to-amber-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </a>
+          <a href="{% url 'shop:product_create' %}" class="inline-flex items-center justify-center rounded-2xl border-2 border-steel-200 bg-white/50 px-10 py-5 text-lg font-bold text-steel-900 shadow-sm backdrop-blur-sm transition-all hover:bg-white hover:border-ember-500 hover:text-ember-600">
+            Разместить объявление
+          </a>
+        </div>
       </div>
-      
-      <h1 class="hero-reveal font-display text-6xl font-extrabold tracking-tight text-steel-950 sm:text-7xl lg:text-8xl leading-[1.1]">
-        Инструменты <br/>
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-ember-600 to-amber-500">будущего</span> <br/>
-        уже здесь.
-      </h1>
-      
-      <p class="hero-reveal mt-8 max-w-2xl text-xl leading-relaxed text-steel-700 font-medium">
-        HummerLine Hardware — это синергия надежности и инноваций. Мы создаем экосистему для тех, кто ценит качество, скорость и профессиональный подход в каждом проекте.
-      </p>
-      
-      <div class="hero-reveal mt-12 flex flex-wrap gap-5 justify-center lg:justify-start">
-        <a href="{% url 'shop:product_list' %}" class="group relative inline-flex items-center justify-center rounded-2xl bg-steel-950 px-10 py-5 text-lg font-bold text-white shadow-display transition-all hover:bg-ember-500 hover:scale-105 active:scale-95 overflow-hidden">
-          <span class="relative z-10">Каталог товаров</span>
-          <div class="absolute inset-0 bg-gradient-to-r from-ember-500 to-amber-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        </a>
-        <a href="{% url 'shop:product_create' %}" class="inline-flex items-center justify-center rounded-2xl border-2 border-steel-200 bg-white/50 px-10 py-5 text-lg font-bold text-steel-900 shadow-sm backdrop-blur-sm transition-all hover:bg-white hover:border-ember-500 hover:text-ember-600">
-          Разместить заказ
-        </a>
+
+      <!-- Interactive GSAP Animation -->
+      <div class="hidden lg:flex justify-center items-center relative py-10" id="hero-interactive">
+        <div class="relative w-full max-w-lg aspect-square">
+          <!-- Main Floating Card -->
+          <div id="float-card" class="absolute inset-0 bg-white/40 backdrop-blur-3xl rounded-[3rem] border border-white/50 shadow-display overflow-hidden p-8 flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+              <div class="w-16 h-16 rounded-2xl bg-ember-500/10 flex items-center justify-center">
+                <i data-lucide="hammer" class="w-8 h-8 text-ember-600"></i>
+              </div>
+              <div class="text-right">
+                <div class="text-xs font-bold text-steel-400 uppercase tracking-widest mb-1">Status</div>
+                <div class="text-sm font-bold text-pine-600 flex items-center gap-1.5 justify-end">
+                  <span class="w-2 h-2 rounded-full bg-pine-500 animate-pulse"></span> Online
+                </div>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="h-3 w-2/3 bg-steel-200/50 rounded-full"></div>
+              <div class="h-3 w-1/2 bg-steel-200/50 rounded-full"></div>
+              <div class="h-10 w-full bg-ember-500/20 rounded-xl border border-ember-500/30"></div>
+            </div>
+          </div>
+
+          <!-- Secondary Elements -->
+          <div id="float-circle" class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-ember-500 to-amber-400 rounded-full shadow-lg flex items-center justify-center text-white">
+            <i data-lucide="zap" class="w-12 h-12"></i>
+          </div>
+          
+          <div id="float-badge" class="absolute -bottom-6 -left-6 bg-steel-950 text-white px-6 py-4 rounded-2xl shadow-display font-display font-bold text-lg border border-white/10">
+            <div class="text-xs text-steel-400 uppercase mb-1">Accuracy</div>
+            99.9%
+          </div>
+
+          <!-- Decorative Lines -->
+          <svg class="absolute inset-0 w-full h-full -z-10 opacity-20" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 4" class="text-ember-500"/>
+            <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1 3" class="text-steel-400"/>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
@@ -129,5 +173,85 @@
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Entrance Animation
+    const tl = gsap.timeline();
+    tl.from(".hero-reveal", {
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: "power4.out"
+    });
+    
+    tl.from("#hero-interactive", {
+        scale: 0.8,
+        opacity: 0,
+        duration: 1.5,
+        ease: "expo.out"
+    }, "-=1");
+
+    // 2. Interactive Parallax Effect
+    const container = document.querySelector('#hero-interactive');
+    const card = document.querySelector('#float-card');
+    const circle = document.querySelector('#float-circle');
+    const badge = document.querySelector('#float-badge');
+
+    if (container) {
+        window.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const { innerWidth, innerHeight } = window;
+            
+            const xPos = (clientX / innerWidth) - 0.5;
+            const yPos = (clientY / innerHeight) - 0.5;
+
+            gsap.to(card, {
+                x: xPos * 40,
+                y: yPos * 40,
+                rotateY: xPos * 15,
+                rotateX: -yPos * 15,
+                duration: 1,
+                ease: "power2.out"
+            });
+
+            gsap.to(circle, {
+                x: xPos * 80,
+                y: yPos * 80,
+                duration: 1.2,
+                ease: "power2.out"
+            });
+
+            gsap.to(badge, {
+                x: xPos * -30,
+                y: yPos * -30,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+        });
+    }
+
+    // 3. Constant Floating Motion
+    gsap.to(card, {
+        y: "+=15",
+        duration: 2.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+    });
+    
+    gsap.to(circle, {
+        y: "-=20",
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 0.5
+    });
+});
+</script>
 {% endblock %}
 

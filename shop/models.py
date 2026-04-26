@@ -1,9 +1,7 @@
-import uuid
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils import timezone
-import datetime
 
 class Category(models.Model):
     name = models.CharField('Название', max_length=200, db_index=True)
@@ -204,22 +202,3 @@ class Message(models.Model):
         return f"Сообщение от {self.sender.username} в {self.created_at}"
 
 
-class EmailVerificationToken(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,
-                                related_name='email_verification_token',
-                                verbose_name='Пользователь')
-    code = models.CharField(max_length=6, unique=True, verbose_name='Код подтверждения')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    EXPIRY_HOURS = 24
-
-    class Meta:
-        verbose_name = 'Токен верификации email'
-        verbose_name_plural = 'Токены верификации email'
-
-    def __str__(self):
-        return f"Верификация для {self.user.username}"
-
-    def is_expired(self):
-        expiry = self.created_at + datetime.timedelta(hours=self.EXPIRY_HOURS)
-        return timezone.now() > expiry
