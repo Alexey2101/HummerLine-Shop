@@ -96,16 +96,25 @@ DATABASES = {
     }
 }
 
-if os.environ.get('DATABASE_URL'):
-    # Если есть DATABASE_URL (например, от Postgres в Railway), используем его
+db_url = os.environ.get('DATABASE_URL') or os.environ.get('MYSQL_URL')
+
+if db_url:
+    # Если есть DATABASE_URL или MYSQL_URL (от Railway), используем его
     DATABASES['default'] = dj_database_url.config(
+        default=db_url,
         conn_max_age=600,
         conn_health_checks=True,
     )
+    
+    # Дополнительные настройки для MySQL
+    if DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
+        DATABASES['default']['OPTIONS'] = {
+            'charset': 'utf8mb4',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
 elif not DEBUG:
-    # В продакшене (DEBUG=False) ОБЯЗАТЕЛЬНО должен быть DATABASE_URL (Postgres)
-    # Если его нет, это приведет к ошибкам с SQLite
-    pass 
+    # В продакшене (DEBUG=False) ОБЯЗАТЕЛЬНО должен быть DATABASE_URL/MYSQL_URL
+    pass
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
