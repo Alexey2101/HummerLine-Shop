@@ -12,18 +12,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-z!x0=3(kw@%m&z9(a$-c4u2i7m_559n3v*n_u9(#l+@m8j9f%l')
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY and not os.environ.get('DEBUG'):
+    raise Exception("SECRET_KEY must be set in production")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = [
-    os.environ.get('RAILWAY_STATIC_URL', '*'),
-    os.environ.get('RAILWAY_PUBLIC_DOMAIN', '*'),
-    'localhost',
-    '127.0.0.1',
-    '.railway.app', # Доверяем всем поддоменам railway
+    os.environ.get('RAILWAY_STATIC_URL'),
+    os.environ.get('RAILWAY_PUBLIC_DOMAIN'),
+    '.railway.app',
 ]
+# Если DEBUG включен, добавляем локальные хосты
+if DEBUG:
+    ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
 
@@ -65,6 +68,17 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Security Settings
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000 # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
 
 ROOT_URLCONF = 'core.urls'
 
@@ -159,12 +173,15 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login/'
 
 # ─── Email ────────────────────────────────────────────────────────────────────
-# For development: emails are printed to the console.
-# For production: change to 'django.core.mail.backends.smtp.EmailBackend'
-# and set EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_USE_TLS.
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'HummerLine <noreply@hummerline.kz>'
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT', 587)
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() == 'true'
+
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'HummerLine <noreply@hummerline.kz>')
 EMAIL_SUBJECT_PREFIX = '[HummerLine] '
 
-# Domain used in verification links (no trailing slash)
-SITE_DOMAIN = 'http://127.0.0.1:8000'
+# Domain used in verification links
+SITE_DOMAIN = os.environ.get('SITE_DOMAIN', 'https://hummerline-shop-production.up.railway.app').rstrip('/')
