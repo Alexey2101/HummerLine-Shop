@@ -208,7 +208,7 @@ class EmailVerificationToken(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 related_name='email_verification_token',
                                 verbose_name='Пользователь')
-    token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    code = models.CharField(max_length=6, unique=True, verbose_name='Код подтверждения')
     created_at = models.DateTimeField(auto_now_add=True)
 
     EXPIRY_HOURS = 24

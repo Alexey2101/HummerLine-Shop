@@ -1,0 +1,61 @@
+{% extends "shop/base.html" %}
+{% block title %}Подтверждение почты{% endblock %}
+
+{% block content %}
+<section class="min-h-[70vh] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-steel-50/50">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 class="mt-6 text-center font-display text-4xl font-bold tracking-tight text-steel-950">
+            Подтверждение почты
+        </h2>
+        <p class="mt-4 text-center text-sm text-muted-foreground">
+            Мы отправили 6-значный код на почту <span class="font-semibold text-steel-950">{{ email }}</span>
+        </p>
+    </div>
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white px-8 py-10 shadow-panel rounded-[2rem] border border-border/70 backdrop-blur">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-6 p-4 rounded-xl {% if message.tags == 'error' %}bg-red-50 text-red-700 border border-red-100{% else %}bg-emerald-50 text-emerald-700 border border-emerald-100{% endif %} text-sm">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form class="space-y-6" method="POST">
+                {% csrf_token %}
+                
+                <div>
+                    <label for="code" class="block text-sm font-semibold leading-6 text-steel-950 text-center mb-4">Введите код подтверждения</label>
+                    <div class="flex justify-center gap-3" id="otp-inputs">
+                        <input type="text" maxlength="6" name="code" id="code" 
+                               class="text-center text-3xl font-bold tracking-[0.5em] w-full rounded-xl border-border bg-steel-50/50 focus:border-ember-500 focus:ring-ember-500 transition-all uppercase"
+                               placeholder="000000" autocomplete="one-time-code" required>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="flex w-full justify-center rounded-xl bg-ember-500 px-3 py-3.5 text-base font-semibold text-white shadow-display hover:bg-ember-600 transition">
+                        Подтвердить аккаунт
+                    </button>
+                </div>
+            </form>
+
+            <p class="mt-8 text-center text-sm text-muted-foreground">
+                Не пришел код? 
+                <a href="{% url 'shop:register' %}" class="font-semibold text-ember-600 hover:text-ember-500 transition">Зарегистрироваться снова</a>
+            </p>
+        </div>
+    </div>
+</section>
+
+<style>
+    #code::placeholder {
+        color: #cbd5e1;
+        letter-spacing: normal;
+    }
+    #code:focus::placeholder {
+        color: transparent;
+    }
+</style>
+{% endblock %}

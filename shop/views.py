@@ -1,4 +1,5 @@
 import json
+import random
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.contrib.auth import login
@@ -49,31 +50,71 @@ def register_view(request):
             user.is_active = False  # disabled until email verified
             user.save()
 
-            # Create verification token
-            token_obj = EmailVerificationToken.objects.create(user=user)
-
-            # Build verification URL
-            verify_url = f"{settings.SITE_DOMAIN}/accounts/verify-email/{token_obj.token}/"
-
+            # Create verification code
+            code = str(random.randint(100000, 999999))
+            while EmailVerificationToken.objects.filter(code=code).exists():
+                code = str(random.randint(100000, 999999))
+            
+            token_obj = EmailVerificationToken.objects.create(user=user, code=code)
+            
             # Send verification email
             send_mail(
-                subject='Подтвердите ваш email — HummerLine',
+                subject='Код подтверждения — HummerLine',
                 message=(
                     f"Привет, {user.username}!\n\n"
                     f"Спасибо за регистрацию на HummerLine.\n"
-                    f"Для активации аккаунта перейдите по ссылке:\n\n"
-                    f"{verify_url}\n\n"
-                    f"Ссылка действительна 24 часа.\n\n"
+                    f"Ваш код для активации аккаунта:\n\n"
+                    f"   {code}\n\n"
+                    f"Код действителен 24 часа.\n\n"
                     f"Если вы не регистрировались на нашей платформе, просто проигнорируйте это письмо."
                 ),
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[user.email],
                 fail_silently=False,
             )
-            return redirect('shop:email_verification_sent')
+            # Store email in session for the verification page
+            request.session['verification_email'] = user.email
+            return redirect('shop:verify_email')
     else:
         form = UserRegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+
+def verify_email(request):
+    """View to enter and verify the 6-digit code."""
+    email = request.session.get('verification_email')
+    if not email:
+        return redirect('shop:register')
+    
+    if request.method == 'POST':
+        code = request.POST.get('code')
+        try:
+            token_obj = EmailVerificationToken.objects.select_related('user').get(code=code)
+            
+            if token_obj.is_expired():
+                token_obj.delete()
+                messages.error(request, 'Срок действия кода истек. Пожалуйста, зарегистрируйтесь снова.')
+                return redirect('shop:register')
+            
+            user = token_obj.user
+            if user.email != email:
+                messages.error(request, 'Неверный код для данного email.')
+                return render(request, 'registration/verify_email.html', {'email': email})
+
+            user.is_active = True
+            user.save()
+            token_obj.delete()
+            
+            login(request, user)
+            messages.success(request, f'Аккаунт {user.username} успешно активирован! Добро пожаловать!')
+            # Clean up session
+            del request.session['verification_email']
+            return redirect('shop:home')
+            
+        except EmailVerificationToken.DoesNotExist:
+            messages.error(request, 'Неверный код подтверждения.')
+    
+    return render(request, 'registration/verify_email.html', {'email': email})
 
 
 def email_verification_sent(request):
@@ -82,26 +123,9 @@ def email_verification_sent(request):
 
 
 def activate_account(request, token):
-    """Validates the UUID token and activates the user account."""
-    try:
-        token_obj = EmailVerificationToken.objects.select_related('user').get(token=token)
-    except EmailVerificationToken.DoesNotExist:
-        return render(request, 'registration/email_verification_invalid.html',
-                      {'reason': 'Ссылка недействительна или уже была использована.'})
-
-    if token_obj.is_expired():
-        token_obj.delete()
-        return render(request, 'registration/email_verification_invalid.html',
-                      {'reason': 'Ссылка истекла. Зарегистрируйтесь снова.'})
-
-    user = token_obj.user
-    user.is_active = True
-    user.save()
-    token_obj.delete()  # single-use token
-
-    login(request, user)
-    messages.success(request, f'Аккаунт {user.username} успешно активирован! Добро пожаловать!')
-    return redirect('shop:home')
+    # This view is now deprecated as we use codes, 
+    # but we keep it for backward compatibility or direct links if needed.
+    return redirect('shop:verify_email')
 
 def home(request):
     return render(request, 'shop/home.html')
