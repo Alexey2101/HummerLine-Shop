@@ -97,11 +97,15 @@ DATABASES = {
 }
 
 if os.environ.get('DATABASE_URL'):
+    # Если есть DATABASE_URL (например, от Postgres в Railway), используем его
     DATABASES['default'] = dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
         conn_max_age=600,
         conn_health_checks=True,
     )
+elif not DEBUG:
+    # В продакшене (DEBUG=False) ОБЯЗАТЕЛЬНО должен быть DATABASE_URL (Postgres)
+    # Если его нет, это приведет к ошибкам с SQLite
+    pass 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

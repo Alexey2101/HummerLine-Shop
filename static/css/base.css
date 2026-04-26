@@ -4,6 +4,7 @@
   --border: 32 23% 84%;
   --muted: 36 28% 93%;
   --muted-foreground: 217 11% 42%;
+  --primary: #f97316;
 }
 body {
   background-color: hsl(var(--background));
