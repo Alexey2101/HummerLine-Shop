@@ -10,8 +10,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('favicon.ico', RedirectView.as_view(url='/static/images/favicon.ico')),
     path('accounts/register/', shop_views.register_view, name='register'),
-    path('accounts/verify-email/sent/', shop_views.email_verification_sent, name='email_verification_sent'),
-    path('accounts/verify-email/<uuid:token>/', shop_views.activate_account, name='activate_account'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('shop.urls', namespace='shop')),
 ]

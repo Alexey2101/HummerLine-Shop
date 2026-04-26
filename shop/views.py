@@ -84,7 +84,7 @@ def verify_email(request):
     """View to enter and verify the 6-digit code."""
     email = request.session.get('verification_email')
     if not email:
-        return redirect('shop:register')
+        return redirect('register')
     
     if request.method == 'POST':
         code = request.POST.get('code')
@@ -94,7 +94,7 @@ def verify_email(request):
             if token_obj.is_expired():
                 token_obj.delete()
                 messages.error(request, 'Срок действия кода истек. Пожалуйста, зарегистрируйтесь снова.')
-                return redirect('shop:register')
+                return redirect('register')
             
             user = token_obj.user
             if user.email != email:
