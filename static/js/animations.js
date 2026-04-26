@@ -45,35 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Анимации для главной страницы (home.html)
-    const heroReveals = gsap.utils.toArray('.hero-reveal');
-    if (heroReveals.length > 0) {
-        const tl = gsap.timeline();
-        tl.from(heroReveals, { 
-            y: 30, 
-            opacity: 0, 
-            duration: 0.8, 
-            stagger: 0.15, 
-            ease: "power3.out", 
-            clearProps: "all" 
-        });
-
-        // Параллакс для меш-фона
-        const heroMesh = document.getElementById('hero-mesh');
-        if (heroMesh) {
-            gsap.to(heroMesh, {
-                yPercent: 20,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "section",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
-        }
-    }
-
     // Скролл-анимации для секций
     gsap.utils.toArray('.section-reveal').forEach(section => {
         gsap.from(section, {
