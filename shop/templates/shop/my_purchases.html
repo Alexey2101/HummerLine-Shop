@@ -1,0 +1,168 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}Мои покупки{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="py-10 bg-steel-50 border-b border-border/70">
+  <div class="container">
+    <div class="flex items-center gap-4">
+      <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-steel-950 text-white shadow-display">
+        <i data-lucide="shopping-bag" class="w-7 h-7"></i>
+      </div>
+      <div>
+        <h1 class="font-display text-4xl font-bold tracking-tight text-steel-950">Мои покупки</h1>
+        <p class="mt-1 text-steel-600">История всех ваших заказов на платформе HummerLine</p>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-lg">
+      <div class="rounded-2xl bg-white border border-border/70 p-4 shadow-sm text-center">
+        <div class="font-display text-2xl font-bold text-steel-950">{{ orders|length }}</div>
+        <div class="text-xs text-muted-foreground mt-1">Заказов всего</div>
+      </div>
+      <div class="rounded-2xl bg-white border border-border/70 p-4 shadow-sm text-center">
+        <div class="font-display text-2xl font-bold text-emerald-600">
+          {{ orders|length }}
+        </div>
+        <div class="text-xs text-muted-foreground mt-1">Выполнено</div>
+      </div>
+      <div class="rounded-2xl bg-ember-50 border border-ember-200 p-4 shadow-sm text-center col-span-2 sm:col-span-1">
+        <div class="font-display text-2xl font-bold text-ember-600">
+          ₸&thinsp;{% for order in orders %}{% if forloop.last %}—{% endif %}{% empty %}0{% endfor %}
+        </div>
+        <div class="text-xs text-muted-foreground mt-1">Потрачено</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Orders List -->
+<section class="py-10 sm:py-14">
+  <div class="container max-w-4xl">
+    {% if orders %}
+    <div class="space-y-6" id="orders-list">
+      {% for order in orders %}
+      <div class="order-card rounded-[2rem] border border-border/70 bg-white shadow-sm overflow-hidden">
+
+        <!-- Order header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-7 py-5 border-b border-border/70 bg-steel-50/60">
+          <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl
+              {% if order.paid %}bg-pine-100 text-pine-700{% else %}bg-amber-100 text-amber-700{% endif %} text-sm font-bold flex-shrink-0">
+              <i data-lucide="{% if order.paid %}check-circle{% else %}clock{% endif %}" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <p class="font-display font-bold text-steel-950">Заказ #{{ order.id }}</p>
+              <p class="text-xs text-muted-foreground mt-0.5">{{ order.created|date:"d M Y, H:i" }}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold
+              {% if order.paid %}bg-pine-100 text-pine-800 border border-pine-200
+              {% else %}bg-amber-100 text-amber-800 border border-amber-200{% endif %}">
+              <span class="w-1.5 h-1.5 rounded-full {% if order.paid %}bg-pine-500{% else %}bg-amber-500{% endif %}"></span>
+              {% if order.paid %}Оплачен{% else %}Ожидает оплаты{% endif %}
+            </span>
+            <span class="font-display font-bold text-lg text-steel-950">
+              ₸ {{ order.get_total_cost }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Order items -->
+        <div class="divide-y divide-border/50">
+          {% for item in order.items.all %}
+          <div class="flex items-center gap-5 px-7 py-4 hover:bg-steel-50/50 transition-colors">
+            <!-- Product image -->
+            <div class="w-14 h-14 rounded-xl overflow-hidden bg-steel-100 flex-shrink-0">
+              {% if item.product.image %}
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-full object-cover">
+              {% else %}
+                <div class="w-full h-full flex items-center justify-center">
+                  <i data-lucide="image" class="w-6 h-6 text-steel-400"></i>
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Product info -->
+            <div class="flex-grow min-w-0">
+              <a href="{{ item.product.get_absolute_url }}"
+                 class="font-semibold text-steel-950 hover:text-ember-600 transition-colors truncate block">
+                {{ item.product.name }}
+              </a>
+              <p class="text-xs text-muted-foreground mt-0.5">
+                {{ item.quantity }} шт. × ₸ {{ item.price }}
+              </p>
+            </div>
+
+            <!-- Item total -->
+            <div class="text-right flex-shrink-0">
+              <p class="font-bold text-emerald-600">₸ {{ item.get_cost }}</p>
+              <p class="text-xs text-muted-foreground mt-0.5">итого</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Order footer -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-7 py-4 bg-steel-50/40 border-t border-border/70">
+          <div class="text-sm text-muted-foreground">
+            <i data-lucide="map-pin" class="w-4 h-4 inline-block mr-1 align-middle"></i>
+            {{ order.city }}{% if order.address %}, {{ order.address }}{% endif %}
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="{{ order.items.first.product.get_absolute_url }}"
+               class="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-medium text-steel-700 transition hover:bg-white hover:border-ember-300 hover:text-ember-600">
+              <i data-lucide="repeat" class="w-4 h-4"></i>
+              Купить снова
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <!-- Empty state -->
+    <div class="py-24 text-center flex flex-col items-center gap-5">
+      <div class="w-24 h-24 rounded-full bg-steel-100 flex items-center justify-center">
+        <i data-lucide="shopping-bag" class="w-12 h-12 text-steel-300"></i>
+      </div>
+      <div>
+        <h2 class="font-display text-2xl font-bold text-steel-700">Покупок пока нет</h2>
+        <p class="mt-2 text-muted-foreground">Добавьте товары в корзину и оформите первый заказ</p>
+      </div>
+      <a href="{% url 'shop:product_list' %}"
+         class="mt-2 inline-flex items-center gap-2 rounded-xl bg-ember-500 px-7 py-3.5 text-base font-bold text-white shadow-display transition hover:bg-ember-600">
+        <i data-lucide="package-search" class="w-5 h-5"></i>
+        Перейти в каталог
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.gsap) return;
+  const cards = document.querySelectorAll('.order-card');
+  if (cards.length === 0) return;
+
+  gsap.from(cards, {
+    y: 40,
+    opacity: 0,
+    duration: 0.6,
+    stagger: 0.12,
+    ease: 'power3.out',
+    delay: 0.1,
+    clearProps: 'all'
+  });
+});
+</script>
+{% endblock %}

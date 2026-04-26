@@ -1,0 +1,257 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Ремонт, отделка и строительство{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Заголовок страницы -->
+<section class="py-10 bg-steel-50 border-b border-border/70">
+  <div class="container">
+    <h1 class="font-display text-4xl font-bold tracking-tight text-steel-950">
+      {% if category %}{{ category.name }}{% else %}Все товары{% endif %}
+    </h1>
+    <p class="mt-4 text-lg text-steel-700 max-w-2xl">
+      Профессиональные инструменты, надежные материалы и быстрый сервис для каждого проекта.
+    </p>
+    
+    <!-- Поиск -->
+    <div class="mt-8 max-w-xl relative" id="search-container">
+      <form action="{% url 'shop:product_list' %}" method="get" class="relative group" id="search-form">
+        <input type="text" name="q" id="search-input" value="{{ search_query|default:'' }}" autocomplete="off"
+               placeholder="Поиск инструментов или материалов..." 
+               class="w-full rounded-2xl border border-border/70 bg-white px-6 py-4 pl-12 text-sm shadow-sm transition focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none">
+        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-ember-500 transition-colors"></i>
+        {% if current_sort %}
+          <input type="hidden" name="sort" value="{{ current_sort }}">
+        {% endif %}
+        <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl bg-steel-950 px-4 py-2 text-xs font-bold text-white transition hover:bg-ember-500">
+          Найти
+        </button>
+      </form>
+      
+      <!-- Autocomplete Dropdown -->
+      <div id="autocomplete-results" class="absolute left-0 right-0 top-full mt-2 hidden z-50 overflow-hidden rounded-2xl border border-border/70 bg-white shadow-display backdrop-blur-xl">
+        <div id="results-list" class="divide-y divide-border/50"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Категории и Товары -->
+<section class="py-10 sm:py-14">
+  <div class="container grid gap-12 lg:grid-cols-[250px_1fr]">
+    <!-- Сайдбар категорий -->
+    <aside>
+      <div class="sticky top-28 space-y-6">
+        <!-- Сайдбар категорий -->
+        <div class="rounded-[1.75rem] border border-border/70 bg-white/80 p-6 shadow-sm backdrop-blur">
+          <h3 class="font-display text-xl font-bold text-steel-950 mb-4">Категории</h3>
+          <ul class="space-y-3">
+            <li>
+              <a href="{% url 'shop:product_list' %}{% if search_query %}?q={{ search_query }}{% endif %}" class="flex items-center gap-2 text-sm font-medium transition hover:text-ember-600 {% if not category %}text-ember-600 font-bold{% else %}text-muted-foreground{% endif %}">
+                <i data-lucide="boxes" class="w-4 h-4"></i> Все товары
+              </a>
+            </li>
+            {% for c in categories %}
+            <li>
+              <a href="{{ c.get_absolute_url }}{% if search_query %}?q={{ search_query }}{% endif %}" class="flex items-center gap-2 text-sm font-medium transition hover:text-ember-600 {% if category.slug == c.slug %}text-ember-600 font-bold{% else %}text-muted-foreground{% endif %}">
+                <i data-lucide="package" class="w-4 h-4"></i> {{ c.name }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Фильтр по цене -->
+        <div class="rounded-[1.75rem] border border-border/70 bg-white/80 p-6 shadow-sm backdrop-blur">
+          <h3 class="font-display text-xl font-bold text-steel-950 mb-4">Цена</h3>
+          <form action="{{ request.path }}" method="get" class="space-y-4">
+            {% if search_query %}
+              <input type="hidden" name="q" value="{{ search_query }}">
+            {% endif %}
+            {% if current_sort %}
+              <input type="hidden" name="sort" value="{{ current_sort }}">
+            {% endif %}
+            <div class="grid grid-cols-2 gap-2">
+              <input type="number" name="min_price" value="{{ request.GET.min_price|default:'' }}" placeholder="От" inputmode="decimal" class="w-full rounded-xl border border-border p-2.5 text-xs focus:ring-2 focus:ring-ember-500 outline-none bg-white shadow-sm">
+              <input type="number" name="max_price" value="{{ request.GET.max_price|default:'' }}" placeholder="До" inputmode="decimal" class="w-full rounded-xl border border-border p-2.5 text-xs focus:ring-2 focus:ring-ember-500 outline-none bg-white shadow-sm">
+            </div>
+            <button type="submit" class="w-full rounded-xl bg-steel-950 py-2.5 text-xs font-bold text-white transition hover:bg-ember-500">
+              Применить
+            </button>
+          </form>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Основной контент (Сортировка + Сетка товаров) -->
+    <div class="flex flex-col">
+      <!-- Панель сортировки -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <p class="text-steel-600 font-medium">Показано {{ products|length }} товаров</p>
+        <div class="flex items-center gap-3">
+            <label for="sort-select" class="text-sm font-medium text-steel-600">Сортировка:</label>
+            <select id="sort-select" class="rounded-xl border border-border p-2.5 focus:ring-2 focus:ring-ember-500 outline-none text-sm bg-white cursor-pointer shadow-sm">
+                <option value="name_asc" {% if current_sort == 'name_asc' or not current_sort %}selected{% endif %}>По названию (А-Я)</option>
+                <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Сначала дешевые</option>
+                <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Сначала дорогие</option>
+                <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Сначала новые</option>
+            </select>
+        </div>
+      </div>
+
+      <script>
+        document.getElementById('sort-select').addEventListener('change', function() {
+            const url = new URL(window.location.href);
+            url.searchParams.set('sort', this.value);
+            window.location.href = url.toString();
+        });
+      </script>
+      
+      <!-- Сетка товаров -->
+      <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      {% for product in products %}
+      <div class="group rounded-[1.75rem] border border-border/70 bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:border-ember-200 hover:shadow-panel flex flex-col bg-white">
+        <div class="flex justify-end mb-2">
+            {% if user.is_authenticated %}
+            <button class="favorite-btn transition" data-id="{{ product.id }}">
+                <svg viewBox="0 0 24 24" class="favorite-icon {% if product.id in favorite_product_ids %}is-favorite{% endif %}">
+                    <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z" />
+                </svg>
+            </button>
+            {% else %}
+            <a href="{% url 'login' %}" class="text-steel-300 transition hover:text-ember-500" title="Войдите, чтобы добавить в избранное">
+                <svg viewBox="0 0 24 24" class="favorite-icon">
+                    <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z" />
+                </svg>
+            </a>
+            {% endif %}
+        </div>
+        <a href="{{ product.get_absolute_url }}" class="flex-shrink-0 mb-5 relative overflow-hidden rounded-2xl block bg-steel-50">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover transition duration-300 group-hover:scale-105">
+          {% else %}
+            <div class="w-full h-48 flex flex-col items-center justify-center text-steel-400">
+              <i data-lucide="image" class="w-8 h-8 opacity-50 mb-2"></i>
+              <span class="text-sm">Нет фото</span>
+            </div>
+          {% endif %}
+        </a>
+        <h3 class="font-display text-xl font-bold text-steel-950 flex-grow"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+        <div class="mt-4 flex items-end justify-between">
+          <div class="font-bold text-lg text-emerald-600">{{ product.price }} ₸</div>
+          <button class="inline-flex items-center justify-center rounded-xl bg-steel-950 w-10 h-10 text-white shadow-display transition hover:bg-ember-500 add-to-cart"
+                  data-id="{{ product.id }}" 
+                  data-name="{{ product.name }}" 
+                  data-price="{{ product.price }}">
+             <i data-lucide="plus" class="w-5 h-5 pointer-events-none"></i>
+          </button>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-span-full py-16 text-center text-muted-foreground">
+        В этой категории пока нет товаров.
+      </div>
+      {% endfor %}
+      </div>
+
+      <!-- Пагинация -->
+      {% if products.has_other_pages %}
+      <div class="mt-12 flex justify-center">
+        <nav class="inline-flex items-center gap-1 rounded-2xl bg-white p-1.5 border border-border/70 shadow-sm">
+          {% if products.has_previous %}
+            <a href="?page={{ products.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+               class="flex h-10 w-10 items-center justify-center rounded-xl transition hover:bg-steel-50 hover:text-ember-600">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </a>
+          {% endif %}
+
+          {% for num in products.paginator.page_range %}
+            {% if products.number == num %}
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-ember-500 font-bold text-white shadow-sm">
+                {{ num }}
+              </span>
+            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+              <a href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                 class="flex h-10 w-10 items-center justify-center rounded-xl transition hover:bg-steel-50 hover:text-ember-600 font-medium">
+                {{ num }}
+              </a>
+            {% endif %}
+          {% endfor %}
+
+          {% if products.has_next %}
+            <a href="?page={{ products.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+               class="flex h-10 w-10 items-center justify-center rounded-xl transition hover:bg-steel-50 hover:text-ember-600">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </a>
+          {% endif %}
+        </nav>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input');
+    const resultsContainer = document.getElementById('autocomplete-results');
+    const resultsList = document.getElementById('results-list');
+    let debounceTimer;
+
+    searchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        const query = searchInput.value.trim();
+
+        if (query.length < 2) {
+            resultsContainer.classList.add('hidden');
+            return;
+        }
+
+        debounceTimer = setTimeout(() => {
+            fetch(`{% url 'shop:product_search_autocomplete' %}?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    resultsList.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            const div = document.createElement('a');
+                            div.href = item.url;
+                            div.className = 'flex items-center gap-4 p-4 hover:bg-steel-50 transition transition-colors group';
+                            div.innerHTML = `
+                                <div class="w-12 h-12 rounded-lg bg-steel-100 overflow-hidden flex-shrink-0">
+                                    ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center"><i data-lucide="image" class="w-5 h-5 text-steel-400"></i></div>`}
+                                </div>
+                                <div class="flex-grow">
+                                    <div class="text-sm font-bold text-steel-950 group-hover:text-ember-600 transition-colors">${item.name}</div>
+                                    <div class="text-[10px] text-muted-foreground uppercase tracking-wider">${item.category}</div>
+                                </div>
+                                <div class="text-sm font-bold text-emerald-600">${item.price} ₸</div>
+                            `;
+                            resultsList.appendChild(div);
+                        });
+                        resultsContainer.classList.remove('hidden');
+                        if (window.lucide) window.lucide.createIcons();
+                    } else {
+                        resultsContainer.classList.add('hidden');
+                    }
+                });
+        }, 300);
+    });
+
+    // Close dropdown on click outside
+    document.addEventListener('click', (e) => {
+        if (!document.getElementById('search-container').contains(e.target)) {
+            resultsContainer.classList.add('hidden');
+        }
+    });
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,86 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<section class="py-16 sm:py-20">
+  <div class="container lg:grid lg:grid-cols-[1fr_400px] gap-12">
+    <!-- Левая колонка (Список товаров) -->
+    <div>
+      <div class="inline-flex items-center gap-2 rounded-full border border-sand-200 bg-sand-50 px-4 py-2 text-sm font-semibold text-sand-800 shadow-sm backdrop-blur mb-6">
+        <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+        Оформление
+      </div>
+      <h1 class="font-display text-4xl font-bold tracking-tight text-steel-950 sm:text-5xl border-b border-border/70 pb-6">
+        Ваша корзина
+      </h1>
+
+      <div id="cart-items" class="mt-8 space-y-6">
+        <!-- Сюда JS подставляет товары -->
+      </div>
+    </div>
+
+    <!-- Правая колонка (Сумма и Оформление) -->
+    <div class="mt-12 lg:mt-0">
+      <div class="rounded-[2rem] border border-border/70 bg-gradient-to-br from-sand-50 via-white to-ember-50 p-8 shadow-panel sticky top-28">
+        <h2 class="font-display text-2xl font-bold text-steel-950 mb-6">Сумма заказа</h2>
+        
+        <div class="flex justify-between items-end border-b border-border/70 pb-6 mb-6">
+          <span class="text-lg text-muted-foreground">Итого:</span>
+          <span class="font-display text-4xl font-bold text-emerald-600"><span id="cart-total-sum">0.00</span> ₸</span>
+        </div>
+
+        <button id="checkout-btn" style="display: none;" class="w-full inline-flex justify-center items-center gap-2 rounded-2xl bg-steel-950 px-6 py-4 text-center text-lg font-semibold text-white shadow-display transition hover:bg-steel-900">
+          Перейти к оформлению <i data-lucide="arrow-right" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Форма -->
+        <div id="checkout-form-container" style="display: none;" class="mt-6">
+          <h3 class="font-display text-xl font-bold text-steel-950 mb-4">Данные покупателя</h3>
+          <form id="checkout-form" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-1" for="first_name">Имя</label>
+                <input type="text" id="first_name" required class="w-full rounded-xl border border-border p-3 focus:ring-2 focus:ring-ember-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1" for="last_name">Фамилия</label>
+                <input type="text" id="last_name" required class="w-full rounded-xl border border-border p-3 focus:ring-2 focus:ring-ember-500 outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="email">Email</label>
+              <input type="email" id="email" required class="w-full rounded-xl border border-border p-3 focus:ring-2 focus:ring-ember-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="address">Адрес доставки / самовывоза</label>
+              <input type="text" id="address" required class="w-full rounded-xl border border-border p-3 focus:ring-2 focus:ring-ember-500 outline-none">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-1" for="city">Город</label>
+                <input type="text" id="city" required class="w-full rounded-xl border border-border p-3 focus:ring-2 focus:ring-ember-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1" for="postal_code">Индекс</label>
+                <input type="text" id="postal_code" required class="w-full rounded-xl border border-border p-3 focus:ring-2 focus:ring-ember-500 outline-none">
+              </div>
+            </div>
+            
+            <button type="submit" class="w-full inline-flex justify-center items-center gap-2 rounded-2xl bg-ember-500 mt-6 px-6 py-4 text-center text-lg font-semibold text-white shadow-display transition hover:bg-ember-600">
+              Подтвердить заказ <i data-lucide="check" class="w-5 h-5"></i>
+            </button>
+          </form>
+          <div id="order-message" class="mt-4 text-center font-bold"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% csrf_token %}
+
+
+{% endblock %}

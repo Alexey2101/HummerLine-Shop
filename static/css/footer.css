@@ -1,0 +1,21 @@
+/* Подвал */
+.main-footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    color: #666;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .catalog-layout {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .product-detail {
+        flex-direction: column;
+    }
+}

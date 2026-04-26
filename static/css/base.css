@@ -1,0 +1,41 @@
+:root {
+  --background: 40 43% 97%;
+  --foreground: 218 31% 16%;
+  --border: 32 23% 84%;
+  --muted: 36 28% 93%;
+  --muted-foreground: 217 11% 42%;
+}
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  background-image: radial-gradient(circle at top, rgba(245, 158, 11, 0.12), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  background-attachment: fixed;
+}
+.lucide { 
+  width: 1.25rem; 
+  height: 1.25rem; 
+  stroke-width: 2; 
+}
+.favorite-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke: #cbd5e1; /* steel-300 */
+  fill: transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.favorite-icon:hover {
+  stroke: #f97316; /* ember-500 */
+  transform: scale(1.1);
+}
+
+.favorite-icon.is-favorite {
+  stroke: #f59e0b; /* amber-500 */
+  fill: #f59e0b;
+}
+
+.favorite-icon path {
+  stroke-width: 2px;
+}

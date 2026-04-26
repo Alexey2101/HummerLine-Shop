@@ -1,0 +1,86 @@
+{% extends "shop/base.html" %}
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<section class="min-h-[70vh] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-steel-50/50">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 class="mt-6 text-center font-display text-4xl font-bold tracking-tight text-steel-950">
+            Вход в аккаунт
+        </h2>
+    </div>
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white px-8 py-10 shadow-panel rounded-[2rem] border border-border/70 backdrop-blur text-sm">
+            <form class="space-y-6" method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="rounded-2xl bg-red-50 p-4 mb-6 text-sm text-red-600 border border-red-200">
+                    <p>Пожалуйста, введите правильное имя пользователя и пароль. Поля могут быть чувствительны к регистру.</p>
+                </div>
+                {% endif %}
+
+                <div>
+                    <label for="id_username" class="block text-sm font-semibold leading-6 text-steel-950">Имя пользователя</label>
+                    <div class="mt-2 text-base">
+                        <input id="id_username" name="username" type="text" required class="block w-full rounded-xl border-border py-3 px-4 text-steel-900 outline-none focus:ring-2 focus:ring-ember-500 border bg-steel-50/50 transition duration-200">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="id_password" class="block text-sm font-semibold leading-6 text-steel-950">Пароль</label>
+                        <a href="{% url 'password_reset' %}" class="text-xs font-semibold text-ember-600 hover:text-ember-500 transition">
+                            Забыли пароль?
+                        </a>
+                    </div>
+                    <div class="text-base relative">
+                        <input id="id_password" name="password" type="password" required class="block w-full rounded-xl border-border py-3 pl-4 pr-10 text-steel-900 outline-none focus:ring-2 focus:ring-ember-500 border bg-steel-50/50 transition duration-200">
+                        <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-steel-400 hover:text-steel-600 transition-colors toggle-password" data-target="id_password">
+                            <i data-lucide="eye" class="w-5 h-5 icon-eye"></i>
+                            <i data-lucide="eye-off" class="w-5 h-5 icon-eye-off hidden"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="flex w-full justify-center rounded-xl bg-ember-500 px-3 py-3.5 text-base font-semibold text-white shadow-display transition hover:bg-ember-600">
+                        Войти
+                    </button>
+                </div>
+            </form>
+
+            <p class="mt-6 text-center text-sm text-muted-foreground">
+                Нет аккаунта?
+                <a href="{% url 'register' %}" class="font-semibold text-ember-600 hover:text-ember-500 transition">Зарегистрироваться</a>
+            </p>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            if (input) {
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                
+                const iconEye = this.querySelector('.icon-eye');
+                const iconEyeOff = this.querySelector('.icon-eye-off');
+                
+                if (isPassword) {
+                    if(iconEye) iconEye.classList.add('hidden');
+                    if(iconEyeOff) iconEyeOff.classList.remove('hidden');
+                } else {
+                    if(iconEye) iconEye.classList.remove('hidden');
+                    if(iconEyeOff) iconEyeOff.classList.add('hidden');
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

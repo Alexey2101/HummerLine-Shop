@@ -1,0 +1,133 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}HummerLine - Профессиональные решения{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative overflow-hidden min-h-[85vh] flex flex-col justify-center py-20">
+  <!-- Dynamic Background -->
+  <div class="absolute inset-0 bg-mesh-warm opacity-90 transition-opacity duration-1000" id="hero-mesh"></div>
+  <div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-ember-100/40 to-transparent"></div>
+  <div class="absolute -top-24 -right-24 w-96 h-96 bg-ember-400/10 rounded-full blur-3xl animate-pulse"></div>
+  <div class="absolute top-1/2 -left-24 w-64 h-64 bg-pine-400/10 rounded-full blur-3xl"></div>
+
+  <div class="container relative z-10">
+    <div class="max-w-4xl mx-auto text-center lg:text-left lg:mx-0 lg:max-w-3xl">
+      <div class="hero-reveal inline-flex items-center gap-2 rounded-full border border-ember-200/50 bg-white/60 px-5 py-2.5 text-sm font-bold text-ember-900 shadow-sm backdrop-blur-md mb-8">
+        <i data-lucide="sparkles" class="w-4 h-4 text-ember-600"></i>
+        <span>Премиальное оборудование для профи</span>
+      </div>
+      
+      <h1 class="hero-reveal font-display text-6xl font-extrabold tracking-tight text-steel-950 sm:text-7xl lg:text-8xl leading-[1.1]">
+        Инструменты <br/>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-ember-600 to-amber-500">будущего</span> <br/>
+        уже здесь.
+      </h1>
+      
+      <p class="hero-reveal mt-8 max-w-2xl text-xl leading-relaxed text-steel-700 font-medium">
+        HummerLine Hardware — это синергия надежности и инноваций. Мы создаем экосистему для тех, кто ценит качество, скорость и профессиональный подход в каждом проекте.
+      </p>
+      
+      <div class="hero-reveal mt-12 flex flex-wrap gap-5 justify-center lg:justify-start">
+        <a href="{% url 'shop:product_list' %}" class="group relative inline-flex items-center justify-center rounded-2xl bg-steel-950 px-10 py-5 text-lg font-bold text-white shadow-display transition-all hover:bg-ember-500 hover:scale-105 active:scale-95 overflow-hidden">
+          <span class="relative z-10">Каталог товаров</span>
+          <div class="absolute inset-0 bg-gradient-to-r from-ember-500 to-amber-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </a>
+        <a href="{% url 'shop:product_create' %}" class="inline-flex items-center justify-center rounded-2xl border-2 border-steel-200 bg-white/50 px-10 py-5 text-lg font-bold text-steel-900 shadow-sm backdrop-blur-sm transition-all hover:bg-white hover:border-ember-500 hover:text-ember-600">
+          Разместить заказ
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bento Grid Categories -->
+<section class="py-24 bg-white relative overflow-hidden">
+  <div class="container relative z-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div class="max-w-2xl">
+        <h2 class="section-reveal font-display text-4xl font-bold text-steel-950 sm:text-5xl">Наши направления</h2>
+        <p class="section-reveal mt-4 text-lg text-steel-600">Исследуйте тщательно отобранные категории товаров для любых задач.</p>
+      </div>
+      <a href="{% url 'shop:product_list' %}" class="section-reveal text-ember-600 font-bold flex items-center gap-2 hover:gap-3 transition-all underline decoration-2 underline-offset-8">
+        Смотреть все категории <i data-lucide="arrow-right" class="w-5 h-5"></i>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto lg:h-[700px]">
+      <!-- Big Card -->
+      <a href="{% url 'shop:product_list_by_category' category_slug='stroitelstvo-i-remont' %}" 
+         class="bento-card md:col-span-8 group relative overflow-hidden rounded-[2.5rem] bg-steel-50 border border-steel-100 p-10 flex flex-col justify-between transition-all hover:shadow-panel hover:border-ember-200">
+        <div class="relative z-10 max-w-sm">
+          <h3 class="font-display text-4xl font-bold text-steel-950 mb-4">Строительство И Ремонт</h3>
+          <p class="text-steel-600 font-medium leading-relaxed">Все от фундамента до кровли. Лучшие бренды и проверенные материалы.</p>
+        </div>
+        <div class="relative z-10 mt-10">
+          <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-bold text-steel-900 shadow-sm transition group-hover:bg-ember-500 group-hover:text-white">
+            Исследовать <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </span>
+        </div>
+        <img src="{% static 'images/MainPage/construction.png' %}" class="absolute -right-10 -bottom-10 w-2/3 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3 opacity-80 group-hover:opacity-100">
+      </a>
+
+      <!-- Small Vertical Card -->
+      <a href="{% url 'shop:product_list_by_category' category_slug='mebel' %}" 
+         class="bento-card md:col-span-4 group relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-10 flex flex-col justify-between transition-all hover:shadow-panel">
+        <div class="relative z-10">
+          <h3 class="font-display text-3xl font-bold text-steel-950 mb-4">Мебель</h3>
+          <p class="text-steel-600 font-medium">Стильные решения для вашего интерьера.</p>
+        </div>
+        <img src="{% static 'images/MainPage/furniture.png' %}" class="relative z-10 w-full mt-10 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-6">
+      </a>
+
+      <!-- Small Horizontal Card -->
+      <a href="{% url 'shop:product_list_by_category' category_slug='kompyuternaya-tehnika' %}" 
+         class="bento-card md:col-span-12 lg:col-span-12 group relative overflow-hidden rounded-[2.5rem] bg-steel-900 p-10 lg:p-14 flex flex-col md:flex-row items-center justify-between transition-all hover:shadow-display mt-auto">
+        <div class="relative z-10 text-white max-w-lg mb-10 md:mb-0">
+          <h3 class="font-display text-4xl font-bold mb-6">IT & Электроника</h3>
+          <p class="text-white/70 text-lg leading-relaxed mb-8">Современные компьютеры и комплектующие для работы и отдыха.</p>
+          <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition group-hover:bg-ember-500">
+            Перейти в каталог <i data-lucide="monitor" class="w-4 h-4 ml-2"></i>
+          </span>
+        </div>
+        <div class="relative w-full md:w-1/2 h-64 md:h-full flex items-center justify-center">
+          <img src="{% static 'images/MainPage/electronics.png' %}" class="max-w-[80%] max-h-full object-contain transition-transform duration-700 group-hover:scale-110">
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Highlights Section -->
+<section class="py-24 bg-steel-50">
+  <div class="container">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div class="highlight-card group p-8 rounded-3xl bg-white shadow-sm border border-steel-100 transition hover:shadow-panel">
+        <div class="w-16 h-16 rounded-2xl bg-ember-100 flex items-center justify-center text-ember-600 mb-8 transition group-hover:bg-ember-500 group-hover:text-white">
+          <i data-lucide="truck" class="w-8 h-8"></i>
+        </div>
+        <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Быстрая доставка</h4>
+        <p class="text-steel-600 leading-relaxed">Доставляем заказы по всему Казахстану в кратчайшие сроки.</p>
+      </div>
+      
+      <div class="highlight-card group p-8 rounded-3xl bg-white shadow-sm border border-steel-100 transition hover:shadow-panel">
+        <div class="w-16 h-16 rounded-2xl bg-pine-100 flex items-center justify-center text-pine-600 mb-8 transition group-hover:bg-pine-500 group-hover:text-white">
+          <i data-lucide="shield-check" class="w-8 h-8"></i>
+        </div>
+        <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Гарантия качества</h4>
+        <p class="text-steel-600 leading-relaxed">Только оригинальная продукция от проверенных поставщиков.</p>
+      </div>
+      
+      <div class="highlight-card group p-8 rounded-3xl bg-white shadow-sm border border-steel-100 transition hover:shadow-panel">
+        <div class="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600 mb-8 transition group-hover:bg-amber-500 group-hover:text-white">
+          <i data-lucide="headset" class="w-8 h-8"></i>
+        </div>
+        <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Поддержка 24/7</h4>
+        <p class="text-steel-600 leading-relaxed">Наши специалисты всегда готовы помочь вам с выбором.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

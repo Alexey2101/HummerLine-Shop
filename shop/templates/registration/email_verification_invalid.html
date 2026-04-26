@@ -1,0 +1,41 @@
+{% extends "shop/base.html" %}
+{% block title %}Ошибка подтверждения{% endblock %}
+
+{% block content %}
+<section class="min-h-[75vh] flex items-center justify-center py-12 px-4 bg-steel-50/50">
+  <div class="sm:w-full sm:max-w-md text-center">
+    <div class="bg-white px-8 py-12 shadow-panel rounded-[2rem] border border-border/70">
+      
+      <div class="flex justify-center mb-6">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-red-50 border-2 border-red-200">
+          <i data-lucide="x-circle" class="w-10 h-10 text-red-500" id="err-icon"></i>
+        </div>
+      </div>
+
+      <h1 class="font-display text-3xl font-bold text-steel-950 mb-3">Ссылка не работает</h1>
+      <p class="text-steel-600 mb-8">
+        {{ reason }}
+      </p>
+
+      <a href="{% url 'register' %}" 
+         class="flex w-full justify-center rounded-xl bg-ember-500 px-3 py-3.5 text-base font-semibold text-white shadow-display transition hover:bg-ember-600 mb-4">
+        Зарегистрироваться снова
+      </a>
+      <a href="{% url 'login' %}" 
+         class="flex w-full justify-center rounded-xl border border-border px-3 py-3.5 text-base font-semibold text-steel-700 transition hover:bg-steel-50">
+        Войти
+      </a>
+    </div>
+  </div>
+</section>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.gsap) return;
+  gsap.from('#err-icon', { scale: 0, rotation: 90, opacity: 0, duration: 0.6, ease: 'back.out(2)', delay: 0.1 });
+  gsap.from('h1, p, a', { y: 20, opacity: 0, stagger: 0.1, duration: 0.5, ease: 'power2.out', delay: 0.3 });
+});
+</script>
+{% endblock %}
+{% endblock %}
