@@ -4,3 +4,6 @@ builder = "RAILPACK"
 [deploy]
 startCommand = "gunicorn core.wsgi:application"
 preDeployCommand = "python manage.py migrate"
+
+[deploy.variables]
+RAILPACK_PYTHON_VERSION = "3.12"
