@@ -4,8 +4,11 @@ from shop import views as shop_views
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.views.generic.base import RedirectView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('favicon.ico', RedirectView.as_view(url='/static/images/favicon.ico')),
     path('accounts/register/', shop_views.register_view, name='register'),
     path('accounts/verify-email/sent/', shop_views.email_verification_sent, name='email_verification_sent'),
     path('accounts/verify-email/<uuid:token>/', shop_views.activate_account, name='activate_account'),

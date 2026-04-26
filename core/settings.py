@@ -17,15 +17,30 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-z!x0=3(kw@%m&z9(a$-c4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = [os.environ.get('RAILWAY_STATIC_URL', '*'), 'localhost', '127.0.0.1']
-
-RAILWAY_PUBLIC_DOMAIN = os.environ.get('RAILWAY_PUBLIC_DOMAIN')
-if RAILWAY_PUBLIC_DOMAIN:
-    ALLOWED_HOSTS.append(RAILWAY_PUBLIC_DOMAIN)
+ALLOWED_HOSTS = [
+    os.environ.get('RAILWAY_STATIC_URL', '*'),
+    os.environ.get('RAILWAY_PUBLIC_DOMAIN', '*'),
+    'localhost',
+    '127.0.0.1',
+    '.railway.app', # Доверяем всем поддоменам railway
+]
 
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
-if RAILWAY_PUBLIC_DOMAIN:
-    CSRF_TRUSTED_ORIGINS.append(f"https://{RAILWAY_PUBLIC_DOMAIN}")
+
+# Автоматически добавляем домены Railway в доверенные
+railway_static = os.environ.get('RAILWAY_STATIC_URL')
+if railway_static:
+    if not railway_static.startswith('http'):
+        CSRF_TRUSTED_ORIGINS.append(f"https://{railway_static}")
+    else:
+        CSRF_TRUSTED_ORIGINS.append(railway_static)
+
+railway_public = os.environ.get('RAILWAY_PUBLIC_DOMAIN')
+if railway_public:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{railway_public}")
+
+# Явно добавляем домен из ошибки, если он еще не там
+CSRF_TRUSTED_ORIGINS.append("https://hummerline-shop-production.up.railway.app")
 
 # Application definition
 
