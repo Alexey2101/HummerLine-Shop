@@ -1,46 +1,63 @@
 <!-- Category Sidebar Component -->
-<aside aria-labelledby="categories-heading">
-  <div class="sticky top-28 space-y-6">
-    <!-- Сайдбар категорий -->
-    <div class="sidebar-card">
-      <h3 class="font-display text-xl font-bold text-steel-950 mb-4" id="categories-heading">Категории</h3>
-      <ul class="space-y-3">
+<aside aria-labelledby="categories-heading" class="lg:block hidden">
+  <div class="sticky top-28 space-y-8">
+    <!-- Categories -->
+    <div class="card-premium !p-6">
+      <h3 class="font-display text-lg font-bold text-steel-950 mb-6 flex items-center gap-2" id="categories-heading">
+        <i data-lucide="layers" class="w-5 h-5 text-ember-500"></i>
+        Категории
+      </h3>
+      <ul class="space-y-1">
         <li>
           <a href="{% url 'shop:product_list' %}{% if search_query %}?q={{ search_query }}{% endif %}" 
-             class="flex items-center gap-2 text-sm font-medium transition hover:text-ember-600 {% if not category %}text-ember-600 font-bold{% else %}text-muted-foreground{% endif %}">
-            <i data-lucide="boxes" class="w-4 h-4"></i> Все товары
+             class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold transition-all {% if not category %}bg-ember-50 text-ember-600{% else %}text-steel-600 hover:bg-steel-50 hover:text-steel-950{% endif %}">
+            <span>Все товары</span>
+            {% if not category %}<i data-lucide="check" class="w-4 h-4"></i>{% endif %}
           </a>
         </li>
         {% for c in categories %}
         <li>
           <a href="{{ c.get_absolute_url }}{% if search_query %}?q={{ search_query }}{% endif %}" 
-             class="flex items-center gap-2 text-sm font-medium transition hover:text-ember-600 {% if category.slug == c.slug %}text-ember-600 font-bold{% else %}text-muted-foreground{% endif %}">
-            <i data-lucide="package" class="w-4 h-4"></i> {{ c.name }}
+             class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold transition-all {% if category.slug == c.slug %}bg-ember-50 text-ember-600{% else %}text-steel-600 hover:bg-steel-50 hover:text-steel-950{% endif %}">
+            <span>{{ c.name }}</span>
+            {% if category.slug == c.slug %}<i data-lucide="check" class="w-4 h-4"></i>{% endif %}
           </a>
         </li>
         {% endfor %}
       </ul>
     </div>
 
-    <!-- Фильтр по цене -->
-    <div class="sidebar-card">
-      <h3 class="font-display text-xl font-bold text-steel-950 mb-4">Цена</h3>
-      <form action="{{ request.path }}" method="get" class="space-y-4">
+    <!-- Filter by Price -->
+    <div class="card-premium !p-6">
+      <h3 class="font-display text-lg font-bold text-steel-950 mb-6 flex items-center gap-2">
+        <i data-lucide="filter" class="w-5 h-5 text-ember-500"></i>
+        Фильтры
+      </h3>
+      <form action="{{ request.path }}" method="get" class="space-y-6">
         {% if search_query %}
           <input type="hidden" name="q" value="{{ search_query }}">
         {% endif %}
         {% if current_sort %}
           <input type="hidden" name="sort" value="{{ current_sort }}">
         {% endif %}
-        <div class="grid grid-cols-2 gap-2">
-          <input type="number" name="min_price" value="{{ request.GET.min_price|default:'' }}" 
-                 placeholder="От" inputmode="decimal" 
-                 class="w-full rounded-xl border border-border p-2.5 text-xs focus:ring-2 focus:ring-ember-500 outline-none bg-white shadow-sm">
-          <input type="number" name="max_price" value="{{ request.GET.max_price|default:'' }}" 
-                 placeholder="До" inputmode="decimal" 
-                 class="w-full rounded-xl border border-border p-2.5 text-xs focus:ring-2 focus:ring-ember-500 outline-none bg-white shadow-sm">
+        
+        <div class="space-y-3">
+          <label class="text-[10px] font-bold text-steel-400 uppercase tracking-widest">Ценовой диапазон</label>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-steel-400">ОТ</span>
+              <input type="number" name="min_price" value="{{ request.GET.min_price|default:'' }}" 
+                     class="w-full rounded-xl border border-steel-100 bg-steel-50 pl-8 pr-3 py-2.5 text-xs font-bold focus:ring-2 focus:ring-ember-500/20 focus:border-ember-500 outline-none transition-all">
+            </div>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-steel-400">ДО</span>
+              <input type="number" name="max_price" value="{{ request.GET.max_price|default:'' }}" 
+                     class="w-full rounded-xl border border-steel-100 bg-steel-50 pl-8 pr-3 py-2.5 text-xs font-bold focus:ring-2 focus:ring-ember-500/20 focus:border-ember-500 outline-none transition-all">
+            </div>
+          </div>
         </div>
-        <button type="submit" class="w-full rounded-xl bg-steel-950 py-2.5 text-xs font-bold text-white transition hover:bg-ember-500">
+
+        <button type="submit" class="w-full btn-primary !py-3 !text-sm">
           Применить
         </button>
       </form>

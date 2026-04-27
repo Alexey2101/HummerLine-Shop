@@ -1,10 +1,11 @@
 {% load static %}
 <!-- Header Component -->
-<header class="sticky top-0 z-40 border-b border-border/70 bg-white/90 backdrop-blur-xl">
-  <div class="container flex flex-col gap-5 py-5 lg:flex-row lg:items-center lg:justify-between">
-    <div class="flex items-center justify-between gap-4">
-      <a href="{% url 'shop:home' %}" class="flex items-center transition-all duration-300 hover:opacity-90 active:scale-95" aria-label="HummerLine Главная">
-        <svg id="logo-svg" width="1198" height="191" viewBox="0 0 1198 191" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-10 lg:h-12 w-auto overflow-visible" aria-hidden="true">
+<header class="sticky top-0 z-50 transition-all duration-500" id="main-header">
+  <div class="container py-4">
+    <div class="glass-panel rounded-3xl px-6 py-3 flex items-center justify-between gap-4">
+      <!-- Logo -->
+      <a href="{% url 'shop:home' %}" class="flex items-center group transition-transform active:scale-95" aria-label="HummerLine Главная">
+        <svg id="logo-svg" viewBox="0 0 1198 191" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-8 lg:h-10 w-auto" aria-hidden="true">
           <path id="logo-hammer" d="M3.54473e-05 165.753L92.3706 61.576L86.3706 56.076C86.3706 56.076 92.3706 13.076 40.3706 25.076C60.3706 -8.92403 95.0373 -0.257365 106.871 5.07597L145.371 33.576C145.371 33.576 134.871 44.576 156.871 57.576L163.371 50.076L182.371 64.6685L156.871 98.076L137.871 83.576L144.371 74.076L129.371 64.6685L114.871 76.576L107.871 72.076L31.3706 188.576L3.54473e-05 165.753Z" fill="url(#paint0_linear_header)"/>
           <path class="logo-letter" d="M221.371 188.943V0H243.562V79.6904H275.548V0H297.739V188.943H275.548V104.369H243.562V188.943H221.371Z" fill="url(#paint1_linear_header)"/>
           <path class="logo-letter" d="M359.514 191C355.915 191 352.317 190.486 348.718 189.458C345.12 188.601 341.788 186.973 338.723 184.573C335.657 182.174 332.925 179.175 330.526 175.576C328.26 171.806 326.394 167.778 324.928 163.494C323.595 159.21 322.662 154.754 322.129 150.127C321.596 145.499 321.33 140.872 321.33 136.245V0H343.521V136.245C343.521 138.473 343.587 140.786 343.72 143.186C343.987 145.414 344.32 147.642 344.72 149.869C345.253 151.926 345.92 153.983 346.719 156.039C347.519 158.096 348.518 159.981 349.718 161.694C351.051 163.237 352.583 164.437 354.316 165.293C356.049 165.979 357.781 166.322 359.514 166.322C361.247 166.322 362.979 165.979 364.712 165.293C366.444 164.437 367.911 163.237 369.11 161.694C370.443 159.981 371.509 158.096 372.309 156.039C373.108 153.983 373.708 151.926 374.108 149.869C374.641 147.642 374.974 145.414 375.108 143.186C375.374 140.786 375.507 138.473 375.507 136.245V0H397.698V136.245C397.698 140.872 397.432 145.499 396.899 150.127C396.366 154.754 395.366 159.21 393.9 163.494C392.567 167.778 390.701 171.806 388.302 175.576C386.036 179.175 383.371 182.174 380.305 184.573C377.24 186.973 373.908 188.601 370.31 189.458C366.711 190.486 363.113 191 359.514 191Z" fill="url(#paint2_linear_header)"/>
@@ -31,74 +32,55 @@
           </defs>
         </svg>
       </a>
-    </div>
 
-    <nav class="flex flex-col gap-4 lg:flex-row lg:items-center" aria-label="Главная навигация">
-      <ul class="flex flex-wrap items-center gap-2 text-sm font-medium text-muted-foreground list-none p-0 m-0">
-        <li>
-          <a href="{% url 'shop:home' %}" class="rounded-full px-4 py-2 transition hover:bg-steel-100 hover:text-steel-950">
-            Главная
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'shop:product_list' %}" class="rounded-full px-4 py-2 transition hover:bg-steel-100 hover:text-steel-950">
-            Все товары
-          </a>
-        </li>
-        
+      <!-- Navigation -->
+      <nav class="hidden lg:flex items-center gap-8">
+        <a href="{% url 'shop:home' %}" class="text-sm font-bold text-steel-900 hover:text-ember-600 transition-colors">Главная</a>
+        <a href="{% url 'shop:product_list' %}" class="text-sm font-bold text-steel-900 hover:text-ember-600 transition-colors">Все товары</a>
+        <a href="{% url 'shop:product_create' %}" class="flex items-center gap-2 text-sm font-bold text-ember-600 hover:text-ember-700 transition-colors">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i> Разместить объявление
+        </a>
         {% if user.is_authenticated %}
-        <li>
-          <a href="{% url 'shop:product_create' %}" class="rounded-full bg-ember-500 text-white px-4 py-2 transition hover:bg-ember-600 flex items-center gap-2 font-bold shadow-sm mr-2">
-            <i data-lucide="plus-circle" class="w-4 h-4"></i> Разместить объявление
-          </a>
-        </li>
-        
-        <li>
-          <a href="{% url 'shop:cart_detail' %}" class="rounded-full px-4 py-2 transition hover:bg-steel-100 hover:text-steel-950 flex items-center gap-2 mr-2">
-            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Корзина 
-            <span id="cart-count" class="bg-steel-900 text-white rounded-full px-2 py-0.5 text-xs">0</span>
-            (<span id="cart-total-price">0.00</span> ₸)
-          </a>
-        </li>
+        <a href="{% url 'shop:cart_detail' %}" class="flex items-center gap-2 text-sm font-bold text-steel-900 hover:text-ember-600 transition-colors">
+          <i data-lucide="shopping-cart" class="w-4 h-4"></i> Корзина
+          <span class="bg-ember-500 text-white text-[10px] px-1.5 py-0.5 rounded-full" id="cart-count">0</span>
+        </a>
         {% endif %}
-      </ul>
+      </nav>
 
-      <!-- Профиль -->
-      <div class="flex items-center">
-        <div class="hidden lg:block w-px h-6 bg-border/70 mx-1"></div>
-        
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
         {% if user.is_authenticated %}
-          <!-- Опции профиля с выпадающим меню -->
           <div class="relative group">
-            <button id="profile-dropdown-btn" class="flex items-center gap-2 px-4 py-2 font-semibold text-steel-950 rounded-full transition hover:bg-steel-100 focus:outline-none" aria-haspopup="true" aria-expanded="false" aria-controls="profile-dropdown-menu">
-              <i data-lucide="user" class="w-4 h-4 text-emerald-600"></i> {{ user.username }}
-              <i data-lucide="chevron-down" class="w-4 h-4 text-muted-foreground transition-transform duration-200" id="profile-dropdown-icon"></i>
+            <button id="profile-dropdown-btn" class="flex items-center gap-3 pl-2 pr-4 py-1.5 bg-steel-100 rounded-full hover:bg-steel-200 transition-colors">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-ember-500 to-amber-400 flex items-center justify-center text-white font-bold text-sm">
+                {{ user.username|first|upper }}
+              </div>
+              <span class="text-sm font-bold text-steel-900 hidden sm:inline">{{ user.username }}</span>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-steel-400 transition-transform duration-300" id="profile-dropdown-icon"></i>
             </button>
             
-            <!-- Dropdown Menu -->
-            <div id="profile-dropdown-menu" class="absolute right-0 mt-2 w-48 rounded-2xl bg-white shadow-display border border-border/70 opacity-0 invisible translate-y-2 transition-all duration-200 z-50" role="menu">
-              <div class="p-2 flex flex-col gap-1">
-                <a href="{% url 'shop:my_purchases' %}" class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-steel-700 rounded-lg transition hover:bg-steel-50 hover:text-steel-950" role="menuitem">
-                  <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-600"></i> Мои покупки
+            <div id="profile-dropdown-menu" class="absolute right-0 mt-3 w-56 rounded-3xl glass-panel opacity-0 invisible translate-y-4 transition-all duration-300 z-50">
+              <div class="p-3 flex flex-col gap-1">
+                <a href="{% url 'shop:product_create' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-ember-600 rounded-2xl hover:bg-ember-50 transition-all">
+                  <i data-lucide="plus-circle" class="w-4 h-4"></i> Создать объявление
                 </a>
-                <a href="{% url 'shop:my_ads' %}" class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-steel-700 rounded-lg transition hover:bg-steel-50 hover:text-steel-950" role="menuitem">
-                  <i data-lucide="package-open" class="w-4 h-4 text-emerald-600"></i> Мои объявления
+                <a href="{% url 'shop:my_purchases' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-steel-700 rounded-2xl hover:bg-white hover:text-ember-600 transition-all">
+                  <i data-lucide="shopping-bag" class="w-4 h-4"></i> Покупки
                 </a>
-                <a href="{% url 'shop:chat_list' %}" class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-steel-700 rounded-lg transition hover:bg-steel-50 hover:text-steel-950" role="menuitem">
-                  <i data-lucide="message-circle" class="w-4 h-4 text-ember-500"></i> Сообщения
+                <a href="{% url 'shop:my_ads' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-steel-700 rounded-2xl hover:bg-white hover:text-ember-600 transition-all">
+                  <i data-lucide="package" class="w-4 h-4"></i> Объявления
                 </a>
-                <a href="{% url 'shop:favorites_list' %}" class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-steel-700 rounded-lg transition hover:bg-steel-50 hover:text-steel-950" role="menuitem">
-                  <svg viewBox="0 0 24 24" class="w-4 h-4 fill-amber-500 stroke-amber-500" aria-hidden="true">
-                      <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z" />
-                  </svg> Избранное
+                <a href="{% url 'shop:chat_list' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-steel-700 rounded-2xl hover:bg-white hover:text-ember-600 transition-all">
+                  <i data-lucide="message-square" class="w-4 h-4"></i> Сообщения
                 </a>
-                
-                <div class="h-px bg-border/70 my-1"></div>
-                
-                <!-- Выход -->
-                <form method="POST" action="{% url 'logout' %}" class="w-full" role="none">
+                <a href="{% url 'shop:profile_edit' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-steel-700 rounded-2xl hover:bg-white hover:text-ember-600 transition-all">
+                  <i data-lucide="settings" class="w-4 h-4"></i> Настройки
+                </a>
+                <div class="h-px bg-steel-200/50 my-1 mx-2"></div>
+                <form method="POST" action="{% url 'logout' %}">
                   {% csrf_token %}
-                  <button type="submit" class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 rounded-lg transition hover:bg-red-50 hover:text-red-700" role="menuitem">
+                  <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-600 rounded-2xl hover:bg-red-50 transition-all text-left">
                     <i data-lucide="log-out" class="w-4 h-4"></i> Выйти
                   </button>
                 </form>
@@ -106,19 +88,10 @@
             </div>
           </div>
         {% else %}
-          <div class="flex items-center gap-2">
-            <a href="{% url 'shop:delivery_register' %}" class="rounded-full px-4 py-2 transition hover:bg-steel-100 hover:text-steel-950 flex items-center gap-1.5">
-              <i data-lucide="truck" class="w-4 h-4"></i> Доставка
-            </a>
-            <a href="{% url 'login' %}" class="rounded-full px-4 py-2 transition hover:bg-steel-100 hover:text-steel-950">
-              Вход
-            </a>
-            <a href="{% url 'register' %}" class="rounded-full bg-steel-950 text-white px-5 py-2 transition hover:bg-ember-500 shadow-sm ml-1">
-              Регистрация
-            </a>
-          </div>
+          <a href="{% url 'login' %}" class="text-sm font-bold text-steel-900 hover:text-ember-600 px-4 transition-colors">Вход</a>
+          <a href="{% url 'register' %}" class="btn-primary py-2.5 px-6 text-sm">Начать</a>
         {% endif %}
       </div>
-    </nav>
+    </div>
   </div>
 </header>

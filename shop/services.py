@@ -82,11 +82,11 @@ class ProductService:
         return results
 
     @staticmethod
-    def create_product(user, form_data, files):
+    def create_product(user, form, files):
         """
         Creates a product, generates a unique slug and saves gallery images.
         """
-        product = form_data.save(commit=False)
+        product = form.save(commit=False)
         product.owner = user
         
         # Generate unique slug
@@ -104,4 +104,18 @@ class ProductService:
         for image in gallery_images:
             ProductImage.objects.create(product=product, image=image)
         
+        return product
+
+    @staticmethod
+    def update_product(product, form, files):
+        """
+        Updates an existing product and optionally adds new gallery images.
+        """
+        product = form.save()
+        
+        # Save new gallery images if any
+        gallery_images = files.getlist('gallery')
+        for image in gallery_images:
+            ProductImage.objects.create(product=product, image=image)
+            
         return product

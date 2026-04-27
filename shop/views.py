@@ -1,14 +1,15 @@
 import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
-from django.contrib.auth import login
+from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .models import Category, Product, Order, OrderItem, Favorite, ProductImage, Chat, Message, DeliveryCompany
+from django.contrib.auth.forms import PasswordChangeForm
+from .models import Category, Product, Order, OrderItem, Favorite, ProductImage, Chat, Message
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.utils.text import slugify
-from .forms import ProductForm, UserRegistrationForm, DeliveryCompanyRegistrationForm
+from .forms import ProductForm, UserRegistrationForm, UserEditForm
 from .services import ProductService
 
 
@@ -22,7 +23,20 @@ def product_create(request):
             return redirect(product.get_absolute_url())
     else:
         form = ProductForm()
-    return render(request, 'shop/product_form.html', {'form': form})
+    return render(request, 'shop/product_form.html', {'form': form, 'title': 'Разместить объявление'})
+
+@login_required
+def product_edit(request, id):
+    product = get_object_or_404(Product, id=id, owner=request.user)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            ProductService.update_product(product, form, request.FILES)
+            messages.success(request, 'Объявление успешно обновлено!')
+            return redirect(product.get_absolute_url())
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'shop/product_form.html', {'form': form, 'product': product, 'title': 'Редактировать объявление'})
 
 def register_view(request):
     if request.method == 'POST':
@@ -37,7 +51,8 @@ def register_view(request):
     return render(request, 'registration/register.html', {'form': form})
 
 def home(request):
-    return render(request, 'shop/home.html')
+    recommended_products = Product.objects.filter(available=True).order_by('?')[:4]
+    return render(request, 'shop/home.html', {'recommended_products': recommended_products})
 
 from django.db.models import Q, F, Value, Func
 from django.db.models.functions import Lower
@@ -114,6 +129,9 @@ def order_create(request):
 
             for item in cart:
                 product = get_object_or_404(Product, id=item['product_id'])
+                if product.owner == request.user:
+                    return JsonResponse({'error': f'Вы не можете купить собственный товар: {product.name}'}, status=400)
+                
                 OrderItem.objects.create(
                     order=order,
                     product=product,
@@ -125,35 +143,6 @@ def order_create(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'Метод не поддерживается'}, status=405)
-
-
-def delivery_register(request):
-    """Registration page for delivery/transport companies."""
-    if request.user.is_authenticated and hasattr(request.user, 'delivery_company'):
-        messages.info(request, 'Ваша компания уже зарегистрирована.')
-        return redirect('shop:home')
-
-    if request.method == 'POST':
-        form = DeliveryCompanyRegistrationForm(request.POST, request.FILES)
-        if form.is_valid():
-            user = form.save()
-            DeliveryCompany.objects.create(
-                user=user,
-                company_name=form.cleaned_data['company_name'],
-                phone=form.cleaned_data['phone'],
-                email=form.cleaned_data['email'],
-                regions=form.cleaned_data['regions'],
-                transport_types=form.cleaned_data['transport_types'],
-                price_per_km=form.cleaned_data['price_per_km'],
-                description=form.cleaned_data.get('description', ''),
-                logo=form.cleaned_data.get('logo'),
-            )
-            login(request, user)
-            messages.success(request, f'Компания «{form.cleaned_data["company_name"]}» успешно зарегистрирована!')
-            return redirect('shop:home')
-    else:
-        form = DeliveryCompanyRegistrationForm()
-    return render(request, 'shop/delivery_register.html', {'form': form})
 
 
 @login_required
@@ -243,3 +232,30 @@ def start_chat(request, product_id):
         seller=product.owner
     )
     return redirect('shop:chat_detail', chat_id=chat.id)
+
+@login_required
+def profile_edit(request):
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Ваш профиль успешно обновлен!')
+            return redirect('shop:user_profile', username=request.user.username)
+    else:
+        form = UserEditForm(instance=request.user)
+    return render(request, 'shop/profile_edit.html', {'form': form})
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Keep the user logged in
+            messages.success(request, 'Ваш пароль успешно изменен!')
+            return redirect('shop:user_profile', username=request.user.username)
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибки ниже.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'shop/change_password.html', {'form': form})

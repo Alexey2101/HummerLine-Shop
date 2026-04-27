@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Order, OrderItem, DeliveryCompany
+from .models import Category, Product, Order, OrderItem
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -26,12 +26,4 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ['paid', 'created', 'updated']
     search_fields = ['id', 'first_name', 'last_name', 'email']
     inlines = [OrderItemInline]
-    list_per_page = 20
-
-@admin.register(DeliveryCompany)
-class DeliveryCompanyAdmin(admin.ModelAdmin):
-    list_display = ['company_name', 'user', 'phone', 'transport_types', 'price_per_km', 'is_verified', 'created_at']
-    list_filter = ['is_verified', 'transport_types', 'created_at']
-    list_editable = ['is_verified']
-    search_fields = ['company_name', 'user__username', 'regions']
     list_per_page = 20

@@ -1,0 +1,62 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Редактировать профиль - HummerLine{% endblock %}
+
+{% block content %}
+<section class="py-20 min-h-screen bg-steel-50">
+  <div class="container max-w-xl">
+    <div class="card-premium !p-8 sm:!p-12 bg-white">
+      <div class="flex items-center gap-4 mb-10 pb-8 border-b border-steel-100">
+        <div class="w-16 h-16 rounded-3xl bg-ember-500 flex items-center justify-center text-white shadow-2xl">
+          <i data-lucide="user-cog" class="w-8 h-8"></i>
+        </div>
+        <div>
+          <h1 class="text-3xl font-display font-bold text-steel-950">Настройки профиля</h1>
+          <p class="text-sm text-steel-500 font-medium">Управление основной информацией аккаунта</p>
+        </div>
+      </div>
+
+      <form method="post" class="space-y-8">
+        {% csrf_token %}
+        
+        <div class="space-y-6">
+          {% for field in form %}
+            <div>
+              <label class="block text-sm font-bold text-steel-900 uppercase tracking-widest mb-3" for="{{ field.id_for_label }}">
+                {{ field.label }}
+              </label>
+              {{ field }}
+              {% if field.errors %}
+                <div class="mt-2 space-y-1">
+                  {% for error in field.errors %}
+                    <p class="text-xs font-bold text-red-500 flex items-center gap-1.5">
+                      <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> {{ error }}
+                    </p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              {% if field.help_text %}
+                <p class="text-[10px] text-steel-400 mt-2 leading-relaxed">{{ field.help_text|safe }}</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="pt-8 border-t border-steel-100 flex flex-col gap-4">
+          <button type="submit" class="btn-primary !py-4 shadow-xl">
+            Сохранить изменения
+            <i data-lucide="check-circle" class="w-5 h-5"></i>
+          </button>
+          
+          <div class="flex items-center justify-between py-4">
+              <span class="text-xs font-bold text-steel-400 uppercase tracking-widest">Безопасность</span>
+              <a href="{% url 'shop:change_password' %}" class="text-xs font-bold text-ember-600 hover:text-ember-700 underline underline-offset-4">
+                Изменить пароль
+              </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

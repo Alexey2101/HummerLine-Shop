@@ -1,41 +1,71 @@
 {% load static %}
 <!-- Footer Component -->
-<footer class="border-t border-border/70 bg-steel-950 text-white mt-16">
-  <div class="container py-14">
-    <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr]">
-      <div class="space-y-5">
-        <div class="flex items-center">
-          <img src="{% static 'svg/hummerline_logo.svg' %}" alt="HummerLine" class="h-10 w-auto opacity-90 brightness-110">
-        </div>
-        <p class="max-w-xl text-sm leading-7 text-white/70">
-          Надежные инструменты, высококачественные материалы и отличный сервис. Мы помогаем профессионалам достигать лучших результатов с 2020 года.
+<footer class="bg-steel-950 text-white pt-24 pb-12 overflow-hidden relative">
+  <!-- Decorative Background -->
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-ember-500/10 rounded-full blur-[120px]"></div>
+  
+  <div class="container relative z-10">
+    <div class="grid gap-16 lg:grid-cols-[1.5fr_1fr_1fr]">
+      <!-- Brand Section -->
+      <div class="space-y-8">
+        <a href="{% url 'shop:home' %}" class="inline-block">
+          <img src="{% static 'svg/hummerline_logo.svg' %}" alt="HummerLine" class="h-10 w-auto brightness-200">
+        </a>
+        <p class="max-w-md text-steel-400 font-medium leading-relaxed">
+          HummerLine — ведущий поставщик профессионального оборудования в Казахстане. Мы помогаем мастерам и компаниям достигать выдающихся результатов с помощью качественного инструмента.
         </p>
+        <div class="flex gap-4">
+          <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-ember-500 transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+          <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-ember-500 transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+          <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-ember-500 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+        </div>
       </div>
       
+      <!-- Navigation -->
       <div>
-        <h4 class="font-display font-bold text-lg mb-4">Навигация</h4>
-        <ul class="space-y-2 text-sm text-white/50 list-none p-0">
-          <li><a href="{% url 'shop:home' %}" class="hover:text-white transition">Главная</a></li>
-          <li><a href="{% url 'shop:product_list' %}" class="hover:text-white transition">Все товары</a></li>
-          <li><a href="{% url 'shop:delivery_register' %}" class="hover:text-white transition">Доставка</a></li>
+        <h4 class="font-display font-bold text-xl mb-8">Навигация</h4>
+        <ul class="space-y-4">
+          <li><a href="{% url 'shop:home' %}" class="text-steel-400 hover:text-white transition-colors font-medium">Главная</a></li>
+          <li><a href="{% url 'shop:product_list' %}" class="text-steel-400 hover:text-white transition-colors font-medium">Каталог товаров</a></li>
+          <li><a href="#" class="text-steel-400 hover:text-white transition-colors font-medium">О компании</a></li>
         </ul>
       </div>
 
+      <!-- Contact Info -->
       <div>
-        <h4 class="font-display font-bold text-lg mb-4">Контакты</h4>
-        <ul class="space-y-2 text-sm text-white/50 list-none p-0">
-          <li class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i> +7 (777) 777-77-77</li>
-          <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> info@hummerline.kz</li>
-          <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> г. Алматы, пр. Абая 10</li>
+        <h4 class="font-display font-bold text-xl mb-8">Контакты</h4>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 text-ember-500"><i data-lucide="phone" class="w-5 h-5"></i></div>
+            <div>
+              <div class="text-[10px] font-bold text-steel-500 uppercase tracking-widest mb-1">Телефон</div>
+              <a href="tel:+77777777777" class="text-steel-200 hover:text-white font-bold transition-colors">+7 (777) 777-77-77</a>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 text-ember-500"><i data-lucide="mail" class="w-5 h-5"></i></div>
+            <div>
+              <div class="text-[10px] font-bold text-steel-500 uppercase tracking-widest mb-1">Email</div>
+              <a href="mailto:info@hummerline.kz" class="text-steel-200 hover:text-white font-bold transition-colors">info@hummerline.kz</a>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 text-ember-500"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+            <div>
+              <div class="text-[10px] font-bold text-steel-500 uppercase tracking-widest mb-1">Адрес</div>
+              <span class="text-steel-200 font-bold">г. Алматы, пр. Абая 10</span>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
     
-    <div class="mt-14 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/30">
-      <p>&copy; 2026 HummerLine. Все права защищены.</p>
-      <div class="flex gap-6">
-        <a href="#" class="hover:text-white transition">Политика конфиденциальности</a>
-        <a href="#" class="hover:text-white transition">Условия использования</a>
+    <!-- Bottom Bar -->
+    <div class="mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+      <p class="text-sm text-steel-500 font-medium">&copy; 2026 HummerLine Hardware. Все права защищены.</p>
+      <div class="flex gap-8">
+        <a href="#" class="text-xs text-steel-500 hover:text-white transition-colors font-bold uppercase tracking-widest">Конфиденциальность</a>
+        <a href="#" class="text-xs text-steel-500 hover:text-white transition-colors font-bold uppercase tracking-widest">Условия</a>
       </div>
     </div>
   </div>

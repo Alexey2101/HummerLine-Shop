@@ -2,116 +2,121 @@
 {% load static %}
 
 {% block title %}
-    {% if category %}{{ category.name }}{% else %}Ремонт, отделка и строительство{% endif %}
-{% endblock %}
-
-{% block extra_head %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "itemListElement": [
-    {% for product in products %}
-    {
-      "@type": "ListItem",
-      "position": {{ forloop.counter }},
-      "url": "{{ request.scheme }}://{{ request.get_host }}{{ product.get_absolute_url }}",
-      "name": "{{ product.name }}",
-      "image": "{% if product.image %}{{ request.scheme }}://{{ request.get_host }}{{ product.image.url }}{% endif %}"
-    }{% if not forloop.last %},{% endif %}
-    {% endfor %}
-  ]
-}
-</script>
+    {% if category %}{{ category.name }}{% else %}Каталог инструментов{% endif %} - HummerLine
 {% endblock %}
 
 {% block content %}
-<!-- Заголовок страницы -->
-<section class="py-10 bg-steel-50 border-b border-border/70">
-  <div class="container">
-    <h1 class="font-display text-4xl font-bold tracking-tight text-steel-950" id="page-title">
-      {% if category %}{{ category.name }}{% else %}Все товары{% endif %}
-    </h1>
-    <p class="mt-4 text-lg text-steel-700 max-w-2xl">
-      Профессиональные инструменты, надежные материалы и быстрый сервис для каждого проекта.
-    </p>
-    
-    <!-- Поиск -->
-    <div class="mt-8 max-w-xl relative" id="search-container">
-      <form action="{% url 'shop:product_list' %}" method="get" class="relative group" id="search-form" role="search">
-        <input type="text" name="q" id="search-input" value="{{ search_query|default:'' }}" autocomplete="off"
-               placeholder="Поиск инструментов или материалов..." 
-               class="input-base pl-12" aria-label="Поиск по товарам">
-        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-ember-500 transition-colors" aria-hidden="true"></i>
-        {% if current_sort %}
-          <input type="hidden" name="sort" value="{{ current_sort }}">
-        {% endif %}
-        <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl bg-steel-950 px-4 py-2 text-xs font-bold text-white transition hover:bg-ember-500">
-          Найти
-        </button>
-      </form>
-      
-      <!-- Autocomplete Dropdown -->
-      <div id="autocomplete-results" class="absolute left-0 right-0 top-full mt-2 hidden z-50 overflow-hidden rounded-2xl border border-border/70 bg-white shadow-display backdrop-blur-xl">
-        <div id="results-list" class="divide-y divide-border/50"></div>
+<!-- Page Header -->
+<section class="relative py-20 overflow-hidden">
+  <div class="absolute inset-0 bg-steel-50/50"></div>
+  <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-ember-100/20 to-transparent"></div>
+  
+  <div class="container relative z-10">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+      <div class="max-w-2xl">
+        <nav class="flex items-center gap-2 text-xs font-bold text-steel-400 uppercase tracking-widest mb-4">
+          <a href="{% url 'shop:home' %}" class="hover:text-ember-600 transition-colors">Главная</a>
+          <i data-lucide="chevron-right" class="w-3 h-3"></i>
+          <span class="text-steel-900">Каталог</span>
+          {% if category %}
+          <i data-lucide="chevron-right" class="w-3 h-3"></i>
+          <span class="text-ember-600">{{ category.name }}</span>
+          {% endif %}
+        </nav>
+        
+        <h1 class="font-display text-5xl md:text-6xl font-bold text-steel-950 mb-6">
+          {% if category %}{{ category.name }}{% else %}Все товары{% endif %}
+        </h1>
+        <p class="text-lg text-steel-600 font-medium">
+          Найдите идеальный инструмент для ваших задач. Только проверенные решения для профессионалов.
+        </p>
+      </div>
+
+      <!-- Search Box -->
+      <div class="w-full max-w-md" id="search-container">
+        <form action="{% url 'shop:product_list' %}" method="get" class="relative group" id="search-form">
+          <div class="relative">
+            <input type="text" name="q" id="search-input" value="{{ search_query|default:'' }}" autocomplete="off"
+                   placeholder="Что вы ищете?" 
+                   class="w-full rounded-2xl border border-steel-100 bg-white pl-12 pr-4 py-4 text-sm font-bold shadow-sm focus:ring-4 focus:ring-ember-500/10 focus:border-ember-500 outline-none transition-all group-focus-within:shadow-xl">
+            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-steel-400 group-focus-within:text-ember-500 transition-colors"></i>
+          </div>
+          
+          <!-- Autocomplete -->
+          <div id="autocomplete-results" class="absolute left-0 right-0 top-full mt-3 hidden z-50 overflow-hidden rounded-3xl glass-panel shadow-2xl border-white/50">
+            <div id="results-list" class="divide-y divide-steel-100/50"></div>
+          </div>
+        </form>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- Категории и Товары -->
-<section class="py-10 sm:py-14">
-  <div class="container grid gap-12 lg:grid-cols-[250px_1fr]">
-    <!-- Сайдбар категорий -->
+<!-- Main Content -->
+<section class="py-12">
+  <div class="container grid lg:grid-cols-[280px_1fr] gap-12">
+    <!-- Sidebar -->
     {% include "shop/components/category_sidebar.html" %}
 
-    <!-- Основной контент (Сортировка + Сетка товаров) -->
-    <div class="flex flex-col">
-      <!-- Панель сортировки -->
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <p class="text-steel-600 font-medium">Показано {{ products|length }} товаров</p>
-        <div class="flex items-center gap-3">
-            <label for="sort-select" class="text-sm font-medium text-steel-600">Сортировка:</label>
-            <select id="sort-select" class="rounded-xl border border-border p-2.5 focus:ring-2 focus:ring-ember-500 outline-none text-sm bg-white cursor-pointer shadow-sm">
-                <option value="name_asc" {% if current_sort == 'name_asc' or not current_sort %}selected{% endif %}>По названию (А-Я)</option>
-                <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Сначала дешевые</option>
-                <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Сначала дорогие</option>
-                <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Сначала новые</option>
-            </select>
+    <!-- Grid -->
+    <div>
+      <!-- Sort & Stats -->
+      <div class="flex flex-col sm:flex-row justify-between items-center mb-10 gap-4 bg-white p-4 rounded-2xl border border-steel-100">
+        <div class="flex items-center gap-4">
+          <span class="text-sm font-bold text-steel-900">{{ products.paginator.count|default:products|length }} товаров</span>
+          <div class="h-4 w-px bg-steel-200"></div>
+          <div class="flex items-center gap-2">
+            <button class="w-8 h-8 rounded-lg bg-steel-950 text-white flex items-center justify-center shadow-lg"><i data-lucide="layout-grid" class="w-4 h-4"></i></button>
+            <button class="w-8 h-8 rounded-lg bg-steel-50 text-steel-400 flex items-center justify-center hover:bg-steel-100 transition-colors"><i data-lucide="list" class="w-4 h-4"></i></button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <label for="sort-select" class="text-xs font-bold text-steel-400 uppercase tracking-widest">Сортировка</label>
+          <select id="sort-select" class="rounded-xl border-none bg-steel-50 px-4 py-2 text-sm font-bold text-steel-900 focus:ring-2 focus:ring-ember-500 outline-none cursor-pointer">
+            <option value="name_asc" {% if current_sort == 'name_asc' or not current_sort %}selected{% endif %}>По умолчанию</option>
+            <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Сначала дешевые</option>
+            <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Сначала дорогие</option>
+            <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Новинки</option>
+          </select>
         </div>
       </div>
 
-      <script>
-        document.getElementById('sort-select').addEventListener('change', function() {
-            const url = new URL(window.location.href);
-            url.searchParams.set('sort', this.value);
-            window.location.href = url.toString();
-        });
-      </script>
-      
-      <!-- Сетка товаров -->
-      <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-      {% for product in products %}
-        {% include "shop/components/product_card.html" %}
-      {% empty %}
-      <div class="col-span-full py-16 text-center text-muted-foreground">
-        В этой категории пока нет товаров.
-      </div>
-      {% endfor %}
+      <!-- Products Grid -->
+      <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
+        {% for product in products %}
+          {% include "shop/components/product_card.html" %}
+        {% empty %}
+          <div class="col-span-full py-20 flex flex-col items-center text-center">
+            <div class="w-20 h-20 rounded-full bg-steel-100 flex items-center justify-center text-steel-400 mb-6">
+              <i data-lucide="search-x" class="w-10 h-10"></i>
+            </div>
+            <h3 class="text-xl font-bold text-steel-950 mb-2">Ничего не найдено</h3>
+            <p class="text-steel-600 font-medium">Попробуйте изменить параметры поиска или фильтры.</p>
+          </div>
+        {% endfor %}
       </div>
 
-      <!-- Пагинация -->
-      {% include "shop/components/pagination.html" with page_obj=products %}
+      <!-- Pagination -->
+      <div class="mt-16">
+        {% include "shop/components/pagination.html" with page_obj=products %}
+      </div>
     </div>
   </div>
 </section>
-
 {% endblock %}
 
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // Sort logic
+    document.getElementById('sort-select').addEventListener('change', function() {
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort', this.value);
+        window.location.href = url.toString();
+    });
+
+    // Autocomplete logic
     const searchInput = document.getElementById('search-input');
     const resultsContainer = document.getElementById('autocomplete-results');
     const resultsList = document.getElementById('results-list');
@@ -135,16 +140,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         data.forEach(item => {
                             const div = document.createElement('a');
                             div.href = item.url;
-                            div.className = 'flex items-center gap-4 p-4 hover:bg-steel-50 transition transition-colors group';
+                            div.className = 'flex items-center gap-4 p-4 hover:bg-white transition-colors group';
                             div.innerHTML = `
-                                <div class="w-12 h-12 rounded-lg bg-steel-100 overflow-hidden flex-shrink-0">
-                                    ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center"><i data-lucide="image" class="w-5 h-5 text-steel-400"></i></div>`}
+                                <div class="w-14 h-14 rounded-2xl bg-steel-50 overflow-hidden flex-shrink-0 border border-steel-100">
+                                    ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">` : `<div class="w-full h-full flex items-center justify-center"><i data-lucide="image" class="w-6 h-6 text-steel-200"></i></div>`}
                                 </div>
                                 <div class="flex-grow">
-                                    <div class="text-sm font-bold text-steel-950 group-hover:text-ember-600 transition-colors">${item.name}</div>
-                                    <div class="text-[10px] text-muted-foreground uppercase tracking-wider">${item.category}</div>
+                                    <div class="text-sm font-bold text-steel-950 group-hover:text-ember-600 transition-colors line-clamp-1">${item.name}</div>
+                                    <div class="text-[10px] text-steel-400 font-bold uppercase tracking-widest">${item.category}</div>
                                 </div>
-                                <div class="text-sm font-bold text-emerald-600">${item.price} ₸</div>
+                                <div class="text-sm font-bold text-steel-950">${item.price} ₸</div>
                             `;
                             resultsList.appendChild(div);
                         });
@@ -157,13 +162,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 300);
     });
 
-    // Close dropdown on click outside
     document.addEventListener('click', (e) => {
         if (!document.getElementById('search-container').contains(e.target)) {
             resultsContainer.classList.add('hidden');
         }
     });
+
+    // Page Animations
+    if (typeof gsap !== 'undefined') {
+        gsap.from(".card-premium", {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "expo.out"
+        });
+    }
 });
 </script>
 {% endblock %}
-

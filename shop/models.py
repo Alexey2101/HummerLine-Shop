@@ -56,34 +56,6 @@ class ProductImage(models.Model):
         verbose_name_plural = 'Дополнительные изображения'
 
 
-class DeliveryCompany(models.Model):
-    TRANSPORT_CHOICES = [
-        ('truck', 'Грузовик'),
-        ('van', 'Фургон'),
-        ('motorcycle', 'Мотоцикл'),
-        ('cargo_bike', 'Грузовой велосипед'),
-        ('refrigerated', 'Рефрижератор'),
-    ]
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='delivery_company', verbose_name='Пользователь')
-    company_name = models.CharField('Название компании', max_length=200)
-    description = models.TextField('Описание услуг', blank=True)
-    phone = models.CharField('Телефон', max_length=20)
-    email = models.EmailField('Email')
-    regions = models.TextField('Регионы доставки', help_text='Перечислите регионы через запятую')
-    transport_types = models.CharField('Тип транспорта', max_length=50, choices=TRANSPORT_CHOICES, default='truck')
-    price_per_km = models.DecimalField('Цена за км (₸)', max_digits=8, decimal_places=2, default=0)
-    logo = models.ImageField('Логотип компании', upload_to='delivery/logos/', blank=True, null=True)
-    is_verified = models.BooleanField('Подтверждена', default=False)
-    created_at = models.DateTimeField('Зарегистрирована', auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'Транспортная компания'
-        verbose_name_plural = 'Транспортные компании'
-
-    def __str__(self):
-        return self.company_name
-
 
 class Order(models.Model):
     buyer = models.ForeignKey(User, related_name='orders', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Покупатель')

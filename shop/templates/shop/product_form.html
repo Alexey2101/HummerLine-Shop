@@ -1,6 +1,6 @@
 {% extends "shop/base.html" %}
 
-{% block title %}Разместить объявление{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block extra_head %}
 <!-- FilePond CSS -->
@@ -37,7 +37,7 @@
   <div class="container max-w-3xl">
     <div class="rounded-[2rem] border border-border/70 bg-white p-8 sm:p-12 shadow-panel">
       <h1 class="font-display text-3xl font-bold tracking-tight text-steel-950 mb-8 border-b border-border/70 pb-6">
-        Разместить объявление
+        {{ title }}
       </h1>
 
       <form method="post" enctype="multipart/form-data" class="space-y-6">
@@ -100,12 +100,27 @@
                   <p class="text-[10px] text-steel-500 mt-2 uppercase tracking-wider font-medium">До 10 фото, каждое не более 3MB</p>
                 </div>
             </div>
+
+            {% if product and product.image %}
+              <div class="mt-4">
+                <p class="text-xs font-bold text-steel-400 uppercase tracking-widest mb-3">Текущие фото:</p>
+                <div class="flex flex-wrap gap-4">
+                  <div class="relative group">
+                    <img src="{{ product.image.url }}" class="w-24 h-24 object-cover rounded-xl border-2 border-ember-500">
+                    <span class="absolute -top-2 -right-2 bg-ember-500 text-white text-[8px] font-bold px-2 py-1 rounded-full shadow-sm">Main</span>
+                  </div>
+                  {% for img in product.images.all %}
+                    <img src="{{ img.image.url }}" class="w-24 h-24 object-cover rounded-xl border border-steel-200">
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
         </div>
 
 
         <div class="pt-6 border-t border-border/70 flex justify-end">
             <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-ember-500 px-8 py-4 text-center text-lg font-bold text-white shadow-display transition hover:bg-ember-600">
-                Опубликовать объявление <i data-lucide="check-circle" class="w-5 h-5"></i>
+                {% if product %}Сохранить изменения{% else %}Опубликовать объявление{% endif %} <i data-lucide="check-circle" class="w-5 h-5"></i>
             </button>
         </div>
       </form>
