@@ -9,6 +9,7 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.utils.text import slugify
 from .forms import ProductForm, UserRegistrationForm, DeliveryCompanyRegistrationForm
+from .services import ProductService
 
 
 @login_required
@@ -16,24 +17,7 @@ def product_create(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            product = form.save(commit=False)
-            product.owner = request.user
-            
-            # Генерация уникального slug
-            base_slug = slugify(product.name, allow_unicode=True) or 'product'
-            unique_slug = base_slug
-            counter = 1
-            while Product.objects.filter(slug=unique_slug).exists():
-                unique_slug = f"{base_slug}-{counter}"
-                counter += 1
-            product.slug = unique_slug
-            product.save()
-
-            # Сохранение дополнительных изображений галереи
-            images = request.FILES.getlist('gallery')
-            for image in images:
-                ProductImage.objects.create(product=product, image=image)
-
+            product = ProductService.create_product(request.user, form, request.FILES)
             messages.success(request, 'Ваше объявление успешно размещено!')
             return redirect(product.get_absolute_url())
     else:
@@ -61,52 +45,23 @@ from django.db.models.functions import Lower
 from django.core.paginator import Paginator
 
 def product_list(request, category_slug=None):
-    category = None
-    categories = Category.objects.all()
-    products = Product.objects.filter(available=True)
-    
-    if category_slug:
-        category = get_object_or_404(Category, slug=category_slug)
-        products = products.filter(category=category)
-    
-    # Поиск
     query = request.GET.get('q')
-    if query:
-        query_lower = query.lower()
-        # Сначала обычный поиск, потом нечеткий
-        products = products.annotate(
-            name_lower=Lower('name'),
-            desc_lower=Lower('description'),
-            similarity=Func(F('name'), Value(query), function='SIMILARITY')
-        ).filter(
-            Q(name_lower__contains=query_lower) | 
-            Q(desc_lower__contains=query_lower) |
-            Q(similarity__gt=0.3)
-        ).order_by('-similarity', 'name_lower')
-    
-    # Фильтрация по цене
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
-    if min_price:
-        products = products.filter(price__gte=min_price)
-    if max_price:
-        products = products.filter(price__lte=max_price)
-    
-    # Сортировка
     sort = request.GET.get('sort', '')
-    if sort == 'price_asc':
-        products = products.order_by('price')
-    elif sort == 'price_desc':
-        products = products.order_by('-price')
-    elif sort == 'newest':
-        products = products.order_by('-created')
-    else:
-        products = products.order_by('name') # по умолчанию
-
-    # Пагинация
-    paginator = Paginator(products, 9)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    
+    products_qs, category = ProductService.get_filtered_products(
+        category_slug=category_slug,
+        query=query,
+        min_price=min_price,
+        max_price=max_price,
+        sort=sort
+    )
+    
+    page_obj = ProductService.get_paginated_products(
+        products_qs, 
+        request.GET.get('page')
+    )
     
     favorite_product_ids = []
     if request.user.is_authenticated:
@@ -114,7 +69,7 @@ def product_list(request, category_slug=None):
 
     return render(request, 'shop/product_list.html', {
         'category': category,
-        'categories': categories,
+        'categories': Category.objects.all(),
         'products': page_obj,
         'favorite_product_ids': favorite_product_ids,
         'current_sort': sort,
@@ -248,32 +203,9 @@ def user_profile(request, username):
 
 def product_search_autocomplete(request):
     query = request.GET.get('q', '')
-    if len(query) < 2:
-        return JsonResponse([], safe=False)
-    
-    query_lower = query.lower()
-    products = Product.objects.filter(available=True).annotate(
-        name_lower=Lower('name'),
-        cat_lower=Lower('category__name'),
-        similarity=Func(F('name'), Value(query), function='SIMILARITY')
-    ).filter(
-        Q(name_lower__contains=query_lower) | 
-        Q(cat_lower__contains=query_lower) |
-        Q(similarity__gt=0.3)
-    ).order_by('-similarity')[:5]
-    
-    results = []
-    for p in products:
-        results.append({
-            'id': p.id,
-            'name': p.name,
-            'price': str(p.price),
-            'url': p.get_absolute_url(),
-            'category': p.category.name,
-            'image': p.image.url if p.image else None
-        })
-    
+    results = ProductService.get_autocomplete_results(query)
     return JsonResponse(results, safe=False)
+
 
 @login_required
 def chat_list(request):

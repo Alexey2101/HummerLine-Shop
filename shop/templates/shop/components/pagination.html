@@ -1,0 +1,33 @@
+<!-- Pagination Component -->
+{% if page_obj.has_other_pages %}
+<div class="mt-12 flex justify-center">
+  <nav class="inline-flex items-center gap-1 rounded-2xl bg-white p-1.5 border border-border/70 shadow-sm">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+         class="pagination-link" aria-label="Предыдущая страница">
+        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+      </a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-ember-500 font-bold text-white shadow-sm" aria-current="page">
+          {{ num }}
+        </span>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+           class="pagination-link">
+          {{ num }}
+        </a>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+         class="pagination-link" aria-label="Следующая страница">
+        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+      </a>
+    {% endif %}
+  </nav>
+</div>
+{% endif %}
