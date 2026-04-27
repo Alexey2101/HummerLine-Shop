@@ -48,28 +48,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // Скролл-анимации для секций
     gsap.utils.toArray('.section-reveal').forEach(section => {
         gsap.from(section, {
-            y: 30,
+            y: 40,
             opacity: 0,
-            duration: 0.8,
-            ease: "power2.out",
+            duration: 1,
+            ease: "expo.out",
             scrollTrigger: {
                 trigger: section,
-                start: "top 85%",
+                start: "top 90%",
                 toggleActions: "play none none none"
             }
         });
     });
-
+    
     // Скролл-анимации для Bento-карточек
-    gsap.utils.toArray('.bento-card').forEach(card => {
+    gsap.utils.toArray('.bento-card').forEach((card, i) => {
         gsap.from(card, {
-            scale: 0.95,
+            y: 50,
             opacity: 0,
-            duration: 0.8,
-            ease: "back.out(1.4)",
+            duration: 1.2,
+            delay: i * 0.1,
+            ease: "expo.out",
             scrollTrigger: {
                 trigger: card,
-                start: "top 85%",
+                start: "top 95%",
                 toggleActions: "play none none none"
             }
         });

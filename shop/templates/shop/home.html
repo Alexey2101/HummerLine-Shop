@@ -15,29 +15,41 @@
   <div class="container relative z-10">
     <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
       <div class="text-center lg:text-left">
-        <div class="hero-reveal inline-flex items-center gap-2 rounded-full border border-ember-200/50 bg-white/60 px-5 py-2.5 text-sm font-bold text-ember-900 shadow-sm backdrop-blur-md mb-8">
-          <i data-lucide="sparkles" class="w-4 h-4 text-ember-600"></i>
-          <span>Премиальное оборудование для профи</span>
+        <div class="hero-reveal-wrap mb-8">
+          <div class="hero-reveal-inner inline-flex items-center gap-2 rounded-full border border-ember-200/50 bg-white/60 px-5 py-2.5 text-sm font-bold text-ember-900 shadow-sm backdrop-blur-md">
+            <i data-lucide="sparkles" class="w-4 h-4 text-ember-600"></i>
+            <span>Премиальное оборудование для профи</span>
+          </div>
         </div>
         
-        <h1 class="hero-reveal font-display text-6xl font-extrabold tracking-tight text-steel-950 sm:text-7xl lg:text-8xl leading-[1.1]">
-          Инструменты <br/>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-ember-600 to-amber-500">будущего</span> <br/>
-          уже здесь.
+        <h1 class="font-display text-6xl font-extrabold tracking-tight text-steel-950 sm:text-7xl lg:text-8xl leading-[1.1]">
+          <div class="hero-reveal-wrap overflow-hidden pb-2">
+            <div class="hero-reveal-inner">Инструменты</div>
+          </div>
+          <div class="hero-reveal-wrap overflow-hidden pb-2">
+            <div class="hero-reveal-inner text-transparent bg-clip-text bg-gradient-to-r from-ember-600 to-amber-500 drop-shadow-sm">будущего</div>
+          </div>
+          <div class="hero-reveal-wrap overflow-hidden pb-2">
+            <div class="hero-reveal-inner">уже здесь.</div>
+          </div>
         </h1>
         
-        <p class="hero-reveal mt-8 max-w-2xl text-xl leading-relaxed text-steel-700 font-medium">
-          HummerLine Hardware — это синергия надежности и инноваций. Мы создаем экосистему для тех, кто ценит качество, скорость и профессиональный подход в каждом проекте.
-        </p>
+        <div class="hero-reveal-wrap overflow-hidden mt-8">
+          <p class="hero-reveal-inner max-w-2xl text-xl leading-relaxed text-steel-700 font-medium">
+            HummerLine Hardware — это синергия надежности и инноваций. Мы создаем экосистему для тех, кто ценит качество, скорость и профессиональный подход в каждом проекте.
+          </p>
+        </div>
         
-        <div class="hero-reveal mt-12 flex flex-wrap gap-5 justify-center lg:justify-start">
-          <a href="{% url 'shop:product_list' %}" class="group relative inline-flex items-center justify-center rounded-2xl bg-steel-950 px-10 py-5 text-lg font-bold text-white shadow-display transition-all hover:bg-ember-500 hover:scale-105 active:scale-95 overflow-hidden">
-            <span class="relative z-10">Каталог товаров</span>
-            <div class="absolute inset-0 bg-gradient-to-r from-ember-500 to-amber-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          </a>
-          <a href="{% url 'shop:product_create' %}" class="inline-flex items-center justify-center rounded-2xl border-2 border-steel-200 bg-white/50 px-10 py-5 text-lg font-bold text-steel-900 shadow-sm backdrop-blur-sm transition-all hover:bg-white hover:border-ember-500 hover:text-ember-600">
-            Разместить объявление
-          </a>
+        <div class="hero-reveal-wrap overflow-hidden mt-12">
+          <div class="hero-reveal-inner flex flex-wrap gap-5 justify-center lg:justify-start">
+            <a href="{% url 'shop:product_list' %}" class="group relative inline-flex items-center justify-center rounded-2xl bg-steel-950 px-10 py-5 text-lg font-bold text-white shadow-display transition-all hover:bg-ember-500 hover:scale-105 active:scale-95 overflow-hidden">
+              <span class="relative z-10">Каталог товаров</span>
+              <div class="absolute inset-0 bg-gradient-to-r from-ember-500 to-amber-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </a>
+            <a href="{% url 'shop:product_create' %}" class="inline-flex items-center justify-center rounded-2xl border-2 border-steel-200 bg-white/50 px-10 py-5 text-lg font-bold text-steel-900 shadow-sm backdrop-blur-sm transition-all hover:bg-white hover:border-ember-500 hover:text-ember-600">
+              Разместить объявление
+            </a>
+          </div>
         </div>
       </div>
 
@@ -180,21 +192,32 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Entrance Animation
     const tl = gsap.timeline();
-    tl.from(".hero-reveal", {
-        y: 60,
-        opacity: 0,
+    
+    // Initial setup to prevent flash
+    gsap.set(".hero-reveal-inner", { yPercent: 101 });
+    
+    tl.to(".hero-reveal-inner", {
+        yPercent: 0,
         duration: 1.2,
-        stagger: 0.15,
-        ease: "power4.out",
-        clearProps: "all"
+        stagger: 0.12,
+        ease: "expo.out",
     });
     
     tl.from("#hero-interactive", {
-        scale: 0.8,
+        scale: 0.9,
         opacity: 0,
         duration: 1.5,
         ease: "expo.out"
-    }, "-=1");
+    }, "-=0.8");
+
+    // Dynamic Background Movement
+    gsap.to("#hero-mesh", {
+        backgroundPosition: "10% 10%",
+        duration: 20,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+    });
 
     // 2. Interactive Parallax Effect
     const container = document.querySelector('#hero-interactive');
