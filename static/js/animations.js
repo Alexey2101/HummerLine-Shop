@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             opacity: 0,
             duration: 1,
             ease: "expo.out",
+               force3D: true,
             scrollTrigger: {
                 trigger: section,
                 start: "top 90%",
@@ -68,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             duration: 1.2,
             delay: i * 0.1,
             ease: "expo.out",
+               force3D: true,
             scrollTrigger: {
                 trigger: card,
                 start: "top 95%",
@@ -83,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             opacity: 0,
             duration: 0.6,
             ease: "power2.out",
+               force3D: true,
             scrollTrigger: {
                 trigger: card,
                 start: "top 90%",
@@ -137,6 +140,17 @@ document.addEventListener('DOMContentLoaded', () => {
             } : null
         });
     }
+
+    // Ensure hero interactive container uses preserve-3d
+    gsap.set('#hero-interactive, #float-card', { transformStyle: 'preserve-3d' });
+
+    // Refresh ScrollTrigger after images load to fix incorrect trigger positions
+    if (typeof ScrollTrigger !== 'undefined') {
+        window.addEventListener('load', () => {
+            ScrollTrigger.refresh();
+        });
+    }
+
 });
 
 // Экспортируем функции для использования в других файлах (например, base.js)

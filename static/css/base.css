@@ -40,3 +40,19 @@ body {
 .favorite-icon path {
   stroke-width: 2px;
 }
+
+/* Performance helpers for animated elements */
+.animated, .hero-reveal, .bento-card, .highlight-card, .product-card, #hero-interactive, #float-card {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Make heavy backdrop-filter areas lighter on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal, .bento-card, .highlight-card, #hero-interactive {
+    transition: none !important;
+    animation: none !important;
+  }
+}

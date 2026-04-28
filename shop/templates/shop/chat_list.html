@@ -21,7 +21,7 @@
                 <!-- Товар -->
                 <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border border-border/50">
                     {% if chat.product.image %}
-                    <img src="{{ chat.product.image.url }}" alt="{{ chat.product.name }}" class="h-full w-full object-cover">
+                    <img src="{{ chat.product.image.url }}" alt="{{ chat.product.name }}" loading="lazy" decoding="async" class="h-full w-full object-cover">
                     {% else %}
                     <div class="flex h-full w-full items-center justify-center bg-steel-50 text-steel-400">
                         <i data-lucide="package" class="w-8 h-8"></i>

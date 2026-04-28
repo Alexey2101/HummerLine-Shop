@@ -58,7 +58,7 @@
           <div class="grid grid-cols-4 gap-4">
             {% for p_image in product.images.all %}
               <a href="{{ p_image.image.url }}" data-fancybox="gallery" class="aspect-square rounded-2xl overflow-hidden border-2 border-steel-100 hover:border-ember-500 transition-all group">
-                <img src="{{ p_image.image.url }}" alt="Gallery photo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <img src="{{ p_image.image.url }}" alt="Gallery photo" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
               </a>
             {% endfor %}
           </div>

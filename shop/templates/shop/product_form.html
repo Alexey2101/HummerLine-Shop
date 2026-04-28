@@ -106,11 +106,11 @@
                 <p class="text-xs font-bold text-steel-400 uppercase tracking-widest mb-3">Текущие фото:</p>
                 <div class="flex flex-wrap gap-4">
                   <div class="relative group">
-                    <img src="{{ product.image.url }}" class="w-24 h-24 object-cover rounded-xl border-2 border-ember-500">
+                    <img src="{{ product.image.url }}" loading="lazy" decoding="async" class="w-24 h-24 object-cover rounded-xl border-2 border-ember-500">
                     <span class="absolute -top-2 -right-2 bg-ember-500 text-white text-[8px] font-bold px-2 py-1 rounded-full shadow-sm">Main</span>
                   </div>
                   {% for img in product.images.all %}
-                    <img src="{{ img.image.url }}" class="w-24 h-24 object-cover rounded-xl border border-steel-200">
+                    <img src="{{ img.image.url }}" loading="lazy" decoding="async" class="w-24 h-24 object-cover rounded-xl border border-steel-200">
                   {% endfor %}
                 </div>
               </div>

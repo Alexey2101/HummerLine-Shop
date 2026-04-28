@@ -5,7 +5,7 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="relative overflow-hidden min-h-[85vh] flex flex-col justify-center py-20">
+  <section class="relative overflow-hidden min-h-[85vh] flex flex-col justify-center py-20 isolate">
   <!-- Dynamic Background -->
   <div class="absolute inset-0 bg-mesh-warm opacity-90 transition-opacity duration-1000" id="hero-mesh"></div>
   <div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-ember-100/40 to-transparent"></div>
@@ -124,7 +124,7 @@
             Исследовать <i data-lucide="chevron-right" class="w-4 h-4"></i>
           </span>
         </div>
-        <img src="{% static 'images/MainPage/construction.png' %}" class="absolute -right-10 -bottom-10 w-2/3 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3 opacity-80 group-hover:opacity-100 z-0">
+        <img src="{% static 'images/MainPage/construction.png' %}" loading="eager" decoding="async" class="absolute -right-10 -bottom-10 w-2/3 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3 opacity-80 group-hover:opacity-100 z-0">
       </a>
 
       <!-- Small Vertical Card -->
@@ -134,7 +134,7 @@
           <h3 class="font-display text-3xl font-bold text-steel-950 mb-4">Мебель</h3>
           <p class="text-steel-600 font-medium">Стильные решения для вашего интерьера.</p>
         </div>
-        <img src="{% static 'images/MainPage/furniture.png' %}" class="relative z-10 w-full mt-10 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-6">
+        <img src="{% static 'images/MainPage/furniture.png' %}" loading="eager" decoding="async" class="relative z-10 w-full mt-10 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-6">
       </a>
 
       <!-- Small Horizontal Card -->
@@ -148,7 +148,7 @@
           </span>
         </div>
         <div class="relative w-full md:w-1/2 h-64 md:h-full flex items-center justify-center">
-          <img src="{% static 'images/MainPage/electronics.png' %}" class="max-w-[80%] max-h-full object-contain transition-transform duration-700 group-hover:scale-110 z-0">
+          <img src="{% static 'images/MainPage/electronics.png' %}" loading="eager" decoding="async" class="max-w-[80%] max-h-full object-contain transition-transform duration-700 group-hover:scale-110 z-0">
         </div>
       </a>
     </div>

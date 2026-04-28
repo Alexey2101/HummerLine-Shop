@@ -79,7 +79,7 @@
             <!-- Product image -->
             <div class="w-14 h-14 rounded-xl overflow-hidden bg-steel-100 flex-shrink-0">
               {% if item.product.image %}
-                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-full object-cover">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" loading="lazy" decoding="async" class="w-full h-full object-cover">
               {% else %}
                 <div class="w-full h-full flex items-center justify-center">
                   <i data-lucide="image" class="w-6 h-6 text-steel-400"></i>

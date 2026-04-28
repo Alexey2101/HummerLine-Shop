@@ -34,7 +34,7 @@
             <div class="flex items-center gap-3">
                 <div class="h-12 w-12 overflow-hidden rounded-xl border border-border/50">
                     {% if chat.product.image %}
-                    <img src="{{ chat.product.image.url }}" alt="{{ chat.product.name }}" class="h-full w-full object-cover">
+                    <img src="{{ chat.product.image.url }}" alt="{{ chat.product.name }}" loading="lazy" decoding="async" class="h-full w-full object-cover">
                     {% else %}
                     <div class="flex h-full w-full items-center justify-center bg-steel-50 text-steel-400">
                         <i data-lucide="package" class="w-6 h-6"></i>

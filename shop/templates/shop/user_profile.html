@@ -51,7 +51,7 @@
 
         <a href="{{ product.get_absolute_url }}" class="flex-shrink-0 mb-5 relative overflow-hidden rounded-2xl block bg-steel-50">
           {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover transition duration-300 group-hover:scale-105">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" decoding="async" class="w-full h-48 object-cover transition duration-300 group-hover:scale-105">
           {% else %}
             <div class="w-full h-48 flex flex-col items-center justify-center text-steel-400">
               <i data-lucide="image" class="w-8 h-8 opacity-50 mb-2"></i>
