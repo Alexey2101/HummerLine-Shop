@@ -5,12 +5,14 @@
 
 {% block content %}
 <!-- Hero Section -->
-  <section class="relative overflow-hidden min-h-[85vh] flex flex-col justify-center py-20 isolate">
+  <section class="relative overflow-hidden min-h-[85vh] flex flex-col justify-center py-20">
+  {% if not SIMPLE_DESIGN %}
   <!-- Dynamic Background -->
   <div class="absolute inset-0 bg-mesh-warm opacity-90 transition-opacity duration-1000" id="hero-mesh"></div>
   <div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-ember-100/40 to-transparent"></div>
   <div class="absolute -top-24 -right-24 w-96 h-96 bg-ember-400/10 rounded-full blur-3xl animate-pulse"></div>
   <div class="absolute top-1/2 -left-24 w-64 h-64 bg-pine-400/10 rounded-full blur-3xl"></div>
+  {% endif %}
 
   <div class="container relative z-10">
     <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
@@ -53,6 +55,7 @@
         </div>
       </div>
 
+      {% if not SIMPLE_DESIGN %}
       <!-- Interactive GSAP Animation -->
       <div class="hidden lg:flex justify-center items-center relative py-10" id="hero-interactive">
         <div class="relative w-full max-w-lg aspect-square">
@@ -94,6 +97,7 @@
           </svg>
         </div>
       </div>
+      {% endif %}
     </div>
   </div>
 </section>
@@ -124,7 +128,9 @@
             Исследовать <i data-lucide="chevron-right" class="w-4 h-4"></i>
           </span>
         </div>
+        {% if not SIMPLE_DESIGN %}
         <img src="{% static 'images/MainPage/construction.png' %}" loading="eager" decoding="async" class="absolute -right-10 -bottom-10 w-2/3 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3 opacity-80 group-hover:opacity-100 z-0">
+        {% endif %}
       </a>
 
       <!-- Small Vertical Card -->
@@ -134,7 +140,9 @@
           <h3 class="font-display text-3xl font-bold text-steel-950 mb-4">Мебель</h3>
           <p class="text-steel-600 font-medium">Стильные решения для вашего интерьера.</p>
         </div>
+        {% if not SIMPLE_DESIGN %}
         <img src="{% static 'images/MainPage/furniture.png' %}" loading="eager" decoding="async" class="relative z-10 w-full mt-10 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-6">
+        {% endif %}
       </a>
 
       <!-- Small Horizontal Card -->
@@ -148,7 +156,9 @@
           </span>
         </div>
         <div class="relative w-full md:w-1/2 h-64 md:h-full flex items-center justify-center">
+          {% if not SIMPLE_DESIGN %}
           <img src="{% static 'images/MainPage/electronics.png' %}" loading="eager" decoding="async" class="max-w-[80%] max-h-full object-contain transition-transform duration-700 group-hover:scale-110 z-0">
+          {% endif %}
         </div>
       </a>
     </div>
@@ -161,7 +171,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
       <div class="highlight-card highlight-card-base">
         <div class="w-16 h-16 rounded-2xl bg-ember-100 flex items-center justify-center text-ember-600 mb-8 transition group-hover:bg-ember-500 group-hover:text-white">
-          <i data-lucide="truck" class="w-8 h-8"></i>
+          {% if not SIMPLE_DESIGN %}<i data-lucide="truck" class="w-8 h-8"></i>{% endif %}
         </div>
         <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Быстрая доставка</h4>
         <p class="text-steel-600 leading-relaxed">Доставляем заказы по всему Казахстану в кратчайшие сроки.</p>
@@ -169,7 +179,7 @@
       
       <div class="highlight-card highlight-card-base">
         <div class="w-16 h-16 rounded-2xl bg-pine-100 flex items-center justify-center text-pine-600 mb-8 transition group-hover:bg-pine-500 group-hover:text-white">
-          <i data-lucide="shield-check" class="w-8 h-8"></i>
+          {% if not SIMPLE_DESIGN %}<i data-lucide="shield-check" class="w-8 h-8"></i>{% endif %}
         </div>
         <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Гарантия качества</h4>
         <p class="text-steel-600 leading-relaxed">Только оригинальная продукция от проверенных поставщиков.</p>
@@ -177,7 +187,7 @@
       
       <div class="highlight-card highlight-card-base">
         <div class="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600 mb-8 transition group-hover:bg-amber-500 group-hover:text-white">
-          <i data-lucide="headset" class="w-8 h-8"></i>
+          {% if not SIMPLE_DESIGN %}<i data-lucide="headset" class="w-8 h-8"></i>{% endif %}
         </div>
         <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Поддержка 24/7</h4>
         <p class="text-steel-600 leading-relaxed">Наши специалисты всегда готовы помочь вам с выбором.</p>
@@ -188,94 +198,96 @@
 {% endblock %}
 
 {% block extra_js %}
+{% if not SIMPLE_DESIGN %}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Entrance Animation
-    const tl = gsap.timeline();
+  // 1. Entrance Animation
+  const tl = gsap.timeline();
     
-    // Initial setup to prevent flash
-    gsap.set(".hero-reveal-inner", { yPercent: 101 });
+  // Initial setup to prevent flash
+  gsap.set(".hero-reveal-inner", { yPercent: 101 });
     
-    tl.to(".hero-reveal-inner", {
-        yPercent: 0,
-        duration: 1.2,
-        stagger: 0.12,
-        ease: "expo.out",
-    });
+  tl.to(".hero-reveal-inner", {
+    yPercent: 0,
+    duration: 1.2,
+    stagger: 0.12,
+    ease: "expo.out",
+  });
     
-    tl.from("#hero-interactive", {
-        scale: 0.9,
-        opacity: 0,
-        duration: 1.5,
-        ease: "expo.out"
-    }, "-=0.8");
+  tl.from("#hero-interactive", {
+    scale: 0.9,
+    opacity: 0,
+    duration: 1.5,
+    ease: "expo.out"
+  }, "-=0.8");
 
-    // Dynamic Background Movement
-    gsap.to("#hero-mesh", {
-        backgroundPosition: "10% 10%",
-        duration: 20,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut"
-    });
+  // Dynamic Background Movement
+  gsap.to("#hero-mesh", {
+    backgroundPosition: "10% 10%",
+    duration: 20,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
 
-    // 2. Interactive Parallax Effect
-    const container = document.querySelector('#hero-interactive');
-    const card = document.querySelector('#float-card');
-    const circle = document.querySelector('#float-circle');
-    const badge = document.querySelector('#float-badge');
+  // 2. Interactive Parallax Effect
+  const container = document.querySelector('#hero-interactive');
+  const card = document.querySelector('#float-card');
+  const circle = document.querySelector('#float-circle');
+  const badge = document.querySelector('#float-badge');
 
-    if (container) {
-        window.addEventListener('mousemove', (e) => {
-            const { clientX, clientY } = e;
-            const { innerWidth, innerHeight } = window;
+  if (container) {
+    window.addEventListener('mousemove', (e) => {
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
             
-            const xPos = (clientX / innerWidth) - 0.5;
-            const yPos = (clientY / innerHeight) - 0.5;
+      const xPos = (clientX / innerWidth) - 0.5;
+      const yPos = (clientY / innerHeight) - 0.5;
 
-            gsap.to(card, {
-                x: xPos * 40,
-                y: yPos * 40,
-                rotateY: xPos * 15,
-                rotateX: -yPos * 15,
-                duration: 1,
-                ease: "power2.out"
-            });
+      gsap.to(card, {
+        x: xPos * 40,
+        y: yPos * 40,
+        rotateY: xPos * 15,
+        rotateX: -yPos * 15,
+        duration: 1,
+        ease: "power2.out"
+      });
 
-            gsap.to(circle, {
-                x: xPos * 80,
-                y: yPos * 80,
-                duration: 1.2,
-                ease: "power2.out"
-            });
+      gsap.to(circle, {
+        x: xPos * 80,
+        y: yPos * 80,
+        duration: 1.2,
+        ease: "power2.out"
+      });
 
-            gsap.to(badge, {
-                x: xPos * -30,
-                y: yPos * -30,
-                duration: 0.8,
-                ease: "power2.out"
-            });
-        });
-    }
-
-    // 3. Constant Floating Motion
-    gsap.to(card, {
-        y: "+=15",
-        duration: 2.5,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut"
+      gsap.to(badge, {
+        x: xPos * -30,
+        y: yPos * -30,
+        duration: 0.8,
+        ease: "power2.out"
+      });
     });
+  }
+
+  // 3. Constant Floating Motion
+  gsap.to(card, {
+    y: "+=15",
+    duration: 2.5,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
     
-    gsap.to(circle, {
-        y: "-=20",
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: 0.5
-    });
+  gsap.to(circle, {
+    y: "-=20",
+    duration: 3,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut",
+    delay: 0.5
+  });
 });
 </script>
+{% endif %}
 {% endblock %}
 

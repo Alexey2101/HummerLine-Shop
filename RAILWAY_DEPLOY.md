@@ -11,10 +11,9 @@
 - `AWS_ACCESS_KEY_ID` = <access_key>
 - `AWS_SECRET_ACCESS_KEY` = <secret>
 - `AWS_STORAGE_BUCKET_NAME` = <bucket_name>
-- `AWS_S3_ENDPOINT_URL` = <https://...> (если Railway Bucket предоставляет endpoint)
-- (опционально) `AWS_S3_REGION_NAME` = <region>
-- (опционально) `AWS_S3_CUSTOM_DOMAIN` = <cdn.example.com> (если у вас CDN)
-- (опционально) `CORS_ALLOWED_ORIGINS` = `https://your-frontend.example.com`
+- (опционально) `AWS_S3_ENDPOINT_URL` = <https://...> — указать только для S3-совместимого хранилища (Railway Buckets)
+
+Остальные настройки (регион, CORS, кастомный домен) не обязательны для базовой работы и обычно не нужны для простого кейса на Railway.
 
 Важно: для хоста https://hummerline.up.railway.app установите в Variables:
 - `RAILWAY_PUBLIC_DOMAIN` = `hummerline.up.railway.app`

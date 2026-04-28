@@ -103,6 +103,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.simple_design',
             ],
         },
     },
@@ -173,7 +174,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Если нужно хранить пользовательские файлы в S3-совместимом бакете (Railway Buckets или S3)
+# Простой режим хранения пользовательских файлов в S3-совместимом бакете (Railway Buckets или AWS S3).
+# Включается установкой переменной окружения `USE_S3=true`.
 USE_S3 = os.environ.get('USE_S3', 'False').lower() == 'true'
 if USE_S3:
     INSTALLED_APPS.append('storages')
@@ -182,28 +184,18 @@ if USE_S3:
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', None)
-    AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')  # для S3-совместимых провайдеров (Railway Buckets)
+    AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')  # optional for S3-compatible providers
 
-    # Настройки django-storages / boto3
-    AWS_DEFAULT_ACL = None
-    AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400',
-    }
-
-    # Если задан CUSTOM_DOMAIN, используем его, иначе формируем стандартный
-    AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN') or None
-
+    # Используем стандартный бекенд django-storages (минимальная настройка)
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_DEFAULT_ACL = None
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
-    if AWS_S3_CUSTOM_DOMAIN:
-        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+    # Простая логика MEDIA_URL: если задан endpoint, используем path-style URL, иначе стандартный S3 host
+    if AWS_S3_ENDPOINT_URL:
+        MEDIA_URL = f"{AWS_S3_ENDPOINT_URL.rstrip('/')}/{AWS_STORAGE_BUCKET_NAME}/"
     else:
-        # Если указан endpoint (S3-совместимый), формируем host без схемы
-        if AWS_S3_ENDPOINT_URL:
-            endpoint_host = AWS_S3_ENDPOINT_URL.replace("https://", "").replace("http://", "").rstrip("/")
-            MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.{endpoint_host}/'
-        else:
-            MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
+        MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/"
 
 # CORS (для доступа к медиа с клиентских доменов, если требуется)
 # Укажите CORS_ALLOWED_ORIGINS как через переменную окружения (comma-separated),
@@ -223,3 +215,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login/'
+
+# Flag to enable simplified/legacy design (set SIMPLE_DESIGN=true in env to enable)
+SIMPLE_DESIGN = os.environ.get('SIMPLE_DESIGN', 'False').lower() == 'true'
