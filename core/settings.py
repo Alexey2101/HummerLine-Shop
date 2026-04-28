@@ -24,6 +24,8 @@ ALLOWED_HOSTS = [
     os.environ.get('RAILWAY_PUBLIC_DOMAIN'),
     '.railway.app',
 ]
+# Добавить явный хост для развертывания
+ALLOWED_HOSTS.append('hummerline.up.railway.app')
 # Если DEBUG включен, добавляем локальные хосты
 if DEBUG:
     ALLOWED_HOSTS += ['localhost', '127.0.0.1']
@@ -44,6 +46,9 @@ if railway_public:
 
 # Явно добавляем домен из ошибки, если он еще не там
 CSRF_TRUSTED_ORIGINS.append("https://hummerline-shop-production.up.railway.app")
+# Добавляем целевой домен приложения (если не задан в окружении)
+if "https://hummerline.up.railway.app" not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append("https://hummerline.up.railway.app")
 
 # Application definition
 
@@ -55,10 +60,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'shop.apps.ShopConfig', # Наше приложение HummerLine
 ]
 
+# Поддержка удалённого хранения медиа (S3 / S3-совместимые хранилища, напр. Railway Buckets)
+# Будет включена, если в окружении указать USE_S3=true
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -162,6 +172,48 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Если нужно хранить пользовательские файлы в S3-совместимом бакете (Railway Buckets или S3)
+USE_S3 = os.environ.get('USE_S3', 'False').lower() == 'true'
+if USE_S3:
+    INSTALLED_APPS.append('storages')
+
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', None)
+    AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')  # для S3-совместимых провайдеров (Railway Buckets)
+
+    # Настройки django-storages / boto3
+    AWS_DEFAULT_ACL = None
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+
+    # Если задан CUSTOM_DOMAIN, используем его, иначе формируем стандартный
+    AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN') or None
+
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+    if AWS_S3_CUSTOM_DOMAIN:
+        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+    else:
+        # Если указан endpoint (S3-совместимый), формируем host без схемы
+        if AWS_S3_ENDPOINT_URL:
+            endpoint_host = AWS_S3_ENDPOINT_URL.replace("https://", "").replace("http://", "").rstrip("/")
+            MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.{endpoint_host}/'
+        else:
+            MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
+
+# CORS (для доступа к медиа с клиентских доменов, если требуется)
+# Укажите CORS_ALLOWED_ORIGINS как через переменную окружения (comma-separated),
+# или разрешите все с CORS_ALLOW_ALL_ORIGINS=true (не рекомендовано в продакшене).
+CORS_ALLOW_ALL_ORIGINS = os.environ.get('CORS_ALLOW_ALL_ORIGINS', 'False').lower() == 'true'
+if not CORS_ALLOW_ALL_ORIGINS:
+    cors_env = os.environ.get('CORS_ALLOWED_ORIGINS', '')
+    CORS_ALLOWED_ORIGINS = [o.strip() for o in cors_env.split(',') if o.strip()]
+else:
+    CORS_ALLOWED_ORIGINS = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

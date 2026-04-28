@@ -1,211 +1,187 @@
 {% extends "shop/base.html" %}
 {% load static %}
 
-{% block title %}HummerLine - Профессиональное оборудование{% endblock %}
-
-{% block extra_head %}
-<style>
-  /* Base state: visible */
-  .hero-reveal { opacity: 1 !important; }
-  
-  /* JS-enabled state: hidden for animation */
-  .js-enabled .hero-reveal span { 
-    opacity: 0;
-    transform: translateY(110%);
-  }
-  
-  .dashboard-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
-    backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-  }
-
-  .perspective-1000 {
-    perspective: 1000px;
-  }
-
-  /* Fix for overlapping bento images */
-  .bento-image {
-    max-width: none;
-    pointer-events: none;
-  }
-</style>
-{% endblock %}
+{% block title %}HummerLine - Профессиональные решения{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<section class="relative min-h-[95vh] flex items-center justify-center overflow-hidden py-24 bg-white">
-  <!-- Dynamic Gradient Background -->
-  <div class="absolute inset-0 pointer-events-none">
-    <div class="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_20%,rgba(249,115,22,0.08),transparent_50%)]"></div>
-    <div class="absolute bottom-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_80%,rgba(15,23,42,0.04),transparent_50%)]"></div>
-  </div>
+<section class="relative overflow-hidden min-h-[85vh] flex flex-col justify-center py-20">
+  <!-- Dynamic Background -->
+  <div class="absolute inset-0 bg-mesh-warm opacity-90 transition-opacity duration-1000" id="hero-mesh"></div>
+  <div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-ember-100/40 to-transparent"></div>
+  <div class="absolute -top-24 -right-24 w-96 h-96 bg-ember-400/10 rounded-full blur-3xl animate-pulse"></div>
+  <div class="absolute top-1/2 -left-24 w-64 h-64 bg-pine-400/10 rounded-full blur-3xl"></div>
 
   <div class="container relative z-10">
-    <div class="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
-      <!-- Text Content -->
-      <div class="relative z-20">
-        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-ember-50 border border-ember-100 mb-10 hero-reveal">
-          <span class="flex h-2 w-2 rounded-full bg-ember-500 animate-pulse"></span>
-          <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-ember-600">Premium Hardware Ecosystem</span>
+    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
+      <div class="text-center lg:text-left">
+        <div class="hero-reveal-wrap mb-8">
+          <div class="hero-reveal-inner badge-hero">
+            <i data-lucide="sparkles" class="w-4 h-4 text-ember-600"></i>
+            <span>Премиальное оборудование для профи</span>
+          </div>
         </div>
-
-        <h1 class="font-display text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-steel-950 leading-[1.1] mb-10">
-          <span class="block hero-reveal overflow-hidden py-4"><span>Инструменты</span></span>
-          <span class="block hero-reveal overflow-hidden text-transparent bg-clip-text bg-gradient-to-r from-ember-600 via-amber-500 to-ember-500 py-4"><span>будущего</span></span>
-          <span class="block hero-reveal overflow-hidden py-4"><span>уже здесь.</span></span>
+        
+        <h1 class="text-display-hero hero-title-main">
+          <div class="hero-reveal-wrap overflow-hidden pb-2">
+            <div class="hero-reveal-inner">Инструменты</div>
+          </div>
+          <div class="hero-reveal-wrap overflow-hidden pb-2">
+            <div class="hero-reveal-inner text-transparent bg-clip-text bg-gradient-to-r from-ember-600 to-amber-500 drop-shadow-sm">будущего</div>
+          </div>
+          <div class="hero-reveal-wrap overflow-hidden pb-2">
+            <div class="hero-reveal-inner">уже здесь.</div>
+          </div>
         </h1>
-
-        <p class="text-xl md:text-2xl text-steel-500 font-medium max-w-xl mb-14 hero-reveal leading-relaxed">
-          HummerLine — это синергия надежности и инноваций. Мы создаем экосистему для тех, кто ценит качество и профессиональный подход.
-        </p>
-
-        <div class="flex flex-wrap items-center gap-5 hero-reveal">
-          <a href="{% url 'shop:product_list' %}" class="btn-primary !px-10 !py-5 text-lg group">
-            Каталог товаров
-            <i data-lucide="arrow-right" class="w-6 h-6 transition-transform group-hover:translate-x-1.5"></i>
-          </a>
-          <a href="{% url 'shop:product_create' %}" class="btn-secondary !px-10 !py-5 text-lg">
-            Разместить
-          </a>
+        
+        <div class="hero-reveal-wrap overflow-hidden mt-8">
+          <p class="hero-reveal-inner max-w-2xl text-xl leading-relaxed text-steel-700 font-medium">
+            HummerLine Hardware — это синергия надежности и инноваций. Мы создаем экосистему для тех, кто ценит качество, скорость и профессиональный подход в каждом проекте.
+          </p>
+        </div>
+        
+        <div class="hero-reveal-wrap overflow-hidden mt-12">
+          <div class="hero-reveal-inner flex flex-wrap gap-5 justify-center lg:justify-start">
+            <a href="{% url 'shop:product_list' %}" class="btn-primary-ember">
+              <span class="relative z-10">Каталог товаров</span>
+              <div class="absolute inset-0 bg-gradient-to-r from-ember-500 to-amber-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </a>
+            <a href="{% url 'shop:product_create' %}" class="btn-secondary-outline">
+              Разместить объявление
+            </a>
+          </div>
         </div>
       </div>
 
-      <!-- Hero Visual (Recommended Products) -->
-      <div class="relative hidden lg:block perspective-1000 hero-reveal" id="hero-visual">
-        <div class="space-y-8 relative z-10">
-          <div class="flex items-center justify-between mb-8">
-            <h3 class="text-xs font-bold text-steel-400 uppercase tracking-[0.3em]">Рекомендуем</h3>
-            <div class="flex gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-ember-500"></span>
-              <span class="w-1.5 h-1.5 rounded-full bg-steel-200"></span>
-              <span class="w-1.5 h-1.5 rounded-full bg-steel-200"></span>
+      <!-- Interactive GSAP Animation -->
+      <div class="hidden lg:flex justify-center items-center relative py-10" id="hero-interactive">
+        <div class="relative w-full max-w-lg aspect-square">
+          <!-- Main Floating Card -->
+          <div id="float-card" class="absolute inset-0 bg-white/40 backdrop-blur-3xl rounded-[3rem] border border-white/50 shadow-display overflow-hidden p-8 flex flex-col justify-between z-10">
+            <div class="flex justify-between items-start">
+              <div class="w-16 h-16 rounded-2xl bg-ember-500/10 flex items-center justify-center">
+                <i data-lucide="hammer" class="w-8 h-8 text-ember-600"></i>
+              </div>
+              <div class="text-right">
+                <div class="text-xs font-bold text-steel-400 uppercase tracking-widest mb-1">Status</div>
+                <div class="text-sm font-bold text-pine-600 flex items-center gap-1.5 justify-end">
+                  <span class="w-2 h-2 rounded-full bg-pine-500 animate-pulse"></span> Online
+                </div>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="h-3 w-2/3 bg-steel-200/50 rounded-full"></div>
+              <div class="h-3 w-1/2 bg-steel-200/50 rounded-full"></div>
+              <div class="h-10 w-full bg-ember-500/20 rounded-xl border border-ember-500/30"></div>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-6">
-            {% for product in recommended_products %}
-              <div class="group relative {% if forloop.counter|divisibleby:2 %}mt-12{% endif %}">
-                <a href="{{ product.get_absolute_url }}" class="block">
-                  <div class="card-premium !p-3 bg-white/80 backdrop-blur-xl border-white shadow-2xl transition-all duration-500 group-hover:-translate-y-4">
-                    <div class="aspect-square rounded-2xl overflow-hidden bg-steel-50 mb-4 relative">
-                      {% if product.image %}
-                        <img src="{{ product.image.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                      {% else %}
-                        <div class="w-full h-full flex items-center justify-center text-steel-200">
-                          <i data-lucide="image" class="w-8 h-8"></i>
-                        </div>
-                      {% endif %}
-                      <div class="absolute top-2 right-2 px-2 py-1 rounded-lg bg-white/90 backdrop-blur-md text-[8px] font-bold text-steel-900 shadow-sm">
-                        {{ product.category.name }}
-                      </div>
-                    </div>
-                    <div class="px-1">
-                      <h4 class="text-sm font-bold text-steel-950 truncate mb-1 group-hover:text-ember-600 transition-colors">{{ product.name }}</h4>
-                      <div class="text-lg font-display font-bold text-steel-950">{{ product.price }} <span class="text-[10px] text-steel-400">₸</span></div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% empty %}
-              <div class="col-span-2 py-20 text-center card-premium bg-steel-50/50 border-dashed">
-                <i data-lucide="package-search" class="w-12 h-12 text-steel-200 mx-auto mb-4"></i>
-                <p class="text-sm font-bold text-steel-400 uppercase tracking-widest">Товары скоро появятся</p>
-              </div>
-            {% endfor %}
+          <!-- Secondary Elements -->
+          <div id="float-circle" class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-ember-500 to-amber-400 rounded-full shadow-lg flex items-center justify-center text-white z-0">
+            <i data-lucide="zap" class="w-12 h-12"></i>
           </div>
-        </div>
+          
+          <div id="float-badge" class="absolute -bottom-6 -left-6 bg-steel-950 text-white px-6 py-4 rounded-2xl shadow-display font-display font-bold text-lg border border-white/10 z-20">
+            <div class="text-xs text-steel-400 uppercase mb-1">Accuracy</div>
+            99.9%
+          </div>
 
-        <!-- Background Accents -->
-        <div class="absolute -inset-10 bg-[radial-gradient(circle_at_50%_50%,rgba(249,115,22,0.05),transparent_70%)] pointer-events-none -z-10"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-steel-100 rounded-full opacity-50 pointer-events-none"></div>
+          <!-- Decorative Lines -->
+          <svg class="absolute inset-0 w-full h-full -z-10 opacity-20" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 4" class="text-ember-500"/>
+            <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1 3" class="text-steel-400"/>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Features Grid -->
-<section class="py-40 bg-white relative overflow-hidden">
+<!-- Bento Grid Categories -->
+<section class="py-24 bg-white relative overflow-hidden">
   <div class="container relative z-10">
-    <div class="max-w-3xl mb-32">
-      <div class="inline-block px-4 py-1.5 rounded-full bg-steel-50 text-steel-500 text-[10px] font-bold uppercase tracking-widest mb-6">Expertise</div>
-      <h2 class="font-display text-5xl md:text-7xl font-bold text-steel-950 mb-10 leading-[1.1]">Почему выбирают <span class="text-ember-600">HummerLine</span>?</h2>
-      <p class="text-2xl text-steel-500 font-medium leading-relaxed">Мы объединяем лучшие инструменты и современные технологии в одном месте для создания профессиональных результатов.</p>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-12">
-      <div class="card-premium group !p-12 hover:-translate-y-4">
-        <div class="w-20 h-20 rounded-3xl bg-ember-50 flex items-center justify-center text-ember-600 mb-12 group-hover:bg-ember-500 group-hover:text-white transition-all duration-700">
-          <i data-lucide="truck" class="w-10 h-10"></i>
-        </div>
-        <h3 class="text-3xl font-display font-bold text-steel-950 mb-6">Быстрая доставка</h3>
-        <p class="text-lg text-steel-500 font-medium leading-relaxed">Доставляем заказы по всему Казахстану в кратчайшие сроки с полным страхованием груза.</p>
-      </div>
-
-      <div class="card-premium group !p-12 hover:-translate-y-4 delay-75">
-        <div class="w-20 h-20 rounded-3xl bg-blue-50 flex items-center justify-center text-blue-600 mb-12 group-hover:bg-blue-500 group-hover:text-white transition-all duration-700">
-          <i data-lucide="shield-check" class="w-10 h-10"></i>
-        </div>
-        <h3 class="text-3xl font-display font-bold text-steel-950 mb-6">Гарантия качества</h3>
-        <p class="text-lg text-steel-500 font-medium leading-relaxed">Только оригинальная продукция от мировых брендов. Каждая единица проходит проверку.</p>
-      </div>
-
-      <div class="card-premium group !p-12 hover:-translate-y-4 delay-150">
-        <div class="w-20 h-20 rounded-3xl bg-emerald-50 flex items-center justify-center text-emerald-600 mb-12 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-700">
-          <i data-lucide="headset" class="w-10 h-10"></i>
-        </div>
-        <h3 class="text-3xl font-display font-bold text-steel-950 mb-6">Поддержка 24/7</h3>
-        <p class="text-lg text-steel-500 font-medium leading-relaxed">Наши эксперты всегда на связи, чтобы помочь вам с выбором и ответить на любые вопросы.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Categories Section (Bento) -->
-<section class="py-40 bg-steel-950 overflow-hidden relative">
-  <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,#f97316,transparent_70%)]"></div>
-  
-  <div class="container relative z-10">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-32 gap-12">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
       <div class="max-w-2xl">
-        <h2 class="font-display text-5xl md:text-7xl font-bold text-white mb-10 leading-[1.1]">Исследуйте <br><span class="text-ember-500">категории</span></h2>
-        <p class="text-2xl text-white/40 font-medium">От профессионального инструмента до высокотехнологичной электроники.</p>
+        <h2 class="section-reveal section-heading">Наши направления</h2>
+        <p class="section-reveal mt-4 text-lg text-steel-600">Исследуйте тщательно отобранные категории товаров для любых задач.</p>
       </div>
-      <a href="{% url 'shop:product_list' %}" class="btn-secondary !bg-white/10 !border-white/20 !text-white hover:!bg-ember-500 group">
-        Все категории <i data-lucide="arrow-right" class="w-5 h-5"></i>
+      <a href="{% url 'shop:product_list' %}" class="section-reveal text-ember-600 font-bold flex items-center gap-2 hover:gap-3 transition-all underline decoration-2 underline-offset-8">
+        Смотреть все категории <i data-lucide="arrow-right" class="w-5 h-5"></i>
       </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 auto-rows-[450px]">
-      <!-- Building -->
-      <a href="{% url 'shop:product_list_by_category' category_slug='stroitelstvo-i-remont' %}" class="md:col-span-8 md:row-span-2 card-premium overflow-hidden group flex flex-col justify-between !bg-steel-900 !border-steel-800 !p-16">
-        <div class="relative z-10">
-          <h3 class="text-6xl font-display font-bold text-white mb-8 group-hover:text-ember-500 transition-colors">Строительство</h3>
-          <p class="text-xl text-white/40 font-medium max-w-sm">Все для капитального ремонта и профессиональной стройки.</p>
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto lg:h-[700px]">
+      <!-- Big Card -->
+      <a href="{% url 'shop:product_list_by_category' category_slug='stroitelstvo-i-remont' %}" 
+         class="bento-card bento-card-base md:col-span-8">
+        <div class="relative z-10 max-w-sm">
+          <h3 class="font-display text-4xl font-bold text-steel-950 mb-4">Строительство И Ремонт</h3>
+          <p class="text-steel-600 font-medium leading-relaxed">Все от фундамента до кровли. Лучшие бренды и проверенные материалы.</p>
         </div>
-        <div class="relative z-10 flex items-center gap-3 text-sm font-bold text-ember-500 uppercase tracking-widest">
-          Исследовать <i data-lucide="arrow-right" class="w-5 h-5"></i>
+        <div class="relative z-10 mt-10">
+          <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-bold text-steel-900 shadow-sm transition group-hover:bg-ember-500 group-hover:text-white">
+            Исследовать <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </span>
         </div>
-        <img src="{% static 'images/MainPage/construction.png' %}" class="absolute -right-20 -bottom-20 w-1/2 opacity-20 group-hover:scale-110 transition-transform duration-1000 bento-image">
+        <img src="{% static 'images/MainPage/construction.png' %}" class="absolute -right-10 -bottom-10 w-2/3 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3 opacity-80 group-hover:opacity-100 z-0">
       </a>
 
-      <!-- Furniture -->
-      <a href="{% url 'shop:product_list_by_category' category_slug='mebel' %}" class="md:col-span-4 card-premium overflow-hidden group !bg-amber-500 !border-amber-400 !p-12 flex flex-col justify-between">
+      <!-- Small Vertical Card -->
+      <a href="{% url 'shop:product_list_by_category' category_slug='mebel' %}" 
+         class="bento-card bento-card-base md:col-span-4 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100">
         <div class="relative z-10">
-          <h3 class="text-4xl font-display font-bold text-steel-950 mb-6">Мебель</h3>
-          <p class="text-steel-950/60 font-medium">Стильные решения для дома и офиса.</p>
+          <h3 class="font-display text-3xl font-bold text-steel-950 mb-4">Мебель</h3>
+          <p class="text-steel-600 font-medium">Стильные решения для вашего интерьера.</p>
         </div>
-        <img src="{% static 'images/MainPage/furniture.png' %}" class="absolute -right-10 -bottom-10 w-1/2 opacity-30 group-hover:scale-110 transition-transform duration-1000 bento-image">
+        <img src="{% static 'images/MainPage/furniture.png' %}" class="relative z-10 w-full mt-10 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-6">
       </a>
 
-      <!-- Electronics -->
-      <a href="{% url 'shop:product_list_by_category' category_slug='kompyuternaya-tehnika' %}" class="md:col-span-4 card-premium overflow-hidden group !bg-white !border-steel-100 !p-12 flex flex-col justify-between">
-        <div class="relative z-10">
-          <h3 class="text-4xl font-display font-bold text-steel-950 mb-6">Электроника</h3>
-          <p class="text-steel-500 font-medium">Новейшие гаджеты и техника.</p>
+      <!-- Small Horizontal Card -->
+      <a href="{% url 'shop:product_list_by_category' category_slug='kompyuternaya-tehnika' %}" 
+         class="bento-card bento-card-base md:col-span-12 lg:col-span-12 bg-steel-900 mt-auto lg:p-14 md:flex-row items-center">
+        <div class="relative z-10 text-white max-w-lg mb-10 md:mb-0">
+          <h3 class="font-display text-4xl font-bold mb-6">IT & Электроника</h3>
+          <p class="text-white/70 text-lg leading-relaxed mb-8">Современные компьютеры и комплектующие для работы и отдыха.</p>
+          <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition group-hover:bg-ember-500">
+            Перейти в каталог <i data-lucide="monitor" class="w-4 h-4 ml-2"></i>
+          </span>
         </div>
-        <img src="{% static 'images/MainPage/electronics.png' %}" class="absolute -right-10 -bottom-10 w-1/2 opacity-5 group-hover:scale-110 transition-transform duration-1000 bento-image">
+        <div class="relative w-full md:w-1/2 h-64 md:h-full flex items-center justify-center">
+          <img src="{% static 'images/MainPage/electronics.png' %}" class="max-w-[80%] max-h-full object-contain transition-transform duration-700 group-hover:scale-110 z-0">
+        </div>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- Highlights Section -->
+<section class="py-24 bg-steel-50">
+  <div class="container">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div class="highlight-card highlight-card-base">
+        <div class="w-16 h-16 rounded-2xl bg-ember-100 flex items-center justify-center text-ember-600 mb-8 transition group-hover:bg-ember-500 group-hover:text-white">
+          <i data-lucide="truck" class="w-8 h-8"></i>
+        </div>
+        <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Быстрая доставка</h4>
+        <p class="text-steel-600 leading-relaxed">Доставляем заказы по всему Казахстану в кратчайшие сроки.</p>
+      </div>
+      
+      <div class="highlight-card highlight-card-base">
+        <div class="w-16 h-16 rounded-2xl bg-pine-100 flex items-center justify-center text-pine-600 mb-8 transition group-hover:bg-pine-500 group-hover:text-white">
+          <i data-lucide="shield-check" class="w-8 h-8"></i>
+        </div>
+        <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Гарантия качества</h4>
+        <p class="text-steel-600 leading-relaxed">Только оригинальная продукция от проверенных поставщиков.</p>
+      </div>
+      
+      <div class="highlight-card highlight-card-base">
+        <div class="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600 mb-8 transition group-hover:bg-amber-500 group-hover:text-white">
+          <i data-lucide="headset" class="w-8 h-8"></i>
+        </div>
+        <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Поддержка 24/7</h4>
+        <p class="text-steel-600 leading-relaxed">Наши специалисты всегда готовы помочь вам с выбором.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -214,48 +190,92 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof gsap === 'undefined') return;
-
-    // Entrance Animation
+    // 1. Entrance Animation
     const tl = gsap.timeline();
     
-    // Select the direct span child of hero-reveal
-    gsap.set(".hero-reveal > span", { y: "110%", opacity: 0 });
-    gsap.set(".hero-reveal:not(span)", { y: 30, opacity: 0 });
-    gsap.set("#hero-visual", { scale: 0.95, opacity: 0 });
-
-    tl.to(".hero-reveal > span", {
-        y: "0%",
-        opacity: 1,
+    // Initial setup to prevent flash
+    gsap.set(".hero-reveal-inner", { yPercent: 101 });
+    
+    tl.to(".hero-reveal-inner", {
+        yPercent: 0,
         duration: 1.2,
-        stagger: 0.1,
-        ease: "expo.out"
-    })
-    .to(".hero-reveal:not(span)", {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        stagger: 0.15,
-        ease: "expo.out"
-    }, "-=0.8")
-    .to("#hero-visual", {
-        scale: 1,
-        opacity: 1,
+        stagger: 0.12,
+        ease: "expo.out",
+    });
+    
+    tl.from("#hero-interactive", {
+        scale: 0.9,
+        opacity: 0,
         duration: 1.5,
         ease: "expo.out"
-    }, "-=1.2");
+    }, "-=0.8");
 
-    // Dynamic Header Interaction
-    const header = document.getElementById('main-header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('py-2');
-            header.querySelector('.glass-panel').classList.add('!bg-white/90', 'shadow-2xl');
-        } else {
-            header.classList.remove('py-2');
-            header.querySelector('.glass-panel').classList.remove('!bg-white/90', 'shadow-2xl');
-        }
+    // Dynamic Background Movement
+    gsap.to("#hero-mesh", {
+        backgroundPosition: "10% 10%",
+        duration: 20,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+    });
+
+    // 2. Interactive Parallax Effect
+    const container = document.querySelector('#hero-interactive');
+    const card = document.querySelector('#float-card');
+    const circle = document.querySelector('#float-circle');
+    const badge = document.querySelector('#float-badge');
+
+    if (container) {
+        window.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const { innerWidth, innerHeight } = window;
+            
+            const xPos = (clientX / innerWidth) - 0.5;
+            const yPos = (clientY / innerHeight) - 0.5;
+
+            gsap.to(card, {
+                x: xPos * 40,
+                y: yPos * 40,
+                rotateY: xPos * 15,
+                rotateX: -yPos * 15,
+                duration: 1,
+                ease: "power2.out"
+            });
+
+            gsap.to(circle, {
+                x: xPos * 80,
+                y: yPos * 80,
+                duration: 1.2,
+                ease: "power2.out"
+            });
+
+            gsap.to(badge, {
+                x: xPos * -30,
+                y: yPos * -30,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+        });
+    }
+
+    // 3. Constant Floating Motion
+    gsap.to(card, {
+        y: "+=15",
+        duration: 2.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+    });
+    
+    gsap.to(circle, {
+        y: "-=20",
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 0.5
     });
 });
 </script>
 {% endblock %}
+
