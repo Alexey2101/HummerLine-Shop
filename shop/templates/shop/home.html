@@ -115,49 +115,57 @@
       </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto lg:h-[700px]">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto lg:h-[650px]">
       <!-- Big Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='stroitelstvo-i-remont' %}" 
-         class="bento-card bento-card-base md:col-span-8">
-        <div class="relative z-10 max-w-sm">
-          <h3 class="font-display text-4xl font-bold text-steel-950 mb-4">Строительство И Ремонт</h3>
+         class="bento-card bento-card-base md:col-span-8 group overflow-hidden">
+        <div class="relative z-20 max-w-sm">
+          <h3 class="font-display text-4xl font-bold text-steel-950 mb-4 transition-colors group-hover:text-ember-600">Строительство И Ремонт</h3>
           <p class="text-steel-600 font-medium leading-relaxed">Все от фундамента до кровли. Лучшие бренды и проверенные материалы.</p>
         </div>
-        <div class="relative z-10 mt-10">
-          <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-bold text-steel-900 shadow-sm transition group-hover:bg-ember-500 group-hover:text-white">
+        <div class="relative z-20 mt-10">
+          <span class="inline-flex items-center gap-2 rounded-full bg-steel-950 px-6 py-2.5 text-sm font-bold text-white shadow-lg transition-all group-hover:bg-ember-600 group-hover:px-8">
             Исследовать <i data-lucide="chevron-right" class="w-4 h-4"></i>
           </span>
         </div>
         {% if not SIMPLE_DESIGN %}
-        <img src="{% static 'images/MainPage/construction.png' %}" loading="eager" decoding="async" class="absolute -right-10 -bottom-10 w-2/3 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3 opacity-80 group-hover:opacity-100 z-0">
+        <div class="absolute -right-20 -bottom-20 w-full h-full pointer-events-none z-10 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3">
+          <img src="{% static 'images/MainPage/construction.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-[80%] h-auto object-contain opacity-90 group-hover:opacity-100">
+        </div>
         {% endif %}
       </a>
 
       <!-- Small Vertical Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='mebel' %}" 
-         class="bento-card bento-card-base md:col-span-4 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100">
-        <div class="relative z-10">
-          <h3 class="font-display text-3xl font-bold text-steel-950 mb-4">Мебель</h3>
+         class="bento-card bento-card-base md:col-span-4 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100 group overflow-hidden flex flex-col">
+        <div class="relative z-20">
+          <h3 class="font-display text-3xl font-bold text-steel-950 mb-4 transition-colors group-hover:text-ember-600">Мебель</h3>
           <p class="text-steel-600 font-medium">Стильные решения для вашего интерьера.</p>
         </div>
         {% if not SIMPLE_DESIGN %}
-        <img src="{% static 'images/MainPage/furniture.png' %}" loading="eager" decoding="async" class="relative z-10 w-full mt-10 object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-6">
+        <div class="absolute -right-10 -bottom-10 w-full h-2/3 pointer-events-none z-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-6">
+           <img src="{% static 'images/MainPage/furniture.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-[90%] h-auto object-contain">
+        </div>
         {% endif %}
+        <div class="relative z-20 mt-auto pt-6">
+           <i data-lucide="arrow-right-circle" class="w-8 h-8 text-amber-500 opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
+        </div>
       </a>
 
       <!-- Small Horizontal Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='kompyuternaya-tehnika' %}" 
-         class="bento-card bento-card-base md:col-span-12 lg:col-span-12 bg-steel-900 mt-auto lg:p-14 md:flex-row items-center">
-        <div class="relative z-10 text-white max-w-lg mb-10 md:mb-0">
-          <h3 class="font-display text-4xl font-bold mb-6">IT & Электроника</h3>
-          <p class="text-white/70 text-lg leading-relaxed mb-8">Современные компьютеры и комплектующие для работы и отдыха.</p>
-          <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition group-hover:bg-ember-500">
-            Перейти в каталог <i data-lucide="monitor" class="w-4 h-4 ml-2"></i>
+         class="bento-card bento-card-base md:col-span-12 lg:col-span-12 bg-steel-950 mt-auto lg:p-14 flex flex-col md:flex-row items-center group overflow-hidden">
+        <div class="relative z-20 text-white max-w-lg mb-10 md:mb-0">
+          <h3 class="font-display text-4xl font-bold mb-6 transition-colors group-hover:text-ember-400">IT & Электроника</h3>
+          <p class="text-white/60 text-lg leading-relaxed mb-8">Современные компьютеры и комплектующие для работы и отдыха.</p>
+          <span class="inline-flex items-center gap-3 rounded-full bg-white/10 border border-white/10 px-8 py-4 text-sm font-bold text-white backdrop-blur-xl transition-all group-hover:bg-ember-500 group-hover:border-ember-400">
+            Перейти в каталог <i data-lucide="monitor" class="w-5 h-5 ml-2"></i>
           </span>
         </div>
         <div class="relative w-full md:w-1/2 h-64 md:h-full flex items-center justify-center">
           {% if not SIMPLE_DESIGN %}
-          <img src="{% static 'images/MainPage/electronics.png' %}" loading="eager" decoding="async" class="max-w-[80%] max-h-full object-contain transition-transform duration-700 group-hover:scale-110 z-0">
+          <div class="absolute inset-0 bg-ember-500/10 blur-3xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <img src="{% static 'images/MainPage/electronics.png' %}" loading="eager" decoding="async" class="relative z-10 max-w-[90%] max-h-full object-contain transition-all duration-700 group-hover:scale-105 group-hover:-translate-y-4">
           {% endif %}
         </div>
       </a>
@@ -204,13 +212,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Entrance Animation
   const tl = gsap.timeline();
     
-  // Initial setup to prevent flash
-  gsap.set(".hero-reveal-inner", { yPercent: 101 });
+  // Initial setup to prevent flash (handled by base.html but GSAP needs to manage it now)
+  gsap.set(".hero-reveal-inner", { yPercent: 101, opacity: 1 });
     
   tl.to(".hero-reveal-inner", {
     yPercent: 0,
     duration: 1.2,
-    stagger: 0.12,
+    stagger: 0.1,
     ease: "expo.out",
   });
     

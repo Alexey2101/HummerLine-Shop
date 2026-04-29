@@ -47,12 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Скролл-анимации для секций
     gsap.utils.toArray('.section-reveal').forEach(section => {
-        gsap.from(section, {
-            y: 40,
-            opacity: 0,
-            duration: 1,
+        gsap.to(section, {
+            y: 0,
+            opacity: 1,
+            duration: 1.2,
             ease: "expo.out",
-               force3D: true,
+            force3D: true,
             scrollTrigger: {
                 trigger: section,
                 start: "top 90%",
@@ -63,13 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Скролл-анимации для Bento-карточек
     gsap.utils.toArray('.bento-card').forEach((card, i) => {
-        gsap.from(card, {
-            y: 50,
-            opacity: 0,
-            duration: 1.2,
+        gsap.to(card, {
+            y: 0,
+            opacity: 1,
+            duration: 1.4,
             delay: i * 0.1,
             ease: "expo.out",
-               force3D: true,
+            force3D: true,
             scrollTrigger: {
                 trigger: card,
                 start: "top 95%",

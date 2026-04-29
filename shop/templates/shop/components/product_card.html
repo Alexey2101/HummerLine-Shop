@@ -5,9 +5,10 @@
     {% if product.image %}
       <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
     {% else %}
-      <div class="w-full h-full flex flex-col items-center justify-center text-steel-300">
-        <i data-lucide="image" class="w-10 h-10 opacity-30 mb-2"></i>
-        <span class="text-[10px] font-bold uppercase tracking-widest">No Image</span>
+      <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-steel-50 to-steel-100 text-steel-400 relative overflow-hidden group-hover:from-ember-50 group-hover:to-ember-100 transition-colors duration-500">
+        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: url(&quot;data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0z' fill='none'/%3E%3Cpath d='M0 0h1v1H0z' fill='currentColor'/%3E%3C/svg%3E&quot;);"></div>
+        <i data-lucide="image-off" class="w-12 h-12 opacity-20 mb-3 transform transition-transform group-hover:scale-110 group-hover:rotate-6"></i>
+        <span class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">Нет изображения</span>
       </div>
     {% endif %}
 
