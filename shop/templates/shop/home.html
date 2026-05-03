@@ -135,7 +135,7 @@
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 h-auto lg:h-[700px]">
       <!-- Big Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='stroitelstvo-i-remont' %}" 
-         class="bento-card bento-card-base md:col-span-8 group overflow-hidden bg-slate-50 border-slate-100">
+         class="bento-card bento-card-base md:col-span-8 group overflow-hidden bg-slate-50 border-slate-100 min-h-[400px]">
         <div class="relative z-20 max-w-sm">
           <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 text-ember-500 border border-slate-100">
             <i data-lucide="hammer" class="w-6 h-6"></i>
@@ -149,15 +149,15 @@
           </span>
         </div>
         {% if not SIMPLE_DESIGN %}
-        <div class="absolute -right-10 -bottom-10 w-2/3 h-2/3 pointer-events-none z-10 transition-transform duration-1000 group-hover:scale-110 group-hover:-rotate-3">
-          <img src="{% static 'images/MainPage/construction.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-full h-full object-contain drop-shadow-2xl">
+        <div class="absolute -right-5 -bottom-5 w-3/4 h-3/4 pointer-events-none z-10 transition-transform duration-1000 group-hover:scale-110 group-hover:-rotate-6">
+          <img src="{% static 'images/MainPage/construction.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-full h-full object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)]">
         </div>
         {% endif %}
       </a>
 
       <!-- Small Vertical Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='mebel' %}" 
-         class="bento-card bento-card-base md:col-span-4 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100 group overflow-hidden flex flex-col">
+         class="bento-card bento-card-base md:col-span-4 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100 group overflow-hidden flex flex-col min-h-[400px]">
         <div class="relative z-20">
           <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 text-amber-500 border border-orange-100">
             <i data-lucide="sofa" class="w-6 h-6"></i>
@@ -166,8 +166,8 @@
           <p class="text-steel-600 font-medium leading-relaxed">Стильные и надежные решения для вашего интерьера.</p>
         </div>
         {% if not SIMPLE_DESIGN %}
-        <div class="absolute -right-10 -bottom-10 w-full h-1/2 pointer-events-none z-10 transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-6">
-           <img src="{% static 'images/MainPage/furniture.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-[90%] h-auto object-contain">
+        <div class="absolute -right-16 -bottom-16 w-full h-[60%] pointer-events-none z-10 transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-6">
+           <img src="{% static 'images/MainPage/furniture.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-[85%] h-auto object-contain drop-shadow-2xl">
         </div>
         {% endif %}
         <div class="relative z-20 mt-auto">
@@ -179,7 +179,7 @@
 
       <!-- Small Horizontal Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='kompyuternaya-tehnika' %}" 
-         class="bento-card bento-card-base md:col-span-12 bg-steel-950 mt-4 lg:p-16 flex flex-col md:flex-row items-center group overflow-hidden border-white/5">
+         class="bento-card bento-card-base md:col-span-12 bg-steel-950 mt-4 lg:p-16 flex flex-col md:flex-row items-center group overflow-hidden border-white/5 min-h-[450px]">
         <div class="relative z-20 text-white max-w-xl mb-12 md:mb-0">
           <div class="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center mb-8 text-ember-400 backdrop-blur-xl">
             <i data-lucide="cpu" class="w-8 h-8"></i>
@@ -192,11 +192,12 @@
         </div>
         <div class="relative w-full md:w-1/2 h-80 md:h-full flex items-center justify-center">
           {% if not SIMPLE_DESIGN %}
-          <div class="absolute inset-0 bg-ember-500/20 blur-[120px] rounded-full scale-125 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <img src="{% static 'images/MainPage/electronics.png' %}" loading="eager" decoding="async" class="relative z-10 max-w-[85%] max-h-full object-contain transition-all duration-1000 group-hover:scale-110 group-hover:-translate-y-8 group-hover:rotate-2">
+          <div class="absolute inset-0 bg-ember-500/30 blur-[140px] rounded-full scale-125 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <img src="{% static 'images/MainPage/electronics.png' %}" loading="eager" decoding="async" class="relative z-10 max-w-[100%] max-h-[110%] object-contain transition-all duration-1000 group-hover:scale-110 group-hover:-translate-y-12 group-hover:rotate-3 drop-shadow-2xl">
           {% endif %}
         </div>
       </a>
+
     </div>
   </div>
 </section>
