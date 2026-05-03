@@ -12,43 +12,45 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
-if not SECRET_KEY and not os.environ.get('DEBUG'):
-    raise Exception("SECRET_KEY must be set in production")
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
+# ALLOWED_HOSTS handling
 ALLOWED_HOSTS = [
-    os.environ.get('RAILWAY_STATIC_URL'),
-    os.environ.get('RAILWAY_PUBLIC_DOMAIN'),
+    'localhost',
+    '127.0.0.1',
     '.railway.app',
+    'hummerline.up.railway.app',
 ]
-# Добавить явный хост для развертывания
-ALLOWED_HOSTS.append('hummerline.up.railway.app')
-# Если DEBUG включен, добавляем локальные хосты
-if DEBUG:
-    ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 
-CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
+# Add specific Railway domains if they exist in env
+for env_var in ['RAILWAY_PUBLIC_DOMAIN', 'RAILWAY_STATIC_URL']:
+    domain = os.environ.get(env_var)
+    if domain:
+        ALLOWED_HOSTS.append(domain)
 
-# Автоматически добавляем домены Railway в доверенные
-railway_static = os.environ.get('RAILWAY_STATIC_URL')
-if railway_static:
-    if not railway_static.startswith('http'):
-        CSRF_TRUSTED_ORIGINS.append(f"https://{railway_static}")
-    else:
-        CSRF_TRUSTED_ORIGINS.append(railway_static)
+# CSRF_TRUSTED_ORIGINS handling
+CSRF_TRUSTED_ORIGINS = [
+    'https://hummerline.up.railway.app',
+    'https://hummerline-shop-production.up.railway.app',
+]
 
-railway_public = os.environ.get('RAILWAY_PUBLIC_DOMAIN')
-if railway_public:
-    CSRF_TRUSTED_ORIGINS.append(f"https://{railway_public}")
+# Dynamic CSRF origins from Railway
+for env_var in ['RAILWAY_PUBLIC_DOMAIN', 'RAILWAY_STATIC_URL']:
+    domain = os.environ.get(env_var)
+    if domain:
+        if not domain.startswith('http'):
+            CSRF_TRUSTED_ORIGINS.append(f"https://{domain}")
+        else:
+            CSRF_TRUSTED_ORIGINS.append(domain)
 
-# Явно добавляем домен из ошибки, если он еще не там
-CSRF_TRUSTED_ORIGINS.append("https://hummerline-shop-production.up.railway.app")
-# Добавляем целевой домен приложения (если не задан в окружении)
-if "https://hummerline.up.railway.app" not in CSRF_TRUSTED_ORIGINS:
-    CSRF_TRUSTED_ORIGINS.append("https://hummerline.up.railway.app")
+# Additional custom origins from env
+custom_csrf = os.environ.get('CSRF_TRUSTED_ORIGINS')
+if custom_csrf:
+    CSRF_TRUSTED_ORIGINS.extend([o.strip() for o in custom_csrf.split(',') if o.strip()])
+
 
 # Application definition
 
@@ -121,16 +123,39 @@ DATABASES = {
     }
 }
 
-if os.environ.get('DATABASE_URL'):
-    # Использование PostgreSQL (или другой базы из DATABASE_URL)
+database_url = os.environ.get('DATABASE_URL')
+if database_url:
+    # Use dj-database-url to parse the DATABASE_URL
+    # For Railway internal connections, SSL is often not required and can cause issues if forced
+    is_private = 'RAILWAY_PRIVATE_DOMAIN' in database_url or '.internal' in database_url
+    
     DATABASES['default'] = dj_database_url.config(
+        default=database_url,
         conn_max_age=600,
         conn_health_checks=True,
-        ssl_require=not DEBUG, # Требуем SSL в продакшене
+        ssl_require=False if is_private else not DEBUG,
     )
 elif not DEBUG:
-    # Защита от случайного использования SQLite в продакшене
-    raise Exception("DATABASE_URL must be set in production (DEBUG=False)")
+    # Fallback for individual environment variables if DATABASE_URL is missing
+    pg_user = os.environ.get('PGUSER')
+    pg_pass = os.environ.get('PGPASSWORD')
+    pg_host = os.environ.get('PGHOST')
+    pg_port = os.environ.get('PGPORT')
+    pg_db = os.environ.get('PGDATABASE')
+    
+    if all([pg_user, pg_pass, pg_host, pg_port, pg_db]):
+        DATABASES['default'] = {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': pg_db,
+            'USER': pg_user,
+            'PASSWORD': pg_pass,
+            'HOST': pg_host,
+            'PORT': pg_port,
+        }
+    else:
+        # Защита от случайного использования SQLite в продакшене
+        raise Exception("DATABASE_URL or PGDATABASE/PGHOST/... must be set in production (DEBUG=False)")
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
