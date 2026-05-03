@@ -49,6 +49,126 @@ body {
   transform-style: preserve-3d;
 }
 
+/* --- Premium Design System --- */
+
+/* Hero Typography */
+.text-display-hero {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.badge-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(249, 115, 22, 0.1);
+  color: #ea580c;
+  padding: 0.6rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+/* Buttons */
+.btn-primary-ember {
+  position: relative;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: white;
+  padding: 1.1rem 2.75rem;
+  border-radius: 1.1rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: inline-block;
+  box-shadow: 0 10px 25px -5px rgba(234, 88, 12, 0.4);
+  overflow: hidden;
+}
+
+.btn-primary-ember:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 35px -5px rgba(234, 88, 12, 0.5);
+}
+
+.btn-secondary-outline {
+  border: 2px solid #e2e8f0;
+  color: #1e293b;
+  padding: 1.1rem 2.75rem;
+  border-radius: 1.1rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+}
+
+.btn-secondary-outline:hover {
+  border-color: #f97316;
+  color: #ea580c;
+  background: rgba(249, 115, 22, 0.03);
+  transform: translateY(-2px);
+}
+
+/* Bento Grid System */
+.bento-card-base {
+  position: relative;
+  background: white;
+  border: 1px solid #f1f5f9;
+  border-radius: 2.5rem;
+  padding: 3rem;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.bento-card-base:hover {
+  box-shadow: 0 40px 80px -15px rgba(15, 23, 42, 0.1);
+  border-color: #fed7aa;
+  transform: translateY(-8px);
+}
+
+/* Sections */
+.section-heading {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+/* Highlight Cards */
+.highlight-card-base {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 2rem;
+  border: 1px solid #f1f5f9;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.highlight-card-base:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.05);
+  border-color: #e2e8f0;
+}
+
+/* Backgrounds & Meshes */
+.bg-mesh-warm {
+  background-color: #fffaf5;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.07) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(251, 146, 60, 0.07) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(255, 237, 213, 0.15) 0px, transparent 50%);
+  background-size: 200% 200%;
+}
+
+.shadow-display {
+  box-shadow: 0 40px 100px -20px rgba(15, 23, 42, 0.15);
+}
+
 /* Make heavy backdrop-filter areas lighter on low-end devices */
 @media (prefers-reduced-motion: reduce) {
   .hero-reveal, .bento-card, .highlight-card, #hero-interactive {
@@ -56,3 +176,4 @@ body {
     animation: none !important;
   }
 }
+

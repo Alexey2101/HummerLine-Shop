@@ -5,17 +5,17 @@
 
 {% block content %}
 <!-- Hero Section -->
-  <section class="relative overflow-hidden min-h-[85vh] flex flex-col justify-center py-20">
+<section class="relative overflow-hidden min-h-[90vh] flex flex-col justify-center py-20 bg-background">
   {% if not SIMPLE_DESIGN %}
   <!-- Dynamic Background -->
-  <div class="absolute inset-0 bg-mesh-warm opacity-90 transition-opacity duration-1000" id="hero-mesh"></div>
-  <div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-ember-100/40 to-transparent"></div>
-  <div class="absolute -top-24 -right-24 w-96 h-96 bg-ember-400/10 rounded-full blur-3xl animate-pulse"></div>
-  <div class="absolute top-1/2 -left-24 w-64 h-64 bg-pine-400/10 rounded-full blur-3xl"></div>
+  <div class="absolute inset-0 bg-mesh-warm opacity-100 transition-opacity duration-1000" id="hero-mesh"></div>
+  <div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-white to-transparent opacity-80"></div>
+  <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-ember-500/10 rounded-full blur-[120px] animate-pulse"></div>
+  <div class="absolute top-1/2 -left-24 w-96 h-96 bg-pine-500/10 rounded-full blur-[100px]"></div>
   {% endif %}
 
   <div class="container relative z-10">
-    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-16 lg:gap-24">
       <div class="text-center lg:text-left">
         <div class="hero-reveal-wrap mb-8">
           <div class="hero-reveal-inner badge-hero">
@@ -25,28 +25,29 @@
         </div>
         
         <h1 class="text-display-hero hero-title-main">
-          <div class="hero-reveal-wrap overflow-hidden pb-2">
+          <div class="hero-reveal-wrap overflow-hidden pb-1">
             <div class="hero-reveal-inner">Инструменты</div>
           </div>
-          <div class="hero-reveal-wrap overflow-hidden pb-2">
-            <div class="hero-reveal-inner text-transparent bg-clip-text bg-gradient-to-r from-ember-600 to-amber-500 drop-shadow-sm">будущего</div>
+          <div class="hero-reveal-wrap overflow-hidden pb-1">
+            <div class="hero-reveal-inner text-transparent bg-clip-text bg-gradient-to-r from-ember-600 via-orange-500 to-amber-500">будущего</div>
           </div>
-          <div class="hero-reveal-wrap overflow-hidden pb-2">
-            <div class="hero-reveal-inner">уже здесь.</div>
+          <div class="hero-reveal-wrap overflow-hidden pb-1">
+            <div class="hero-reveal-inner text-steel-950">уже здесь.</div>
           </div>
         </h1>
         
-        <div class="hero-reveal-wrap overflow-hidden mt-8">
-          <p class="hero-reveal-inner max-w-2xl text-xl leading-relaxed text-steel-700 font-medium">
-            HummerLine Hardware — это синергия надежности и инноваций. Мы создаем экосистему для тех, кто ценит качество, скорость и профессиональный подход в каждом проекте.
+        <div class="hero-reveal-wrap overflow-hidden mt-10">
+          <p class="hero-reveal-inner max-w-xl text-xl leading-relaxed text-steel-600 font-medium">
+            HummerLine Hardware — это синергия надежности и инноваций. Мы создаем экосистему для тех, кто ценит качество, скорость и профессиональный подход.
           </p>
         </div>
         
-        <div class="hero-reveal-wrap overflow-hidden mt-12">
-          <div class="hero-reveal-inner flex flex-wrap gap-5 justify-center lg:justify-start">
-            <a href="{% url 'shop:product_list' %}" class="btn-primary-ember">
-              <span class="relative z-10">Каталог товаров</span>
-              <div class="absolute inset-0 bg-gradient-to-r from-ember-500 to-amber-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="hero-reveal-wrap overflow-hidden mt-14">
+          <div class="hero-reveal-inner flex flex-wrap gap-6 justify-center lg:justify-start">
+            <a href="{% url 'shop:product_list' %}" class="btn-primary-ember group">
+              <span class="relative z-10 flex items-center gap-3">
+                Каталог товаров <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+              </span>
             </a>
             <a href="{% url 'shop:product_create' %}" class="btn-secondary-outline">
               Разместить объявление
@@ -57,44 +58,59 @@
 
       {% if not SIMPLE_DESIGN %}
       <!-- Interactive GSAP Animation -->
-      <div class="hidden lg:flex justify-center items-center relative py-10" id="hero-interactive">
-        <div class="relative w-full max-w-lg aspect-square">
+      <div class="hidden lg:flex justify-center items-center relative py-12" id="hero-interactive">
+        <div class="relative w-full max-w-md aspect-[4/5]">
           <!-- Main Floating Card -->
-          <div id="float-card" class="absolute inset-0 bg-white/40 backdrop-blur-3xl rounded-[3rem] border border-white/50 shadow-display overflow-hidden p-8 flex flex-col justify-between z-10">
+          <div id="float-card" class="absolute inset-0 bg-white/60 backdrop-blur-3xl rounded-5xl border border-white/80 shadow-display overflow-hidden p-10 flex flex-col justify-between z-10">
             <div class="flex justify-between items-start">
-              <div class="w-16 h-16 rounded-2xl bg-ember-500/10 flex items-center justify-center">
-                <i data-lucide="hammer" class="w-8 h-8 text-ember-600"></i>
+              <div class="w-20 h-20 rounded-3xl bg-ember-500/10 flex items-center justify-center border border-ember-500/20 shadow-inner">
+                <i data-lucide="hammer" class="w-10 h-10 text-ember-600"></i>
               </div>
               <div class="text-right">
-                <div class="text-xs font-bold text-steel-400 uppercase tracking-widest mb-1">Status</div>
-                <div class="text-sm font-bold text-pine-600 flex items-center gap-1.5 justify-end">
-                  <span class="w-2 h-2 rounded-full bg-pine-500 animate-pulse"></span> Online
+                <div class="text-[10px] font-black text-steel-400 uppercase tracking-[0.2em] mb-2">Service Status</div>
+                <div class="px-4 py-1.5 rounded-full bg-pine-50 border border-pine-100 text-xs font-bold text-pine-600 flex items-center gap-2 justify-end">
+                  <span class="w-2 h-2 rounded-full bg-pine-500 animate-ping"></span> Active
                 </div>
               </div>
             </div>
             
-            <div class="space-y-4">
-              <div class="h-3 w-2/3 bg-steel-200/50 rounded-full"></div>
-              <div class="h-3 w-1/2 bg-steel-200/50 rounded-full"></div>
-              <div class="h-10 w-full bg-ember-500/20 rounded-xl border border-ember-500/30"></div>
+            <div class="space-y-6">
+              <div class="h-4 w-3/4 bg-steel-100 rounded-full overflow-hidden">
+                <div class="h-full w-2/3 bg-ember-500/40 rounded-full"></div>
+              </div>
+              <div class="h-4 w-1/2 bg-steel-100 rounded-full overflow-hidden">
+                <div class="h-full w-1/2 bg-pine-500/40 rounded-full"></div>
+              </div>
+              <div class="p-5 rounded-3xl bg-steel-950 text-white flex items-center justify-between border border-white/10 shadow-lg">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-ember-500 flex items-center justify-center">
+                    <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                  </div>
+                  <span class="text-sm font-bold">Smart Analysis</span>
+                </div>
+                <span class="text-xs text-steel-400 font-mono">100%</span>
+              </div>
             </div>
           </div>
 
           <!-- Secondary Elements -->
-          <div id="float-circle" class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-ember-500 to-amber-400 rounded-full shadow-lg flex items-center justify-center text-white z-0">
-            <i data-lucide="zap" class="w-12 h-12"></i>
+          <div id="float-circle" class="absolute -top-12 -right-12 w-40 h-40 bg-gradient-to-br from-ember-500 to-orange-600 rounded-full shadow-2xl flex items-center justify-center text-white z-0 overflow-hidden group">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            <i data-lucide="zap" class="w-16 h-16 relative z-10"></i>
           </div>
           
-          <div id="float-badge" class="absolute -bottom-6 -left-6 bg-steel-950 text-white px-6 py-4 rounded-2xl shadow-display font-display font-bold text-lg border border-white/10 z-20">
-            <div class="text-xs text-steel-400 uppercase mb-1">Accuracy</div>
-            99.9%
+          <div id="float-badge" class="absolute -bottom-8 -left-8 bg-steel-950 text-white px-8 py-6 rounded-4xl shadow-2xl border border-white/10 z-20 transition-transform">
+            <div class="text-[10px] text-steel-400 uppercase font-black tracking-widest mb-2">Performance</div>
+            <div class="text-3xl font-display font-bold flex items-baseline gap-1">
+              99.9 <span class="text-ember-500 text-lg">%</span>
+            </div>
           </div>
 
           <!-- Decorative Lines -->
-          <svg class="absolute inset-0 w-full h-full -z-10 opacity-20" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 4" class="text-ember-500"/>
-            <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1 3" class="text-steel-400"/>
-          </svg>
+          <div class="absolute inset-0 -z-10 flex items-center justify-center">
+            <div class="w-[120%] h-[120%] border border-ember-500/20 rounded-full border-dashed animate-[spin_20s_linear_infinite]"></div>
+            <div class="absolute w-[140%] h-[140%] border border-steel-200/50 rounded-full border-dashed animate-[spin_30s_linear_infinite_reverse]"></div>
+          </div>
         </div>
       </div>
       {% endif %}
@@ -103,34 +119,38 @@
 </section>
 
 <!-- Bento Grid Categories -->
-<section class="py-24 bg-white relative overflow-hidden">
+<section class="py-32 bg-white relative overflow-hidden">
   <div class="container relative z-10">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
       <div class="max-w-2xl">
         <h2 class="section-reveal section-heading">Наши направления</h2>
-        <p class="section-reveal mt-4 text-lg text-steel-600">Исследуйте тщательно отобранные категории товаров для любых задач.</p>
+        <p class="section-reveal mt-6 text-xl text-steel-500 leading-relaxed">Исследуйте тщательно отобранные категории товаров для любых профессиональных задач.</p>
       </div>
-      <a href="{% url 'shop:product_list' %}" class="section-reveal text-ember-600 font-bold flex items-center gap-2 hover:gap-3 transition-all underline decoration-2 underline-offset-8">
-        Смотреть все категории <i data-lucide="arrow-right" class="w-5 h-5"></i>
+      <a href="{% url 'shop:product_list' %}" class="section-reveal group flex items-center gap-3 text-ember-600 font-extrabold text-lg transition-all">
+        <span class="border-b-2 border-ember-200 group-hover:border-ember-500 transition-colors pb-1">Смотреть все категории</span>
+        <i data-lucide="arrow-right" class="w-6 h-6 group-hover:translate-x-2 transition-transform"></i>
       </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto lg:h-[650px]">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 h-auto lg:h-[700px]">
       <!-- Big Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='stroitelstvo-i-remont' %}" 
-         class="bento-card bento-card-base md:col-span-8 group overflow-hidden">
+         class="bento-card bento-card-base md:col-span-8 group overflow-hidden bg-slate-50 border-slate-100">
         <div class="relative z-20 max-w-sm">
-          <h3 class="font-display text-4xl font-bold text-steel-950 mb-4 transition-colors group-hover:text-ember-600">Строительство И Ремонт</h3>
-          <p class="text-steel-600 font-medium leading-relaxed">Все от фундамента до кровли. Лучшие бренды и проверенные материалы.</p>
+          <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 text-ember-500 border border-slate-100">
+            <i data-lucide="hammer" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-display text-4xl font-bold text-steel-950 mb-6 transition-colors group-hover:text-ember-600">Строительство И Ремонт</h3>
+          <p class="text-steel-600 font-medium text-lg leading-relaxed">Все от фундамента до кровли. Лучшие бренды и проверенные материалы для серьезных задач.</p>
         </div>
-        <div class="relative z-20 mt-10">
-          <span class="inline-flex items-center gap-2 rounded-full bg-steel-950 px-6 py-2.5 text-sm font-bold text-white shadow-lg transition-all group-hover:bg-ember-600 group-hover:px-8">
-            Исследовать <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        <div class="relative z-20 mt-12">
+          <span class="inline-flex items-center gap-3 rounded-2xl bg-steel-950 px-8 py-4 text-sm font-bold text-white shadow-xl transition-all group-hover:bg-ember-600 group-hover:scale-105 active:scale-95">
+            Исследовать <i data-lucide="chevron-right" class="w-5 h-5 ml-1"></i>
           </span>
         </div>
         {% if not SIMPLE_DESIGN %}
-        <div class="absolute -right-20 -bottom-20 w-full h-full pointer-events-none z-10 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3">
-          <img src="{% static 'images/MainPage/construction.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-[80%] h-auto object-contain opacity-90 group-hover:opacity-100">
+        <div class="absolute -right-10 -bottom-10 w-2/3 h-2/3 pointer-events-none z-10 transition-transform duration-1000 group-hover:scale-110 group-hover:-rotate-3">
+          <img src="{% static 'images/MainPage/construction.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-full h-full object-contain drop-shadow-2xl">
         </div>
         {% endif %}
       </a>
@@ -139,33 +159,41 @@
       <a href="{% url 'shop:product_list_by_category' category_slug='mebel' %}" 
          class="bento-card bento-card-base md:col-span-4 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100 group overflow-hidden flex flex-col">
         <div class="relative z-20">
+          <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 text-amber-500 border border-orange-100">
+            <i data-lucide="sofa" class="w-6 h-6"></i>
+          </div>
           <h3 class="font-display text-3xl font-bold text-steel-950 mb-4 transition-colors group-hover:text-ember-600">Мебель</h3>
-          <p class="text-steel-600 font-medium">Стильные решения для вашего интерьера.</p>
+          <p class="text-steel-600 font-medium leading-relaxed">Стильные и надежные решения для вашего интерьера.</p>
         </div>
         {% if not SIMPLE_DESIGN %}
-        <div class="absolute -right-10 -bottom-10 w-full h-2/3 pointer-events-none z-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-6">
+        <div class="absolute -right-10 -bottom-10 w-full h-1/2 pointer-events-none z-10 transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-6">
            <img src="{% static 'images/MainPage/furniture.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-[90%] h-auto object-contain">
         </div>
         {% endif %}
-        <div class="relative z-20 mt-auto pt-6">
-           <i data-lucide="arrow-right-circle" class="w-8 h-8 text-amber-500 opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
+        <div class="relative z-20 mt-auto">
+           <div class="w-12 h-12 rounded-full bg-white border border-orange-100 flex items-center justify-center text-orange-500 shadow-sm opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0">
+             <i data-lucide="arrow-right" class="w-6 h-6"></i>
+           </div>
         </div>
       </a>
 
       <!-- Small Horizontal Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='kompyuternaya-tehnika' %}" 
-         class="bento-card bento-card-base md:col-span-12 lg:col-span-12 bg-steel-950 mt-auto lg:p-14 flex flex-col md:flex-row items-center group overflow-hidden">
-        <div class="relative z-20 text-white max-w-lg mb-10 md:mb-0">
-          <h3 class="font-display text-4xl font-bold mb-6 transition-colors group-hover:text-ember-400">IT & Электроника</h3>
-          <p class="text-white/60 text-lg leading-relaxed mb-8">Современные компьютеры и комплектующие для работы и отдыха.</p>
-          <span class="inline-flex items-center gap-3 rounded-full bg-white/10 border border-white/10 px-8 py-4 text-sm font-bold text-white backdrop-blur-xl transition-all group-hover:bg-ember-500 group-hover:border-ember-400">
-            Перейти в каталог <i data-lucide="monitor" class="w-5 h-5 ml-2"></i>
+         class="bento-card bento-card-base md:col-span-12 bg-steel-950 mt-4 lg:p-16 flex flex-col md:flex-row items-center group overflow-hidden border-white/5">
+        <div class="relative z-20 text-white max-w-xl mb-12 md:mb-0">
+          <div class="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center mb-8 text-ember-400 backdrop-blur-xl">
+            <i data-lucide="cpu" class="w-8 h-8"></i>
+          </div>
+          <h3 class="font-display text-5xl font-bold mb-8 transition-colors group-hover:text-ember-400">IT & Электроника</h3>
+          <p class="text-white/50 text-xl leading-relaxed mb-10">Современные компьютеры, серверное оборудование и комплектующие для работы любой сложности.</p>
+          <span class="inline-flex items-center gap-3 rounded-2xl bg-white text-steel-950 px-10 py-5 text-base font-black transition-all group-hover:bg-ember-500 group-hover:text-white group-hover:shadow-[0_20px_40px_rgba(234,88,12,0.3)]">
+            Открыть каталог <i data-lucide="monitor" class="w-6 h-6 ml-2"></i>
           </span>
         </div>
-        <div class="relative w-full md:w-1/2 h-64 md:h-full flex items-center justify-center">
+        <div class="relative w-full md:w-1/2 h-80 md:h-full flex items-center justify-center">
           {% if not SIMPLE_DESIGN %}
-          <div class="absolute inset-0 bg-ember-500/10 blur-3xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <img src="{% static 'images/MainPage/electronics.png' %}" loading="eager" decoding="async" class="relative z-10 max-w-[90%] max-h-full object-contain transition-all duration-700 group-hover:scale-105 group-hover:-translate-y-4">
+          <div class="absolute inset-0 bg-ember-500/20 blur-[120px] rounded-full scale-125 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <img src="{% static 'images/MainPage/electronics.png' %}" loading="eager" decoding="async" class="relative z-10 max-w-[85%] max-h-full object-contain transition-all duration-1000 group-hover:scale-110 group-hover:-translate-y-8 group-hover:rotate-2">
           {% endif %}
         </div>
       </a>
@@ -174,31 +202,31 @@
 </section>
 
 <!-- Highlights Section -->
-<section class="py-24 bg-steel-50">
+<section class="py-32 bg-steel-50/50 border-t border-steel-100">
   <div class="container">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-      <div class="highlight-card highlight-card-base">
-        <div class="w-16 h-16 rounded-2xl bg-ember-100 flex items-center justify-center text-ember-600 mb-8 transition group-hover:bg-ember-500 group-hover:text-white">
-          {% if not SIMPLE_DESIGN %}<i data-lucide="truck" class="w-8 h-8"></i>{% endif %}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+      <div class="highlight-card highlight-card-base group">
+        <div class="w-20 h-20 rounded-3xl bg-ember-100 border border-ember-200 flex items-center justify-center text-ember-600 mb-10 transition-all duration-500 group-hover:bg-ember-600 group-hover:text-white group-hover:scale-110 group-hover:rotate-6 shadow-sm">
+          {% if not SIMPLE_DESIGN %}<i data-lucide="truck" class="w-10 h-10"></i>{% endif %}
         </div>
         <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Быстрая доставка</h4>
-        <p class="text-steel-600 leading-relaxed">Доставляем заказы по всему Казахстану в кратчайшие сроки.</p>
+        <p class="text-steel-500 text-lg leading-relaxed">Доставляем заказы по всему Казахстану в кратчайшие сроки с полным страхованием груза.</p>
       </div>
       
-      <div class="highlight-card highlight-card-base">
-        <div class="w-16 h-16 rounded-2xl bg-pine-100 flex items-center justify-center text-pine-600 mb-8 transition group-hover:bg-pine-500 group-hover:text-white">
-          {% if not SIMPLE_DESIGN %}<i data-lucide="shield-check" class="w-8 h-8"></i>{% endif %}
+      <div class="highlight-card highlight-card-base group">
+        <div class="w-20 h-20 rounded-3xl bg-pine-100 border border-pine-200 flex items-center justify-center text-pine-600 mb-10 transition-all duration-500 group-hover:bg-pine-600 group-hover:text-white group-hover:scale-110 group-hover:-rotate-6 shadow-sm">
+          {% if not SIMPLE_DESIGN %}<i data-lucide="shield-check" class="w-10 h-10"></i>{% endif %}
         </div>
         <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Гарантия качества</h4>
-        <p class="text-steel-600 leading-relaxed">Только оригинальная продукция от проверенных поставщиков.</p>
+        <p class="text-steel-500 text-lg leading-relaxed">Только оригинальная продукция от сертифицированных производителей и прямых поставщиков.</p>
       </div>
       
-      <div class="highlight-card highlight-card-base">
-        <div class="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600 mb-8 transition group-hover:bg-amber-500 group-hover:text-white">
-          {% if not SIMPLE_DESIGN %}<i data-lucide="headset" class="w-8 h-8"></i>{% endif %}
+      <div class="highlight-card highlight-card-base group">
+        <div class="w-20 h-20 rounded-3xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-600 mb-10 transition-all duration-500 group-hover:bg-amber-600 group-hover:text-white group-hover:scale-110 group-hover:rotate-6 shadow-sm">
+          {% if not SIMPLE_DESIGN %}<i data-lucide="headset" class="w-10 h-10"></i>{% endif %}
         </div>
         <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Поддержка 24/7</h4>
-        <p class="text-steel-600 leading-relaxed">Наши специалисты всегда готовы помочь вам с выбором.</p>
+        <p class="text-steel-500 text-lg leading-relaxed">Наши технические специалисты всегда готовы помочь вам с подбором оборудования.</p>
       </div>
     </div>
   </div>
@@ -206,6 +234,7 @@
 {% endblock %}
 
 {% block extra_js %}
+
 {% if not SIMPLE_DESIGN %}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
