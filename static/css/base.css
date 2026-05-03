@@ -94,6 +94,12 @@ body {
   box-shadow: 0 20px 35px -5px rgba(234, 88, 12, 0.5);
 }
 
+.btn-primary-ember.btn-no-scale:hover {
+  transform: none;
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+}
+
+
 .btn-secondary-outline {
   border: 2px solid #e2e8f0;
   color: #1e293b;
