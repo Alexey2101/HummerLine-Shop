@@ -126,7 +126,7 @@
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 h-auto lg:h-[700px]">
       <!-- Big Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='stroitelstvo-i-remont' %}" 
-         class="bento-card bento-card-base md:col-span-8 group bg-slate-50 border-slate-100 min-h-[400px]">
+         class="bento-card bento-card-base md:col-span-6 group bg-slate-50 border-slate-100 min-h-[400px]">
         <div class="relative z-20 max-w-sm">
           <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 text-ember-500 border border-slate-100">
             <i data-lucide="hammer" class="w-6 h-6"></i>
@@ -134,13 +134,13 @@
           <h3 class="font-display text-4xl font-bold text-steel-950 mb-6 transition-colors group-hover:text-ember-600">Строительство И Ремонт</h3>
           <p class="text-steel-600 font-medium text-lg leading-relaxed">Все от фундамента до кровли. Лучшие бренды и проверенные материалы для серьезных задач.</p>
         </div>
-        <div class="relative z-20 mt-12">
+        <div class="relative z-20 mt-8">
           <span class="inline-flex items-center gap-3 rounded-2xl bg-steel-950 px-8 py-4 text-sm font-bold text-white shadow-xl transition-all group-hover:bg-ember-600 group-hover:scale-105 active:scale-95">
             Исследовать <i data-lucide="chevron-right" class="w-5 h-5 ml-1"></i>
           </span>
         </div>
         {% if not SIMPLE_DESIGN %}
-        <div class="absolute right-6 bottom-6 w-1/2 h-1/2 pointer-events-none z-10 transition-transform duration-1000 group-hover:scale-110 group-hover:-rotate-12">
+        <div class="absolute right-0 bottom-0 w-2/3 h-2/3 pointer-events-none z-10 transition-transform duration-1000 group-hover:scale-110 group-hover:-rotate-12 opacity-80 group-hover:opacity-100">
           <img src="{% static 'images/MainPage/construction.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-full h-full object-contain drop-shadow-[0_45px_55px_rgba(0,0,0,0.2)]">
         </div>
         {% endif %}
@@ -148,7 +148,7 @@
 
       <!-- Small Vertical Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='mebel' %}" 
-         class="bento-card bento-card-base md:col-span-4 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100 group flex flex-col min-h-[400px]">
+         class="bento-card bento-card-base md:col-span-6 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100 group flex flex-col min-h-[400px]">
         <div class="relative z-20">
           <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 text-amber-500 border border-orange-100">
             <i data-lucide="sofa" class="w-6 h-6"></i>
