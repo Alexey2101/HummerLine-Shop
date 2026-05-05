@@ -1,8 +1,9 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from shop import views as shop_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
 
 from django.views.generic.base import RedirectView
 
@@ -14,8 +15,12 @@ urlpatterns = [
     path('', include('shop.urls', namespace='shop')),
 ]
 
-if settings.DEBUG or settings.MEDIA_URL.startswith('/'):
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve media files directly using Django's serve view (works in production on Railway)
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {
+        'document_root': settings.MEDIA_ROOT,
+    }),
+]
 
 # Static files are served by WhiteNoise in production; during development add static patterns
 if settings.DEBUG:
