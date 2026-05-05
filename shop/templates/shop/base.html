@@ -190,6 +190,8 @@
       .js-enabled .section-reveal { opacity: 0; transform: translateY(20px); }
       .js-enabled .bento-card { opacity: 0; transform: translateY(30px); }
       .js-enabled .highlight-card { opacity: 0; transform: translateY(20px); }
+      .js-enabled .grid > .group { opacity: 0; transform: translateY(50px); }
+      .js-enabled .container.grid > div { opacity: 0; transform: translateY(30px); }
       
       /* Fallback: if JS fails to run animations, show them after 3s */
       @keyframes force-reveal {
@@ -198,7 +200,9 @@
       .js-enabled .hero-reveal-inner, 
       .js-enabled .section-reveal, 
       .js-enabled .bento-card, 
-      .js-enabled .highlight-card {
+      .js-enabled .highlight-card,
+      .js-enabled .grid > .group,
+      .js-enabled .container.grid > div {
         animation: force-reveal 0.1s forwards;
         animation-delay: 3s;
       }

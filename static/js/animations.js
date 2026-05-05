@@ -80,12 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Скролл-анимации для преимуществ
     gsap.utils.toArray('.highlight-card').forEach(card => {
-        gsap.from(card, {
-            y: 30,
-            opacity: 0,
+        gsap.to(card, {
+            y: 0,
+            opacity: 1,
             duration: 0.6,
             ease: "power2.out",
-               force3D: true,
+            force3D: true,
             scrollTrigger: {
                 trigger: card,
                 start: "top 90%",
@@ -99,24 +99,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (productCards.length > 0) {
         if (typeof ScrollTrigger !== 'undefined') {
             ScrollTrigger.batch(productCards, {
-                onEnter: batch => gsap.from(batch, { y: 50, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power3.out", clearProps: "all" }),
+                onEnter: batch => gsap.to(batch, { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power3.out", clearProps: "transform" }),
                 once: true
             });
         } else {
-            gsap.from(productCards, { y: 30, opacity: 0, duration: 0.5, stagger: 0.1, ease: "power2.out", delay: 0.1, clearProps: "all" });
+            gsap.to(productCards, { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power2.out", delay: 0.1, clearProps: "transform" });
         }
     }
 
     // Анимации для детальной страницы товара (product_detail.html)
     const detailCols = document.querySelectorAll('.container.grid.lg\\:grid-cols-2 > div');
     if (detailCols.length > 0) {
-        gsap.from(detailCols, { 
-            y: 30, 
-            opacity: 0, 
+        gsap.to(detailCols, { 
+            y: 0, 
+            opacity: 1, 
             duration: 0.8, 
             stagger: 0.2, 
             ease: "power3.out", 
-            clearProps: "all",
+            clearProps: "transform",
             scrollTrigger: typeof ScrollTrigger !== 'undefined' ? {
                 trigger: detailCols[0].parentElement,
                 start: "top 85%"
@@ -127,13 +127,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Анимации для страницы корзины (cart.html)
     const cartCols = document.querySelectorAll('.container.lg\\:grid.lg\\:grid-cols-\\[1fr_400px\\] > div');
     if (cartCols.length > 0) {
-        gsap.from(cartCols, { 
-            y: 30, 
-            opacity: 0, 
+        gsap.to(cartCols, { 
+            y: 0, 
+            opacity: 1, 
             duration: 0.8, 
             stagger: 0.2, 
             ease: "power3.out", 
-            clearProps: "all",
+            clearProps: "transform",
             scrollTrigger: typeof ScrollTrigger !== 'undefined' ? {
                 trigger: cartCols[0].parentElement,
                 start: "top 85%"
