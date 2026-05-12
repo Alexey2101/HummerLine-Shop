@@ -1,4 +1,5 @@
 {% extends "shop/base.html" %}
+{% load svg_icons %}
 
 {% block title %}Редактировать профиль - HummerLine{% endblock %}
 
@@ -8,7 +9,7 @@
     <div class="card-premium !p-8 sm:!p-12 bg-white">
       <div class="flex items-center gap-4 mb-10 pb-8 border-b border-steel-100">
         <div class="w-16 h-16 rounded-3xl bg-ember-500 flex items-center justify-center text-white shadow-2xl">
-          <i data-lucide="user-cog" class="w-8 h-8"></i>
+          {% icon 'user-cog' 'w-8 h-8' %}
         </div>
         <div>
           <h1 class="text-3xl font-display font-bold text-steel-950">Настройки профиля</h1>
@@ -30,7 +31,7 @@
                 <div class="mt-2 space-y-1">
                   {% for error in field.errors %}
                     <p class="text-xs font-bold text-red-500 flex items-center gap-1.5">
-                      <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> {{ error }}
+                      {% icon 'alert-circle' 'w-3.5 h-3.5' %} {{ error }}
                     </p>
                   {% endfor %}
                 </div>
@@ -45,7 +46,7 @@
         <div class="pt-8 border-t border-steel-100 flex flex-col gap-4">
           <button type="submit" class="btn-primary !py-4 shadow-xl">
             Сохранить изменения
-            <i data-lucide="check-circle" class="w-5 h-5"></i>
+            {% icon 'check-circle' 'w-5 h-5' %}
           </button>
           
           <div class="flex items-center justify-between py-4">

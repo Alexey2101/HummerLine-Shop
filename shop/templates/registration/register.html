@@ -1,4 +1,5 @@
 {% extends "shop/base.html" %}
+{% load svg_icons %}
 {% block title %}Регистрация{% endblock %}
 
 {% block content %}
@@ -17,8 +18,14 @@
                 {% for field in form %}
                 <div>
                     <label for="{{ field.id_for_label }}" class="block text-sm font-semibold leading-6 text-steel-950">{{ field.label }}</label>
-                    <div class="mt-2 text-base">
+                    <div class="mt-2 text-base relative">
                         {{ field }}
+                        {% if 'password' in field.name %}
+                            <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-steel-400 hover:text-steel-600 transition-colors toggle-password" data-target="{{ field.id_for_label }}">
+                                {% icon 'eye' 'w-5 h-5 icon-eye' %}
+                                {% icon 'eye-off' 'w-5 h-5 icon-eye-off hidden' %}
+                            </button>
+                        {% endif %}
                         {% if field.help_text and 'password' not in field.name %}
                             <p class="mt-2 text-xs text-muted-foreground">{{ field.help_text|safe }}</p>
                         {% endif %}
@@ -33,18 +40,18 @@
                     <p class="font-semibold text-steel-950 mb-3">Нужно</p>
                     <ul class="space-y-2 text-muted-foreground">
                         <li id="req-length" class="flex items-center gap-2 transition-colors duration-300">
-                            <i data-lucide="x" class="w-4 h-4 text-red-500 icon-x"></i>
-                            <i data-lucide="check" class="w-4 h-4 text-emerald-600 icon-check hidden"></i>
+                            {% icon 'x' 'w-4 h-4 text-red-500 icon-x' %}
+                            {% icon 'check' 'w-4 h-4 text-emerald-600 icon-check hidden' %}
                             Минимум 8 символов
                         </li>
                         <li id="req-numeric" class="flex items-center gap-2 transition-colors duration-300">
-                            <i data-lucide="x" class="w-4 h-4 text-red-500 icon-x"></i>
-                            <i data-lucide="check" class="w-4 h-4 text-emerald-600 icon-check hidden"></i>
+                            {% icon 'x' 'w-4 h-4 text-red-500 icon-x' %}
+                            {% icon 'check' 'w-4 h-4 text-emerald-600 icon-check hidden' %}
                             Не состоит полностью из цифр
                         </li>
                         <li id="req-match" class="flex items-center gap-2 transition-colors duration-300">
-                            <i data-lucide="x" class="w-4 h-4 text-red-500 icon-x"></i>
-                            <i data-lucide="check" class="w-4 h-4 text-emerald-600 icon-check hidden"></i>
+                            {% icon 'x' 'w-4 h-4 text-red-500 icon-x' %}
+                            {% icon 'check' 'w-4 h-4 text-emerald-600 icon-check hidden' %}
                             Пароли совпадают
                         </li>
                     </ul>
@@ -80,6 +87,9 @@
         border-color: #f97316;
         box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
     }
+    .bg-white form input[type="password"] {
+        padding-right: 3rem;
+    }
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -99,20 +109,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function updateCheck(el, isValid) {
-            // Динамический поиск иконок (lucide.createIcons заменяет i на svg, но классы переносятся)
             const iconX = el.querySelector('.icon-x');
             const iconCheck = el.querySelector('.icon-check');
             
             if (isValid) {
+                if (el.classList.contains('text-emerald-600')) return; // Already valid
                 el.classList.add('text-emerald-600', 'font-medium');
                 el.classList.remove('text-muted-foreground');
-                if (iconX) iconX.classList.add('hidden');
-                if (iconCheck) iconCheck.classList.remove('hidden');
+                if (window.AppAnimations && window.AppAnimations.iconTransition) {
+                    window.AppAnimations.iconTransition(el, 1);
+                } else {
+                    if (iconX) iconX.classList.add('hidden');
+                    if (iconCheck) iconCheck.classList.remove('hidden');
+                }
             } else {
+                if (!el.classList.contains('text-emerald-600')) return; // Already invalid
                 el.classList.remove('text-emerald-600', 'font-medium');
                 el.classList.add('text-muted-foreground');
-                if (iconX) iconX.classList.remove('hidden');
-                if (iconCheck) iconCheck.classList.add('hidden');
+                if (window.AppAnimations && window.AppAnimations.iconTransition) {
+                    window.AppAnimations.iconTransition(el, 0);
+                } else {
+                    if (iconX) iconX.classList.remove('hidden');
+                    if (iconCheck) iconCheck.classList.add('hidden');
+                }
             }
         }
 
@@ -142,6 +161,32 @@ document.addEventListener('DOMContentLoaded', () => {
         pass1.addEventListener('input', validatePasswords);
         pass2.addEventListener('input', validatePasswords);
         
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                if (input) {
+                    const isPassword = input.type === 'password';
+                    input.type = isPassword ? 'text' : 'password';
+                    
+                    if (window.AppAnimations && window.AppAnimations.iconTransition) {
+                        window.AppAnimations.iconTransition(this, isPassword ? 1 : 0);
+                    } else {
+                        const iconEye = this.querySelector('.icon-eye');
+                        const iconEyeOff = this.querySelector('.icon-eye-off');
+                        if (isPassword) {
+                            if(iconEye) iconEye.classList.add('hidden');
+                            if(iconEyeOff) iconEyeOff.classList.remove('hidden');
+                        } else {
+                            if(iconEye) iconEye.classList.remove('hidden');
+                            if(iconEyeOff) iconEyeOff.classList.add('hidden');
+                        }
+                    }
+                }
+            });
+        });
+
         // Первоначальная инициализация на случай сохранения паролей браузером
         validatePasswords();
     }

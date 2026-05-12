@@ -1,3 +1,4 @@
+{% load static svg_icons %}
 <!-- Product Card Component -->
 <div class="card-premium flex flex-col group" id="product-card-{{ product.id }}" role="article" aria-labelledby="product-{{ product.id }}-title">
   <!-- Image Container -->
@@ -7,7 +8,7 @@
     {% else %}
       <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-steel-50 to-steel-100 text-steel-400 relative overflow-hidden group-hover:from-ember-50 group-hover:to-ember-100 transition-colors duration-500">
         <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: url(&quot;data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0z' fill='none'/%3E%3Cpath d='M0 0h1v1H0z' fill='currentColor'/%3E%3C/svg%3E&quot;);"></div>
-        <i data-lucide="image-off" class="w-12 h-12 opacity-20 mb-3 transform transition-transform group-hover:scale-110 group-hover:rotate-6"></i>
+        {% icon 'image-off' 'w-12 h-12 opacity-20 mb-3 transform transition-transform group-hover:scale-110 group-hover:rotate-6' %}
         <span class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">Нет изображения</span>
       </div>
     {% endif %}
@@ -42,7 +43,7 @@
       {% if user.is_authenticated and product.owner == user %}
         <a href="{% url 'shop:product_edit' product.id %}" class="w-12 h-12 rounded-2xl bg-ember-500 text-white flex items-center justify-center transition-all hover:bg-ember-600 hover:shadow-lg hover:shadow-ember-500/30 active:scale-95"
                 title="Редактировать">
-          <i data-lucide="edit-3" class="w-5 h-5"></i>
+          {% icon 'edit-3' 'w-5 h-5' %}
         </a>
       {% else %}
         <button class="add-to-cart w-12 h-12 rounded-2xl bg-steel-950 text-white flex items-center justify-center transition-all hover:bg-ember-500 hover:shadow-lg hover:shadow-ember-500/30 active:scale-95"
@@ -50,7 +51,8 @@
                 data-name="{{ product.name }}" 
                 data-price="{{ product.price }}"
                 aria-label="Добавить в корзину">
-          <i data-lucide="plus" class="w-6 h-6"></i>
+          {% icon 'plus' 'w-6 h-6 icon-plus' %}
+          {% icon 'check' 'w-6 h-6 icon-check hidden' %}
         </button>
       {% endif %}
     </div>

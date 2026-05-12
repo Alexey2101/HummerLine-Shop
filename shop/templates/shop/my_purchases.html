@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load static %}
+{% load static svg_icons %}
 
 {% block title %}Мои покупки{% endblock %}
 
@@ -9,7 +9,7 @@
   <div class="container">
     <div class="flex items-center gap-4">
       <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-steel-950 text-white shadow-display">
-        <i data-lucide="shopping-bag" class="w-7 h-7"></i>
+        {% icon 'shopping-bag' 'w-7 h-7' %}
       </div>
       <div>
         <h1 class="font-display text-4xl font-bold tracking-tight text-steel-950">Мои покупки</h1>
@@ -52,7 +52,11 @@
           <div class="flex items-center gap-3">
             <div class="flex h-10 w-10 items-center justify-center rounded-xl
               {% if order.paid %}bg-pine-100 text-pine-700{% else %}bg-amber-100 text-amber-700{% endif %} text-sm font-bold flex-shrink-0">
-              <i data-lucide="{% if order.paid %}check-circle{% else %}clock{% endif %}" class="w-5 h-5"></i>
+              {% if order.paid %}
+                {% icon 'check-circle' 'w-5 h-5' %}
+              {% else %}
+                {% icon 'clock' 'w-5 h-5' %}
+              {% endif %}
             </div>
             <div>
               <p class="font-display font-bold text-steel-950">Заказ #{{ order.id }}</p>
@@ -82,7 +86,7 @@
                 <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" loading="lazy" decoding="async" class="w-full h-full object-cover">
               {% else %}
                 <div class="w-full h-full flex items-center justify-center">
-                  <i data-lucide="image" class="w-6 h-6 text-steel-400"></i>
+                  {% icon 'image' 'w-6 h-6 text-steel-400' %}
                 </div>
               {% endif %}
             </div>
@@ -110,13 +114,13 @@
         <!-- Order footer -->
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-7 py-4 bg-steel-50/40 border-t border-border/70">
           <div class="text-sm text-muted-foreground">
-            <i data-lucide="map-pin" class="w-4 h-4 inline-block mr-1 align-middle"></i>
+            {% icon 'map-pin' 'w-4 h-4 inline-block mr-1 align-middle' %}
             {{ order.city }}{% if order.address %}, {{ order.address }}{% endif %}
           </div>
           <div class="flex items-center gap-2">
             <a href="{{ order.items.first.product.get_absolute_url }}"
                class="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-medium text-steel-700 transition hover:bg-white hover:border-ember-300 hover:text-ember-600">
-              <i data-lucide="repeat" class="w-4 h-4"></i>
+              {% icon 'repeat' 'w-4 h-4' %}
               Купить снова
             </a>
           </div>
@@ -129,7 +133,7 @@
     <!-- Empty state -->
     <div class="py-24 text-center flex flex-col items-center gap-5">
       <div class="w-24 h-24 rounded-full bg-steel-100 flex items-center justify-center">
-        <i data-lucide="shopping-bag" class="w-12 h-12 text-steel-300"></i>
+        {% icon 'shopping-bag' 'w-12 h-12 text-steel-300' %}
       </div>
       <div>
         <h2 class="font-display text-2xl font-bold text-steel-700">Покупок пока нет</h2>
@@ -137,7 +141,7 @@
       </div>
       <a href="{% url 'shop:product_list' %}"
          class="mt-2 inline-flex items-center gap-2 rounded-xl bg-ember-500 px-7 py-3.5 text-base font-bold text-white shadow-display transition hover:bg-ember-600">
-        <i data-lucide="package-search" class="w-5 h-5"></i>
+        {% icon 'package-search' 'w-5 h-5' %}
         Перейти в каталог
       </a>
     </div>

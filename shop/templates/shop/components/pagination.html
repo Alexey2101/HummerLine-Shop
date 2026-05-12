@@ -1,32 +1,39 @@
+{% load static svg_icons %}
 <!-- Pagination Component -->
 {% if page_obj.has_other_pages %}
 <div class="mt-12 flex justify-center">
   <nav class="inline-flex items-center gap-1 rounded-2xl bg-white p-1.5 border border-border/70 shadow-sm">
     {% if page_obj.has_previous %}
       <a href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
-         class="pagination-link" aria-label="Предыдущая страница">
-        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+         class="w-10 h-10 rounded-xl bg-white text-steel-900 hover:bg-ember-500 hover:text-white flex items-center justify-center transition-all border border-steel-100 shadow-sm group">
+        {% icon 'chevron-left' 'w-5 h-5' %}
       </a>
+    {% else %}
+      <span class="w-10 h-10 rounded-xl bg-steel-50 text-steel-200 flex items-center justify-center cursor-not-allowed">
+        {% icon 'chevron-left' 'w-5 h-5' %}
+      </span>
     {% endif %}
 
-    {% for num in page_obj.paginator.page_range %}
-      {% if page_obj.number == num %}
-        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-ember-500 font-bold text-white shadow-sm" aria-current="page">
-          {{ num }}
-        </span>
-      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-        <a href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
-           class="pagination-link">
-          {{ num }}
-        </a>
-      {% endif %}
-    {% endfor %}
+    <div class="flex items-center gap-2">
+      {% for page in page_obj.paginator.page_range %}
+        {% if page_obj.number == page %}
+          <span class="w-10 h-10 rounded-xl bg-ember-500 text-white flex items-center justify-center font-bold shadow-lg shadow-ember-500/20">{{ page }}</span>
+        {% elif page > page_obj.number|add:'-3' and page < page_obj.number|add:'3' %}
+          <a href="?page={{ page }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" 
+             class="w-10 h-10 rounded-xl bg-white text-steel-600 hover:bg-steel-50 hover:text-steel-950 flex items-center justify-center font-bold transition-all border border-steel-100 shadow-sm">{{ page }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
 
     {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
-         class="pagination-link" aria-label="Следующая страница">
-        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+      <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" 
+         class="w-10 h-10 rounded-xl bg-white text-steel-900 hover:bg-ember-500 hover:text-white flex items-center justify-center transition-all border border-steel-100 shadow-sm group">
+        {% icon 'chevron-right' 'w-5 h-5' %}
       </a>
+    {% else %}
+      <span class="w-10 h-10 rounded-xl bg-steel-50 text-steel-200 flex items-center justify-center cursor-not-allowed">
+        {% icon 'chevron-right' 'w-5 h-5' %}
+      </span>
     {% endif %}
   </nav>
 </div>

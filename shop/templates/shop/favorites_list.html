@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load static %}
+{% load static svg_icons %}
 
 {% block title %}Избранное{% endblock %}
 
@@ -22,7 +22,7 @@
         {% include "shop/components/product_card.html" with favorite_product_ids=products|slice:":0"|add:product.id %}
       {% empty %}
       <div class="col-span-full py-16 text-center text-muted-foreground flex flex-col items-center gap-4">
-        <i data-lucide="star-off" class="w-16 h-16 text-steel-300"></i>
+        {% icon 'star-off' 'w-16 h-16 text-steel-300' %}
         <p class="text-xl font-medium text-steel-700">У вас пока нет избранных товаров.</p>
         <a href="{% url 'shop:product_list' %}" class="mt-4 px-6 py-3 bg-ember-500 text-white rounded-full font-bold hover:bg-ember-600 transition shadow-sm">
             Перейти в каталог

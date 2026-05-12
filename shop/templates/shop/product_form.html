@@ -1,4 +1,5 @@
 {% extends "shop/base.html" %}
+{% load static svg_icons %}
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -80,7 +81,7 @@
 
         <div class="bg-steel-50 p-6 sm:p-8 rounded-[2rem] border border-border/70 space-y-8">
             <h3 class="font-display text-xl font-bold text-steel-950 flex items-center gap-2">
-                <i data-lucide="image" class="w-6 h-6 text-ember-500"></i> Фотографии товара
+                {% icon 'image' 'w-6 h-6 text-ember-500' %} Фотографии товара
             </h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -120,7 +121,7 @@
 
         <div class="pt-6 border-t border-border/70 flex justify-end">
             <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-ember-500 px-8 py-4 text-center text-lg font-bold text-white shadow-display transition hover:bg-ember-600">
-                {% if product %}Сохранить изменения{% else %}Опубликовать объявление{% endif %} <i data-lucide="check-circle" class="w-5 h-5"></i>
+                {% if product %}Сохранить изменения{% else %}Опубликовать объявление{% endif %} {% icon 'check-circle' 'w-5 h-5' %}
             </button>
         </div>
       </form>

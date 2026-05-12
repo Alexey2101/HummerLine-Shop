@@ -1,10 +1,11 @@
+{% load static svg_icons %}
 <!-- Category Sidebar Component -->
 <aside aria-labelledby="categories-heading" class="lg:block hidden">
   <div class="sticky top-28 space-y-8">
     <!-- Categories -->
     <div class="card-premium !p-6">
       <h3 class="font-display text-lg font-bold text-steel-950 mb-6 flex items-center gap-2" id="categories-heading">
-        <i data-lucide="layers" class="w-5 h-5 text-ember-500"></i>
+        {% icon 'layers' 'w-5 h-5 text-ember-500' %}
         Категории
       </h3>
       <ul class="space-y-1">
@@ -12,7 +13,7 @@
           <a href="{% url 'shop:product_list' %}{% if search_query %}?q={{ search_query }}{% endif %}" 
              class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold transition-all {% if not category %}bg-ember-50 text-ember-600{% else %}text-steel-600 hover:bg-steel-50 hover:text-steel-950{% endif %}">
             <span>Все товары</span>
-            {% if not category %}<i data-lucide="check" class="w-4 h-4"></i>{% endif %}
+            {% if not category %}{% icon 'check' 'w-4 h-4' %}{% endif %}
           </a>
         </li>
         {% for c in categories %}
@@ -20,7 +21,7 @@
           <a href="{{ c.get_absolute_url }}{% if search_query %}?q={{ search_query }}{% endif %}" 
              class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold transition-all {% if category.slug == c.slug %}bg-ember-50 text-ember-600{% else %}text-steel-600 hover:bg-steel-50 hover:text-steel-950{% endif %}">
             <span>{{ c.name }}</span>
-            {% if category.slug == c.slug %}<i data-lucide="check" class="w-4 h-4"></i>{% endif %}
+            {% if category.slug == c.slug %}{% icon 'check' 'w-4 h-4' %}{% endif %}
           </a>
         </li>
         {% endfor %}
@@ -30,7 +31,7 @@
     <!-- Filter by Price -->
     <div class="card-premium !p-6">
       <h3 class="font-display text-lg font-bold text-steel-950 mb-6 flex items-center gap-2">
-        <i data-lucide="filter" class="w-5 h-5 text-ember-500"></i>
+        {% icon 'filter' 'w-5 h-5 text-ember-500' %}
         Фильтры
       </h3>
       <form action="{{ request.path }}" method="get" class="space-y-6">

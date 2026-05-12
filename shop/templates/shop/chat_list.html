@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load static %}
+{% load static svg_icons %}
 
 {% block title %}Мои сообщения{% endblock %}
 
@@ -24,7 +24,7 @@
                     <img src="{{ chat.product.image.url }}" alt="{{ chat.product.name }}" loading="lazy" decoding="async" class="h-full w-full object-cover">
                     {% else %}
                     <div class="flex h-full w-full items-center justify-center bg-steel-50 text-steel-400">
-                        <i data-lucide="package" class="w-8 h-8"></i>
+                        {% icon 'package' 'w-8 h-8' %}
                     </div>
                     {% endif %}
                 </div>
@@ -40,7 +40,7 @@
                     
                     <div class="flex items-center gap-2 mb-2">
                         <div class="flex items-center gap-1.5 text-sm font-medium text-steel-600">
-                            <i data-lucide="user" class="w-4 h-4"></i>
+                            {% icon 'user' 'w-4 h-4' %}
                             {% if chat.buyer == request.user %}
                                 <span class="text-xs text-muted-foreground uppercase tracking-wider">Продавец:</span>
                                 {{ chat.seller.username }}
@@ -55,7 +55,7 @@
                     {% if last_msg %}
                     <p class="text-sm text-steel-500 line-clamp-1 flex items-center gap-2">
                         {% if last_msg.sender == request.user %}
-                        <i data-lucide="check-check" class="w-4 h-4 text-steel-400"></i>
+                        {% icon 'check-check' 'w-4 h-4 text-steel-400' %}
                         {% endif %}
                         {{ last_msg.text }}
                     </p>
@@ -67,7 +67,7 @@
 
                 <!-- Стрелочка -->
                 <div class="flex-shrink-0 text-steel-300 group-hover:text-ember-500 transition-colors">
-                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    {% icon 'chevron-right' 'w-6 h-6' %}
                 </div>
             </div>
         </a>
@@ -76,14 +76,14 @@
     {% else %}
     <div class="rounded-[2.5rem] border-2 border-dashed border-border/70 bg-white/50 p-20 text-center">
         <div class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-steel-100 text-steel-400">
-            <i data-lucide="message-square-off" class="w-12 h-12"></i>
+            {% icon 'message-square-off' 'w-12 h-12' %}
         </div>
         <h2 class="font-display text-2xl font-bold text-steel-950 mb-3">Пока нет сообщений</h2>
         <p class="mx-auto max-w-sm text-steel-600 mb-8">
             Напишите продавцу интересующего вас товара, чтобы начать диалог.
         </p>
         <a href="{% url 'shop:product_list' %}" class="inline-flex items-center gap-2 rounded-2xl bg-steel-950 px-8 py-4 font-bold text-white transition hover:bg-ember-500 shadow-display">
-            Перейти к товарам <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            Перейти к товарам {% icon 'arrow-right' 'w-5 h-5' %}
         </a>
     </div>
     {% endif %}

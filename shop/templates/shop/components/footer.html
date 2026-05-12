@@ -1,4 +1,4 @@
-{% load static %}
+{% load static svg_icons %}
 <!-- Footer Component -->
 <footer class="bg-steel-950 text-white pt-24 pb-12 overflow-hidden relative">
   <!-- Decorative Background -->
@@ -9,15 +9,15 @@
       <!-- Brand Section -->
       <div class="space-y-8">
         <a href="{% url 'shop:home' %}" class="inline-block">
-          <img src="{% static 'svg/hummerline_logo.svg' %}" alt="HummerLine" class="h-10 w-auto brightness-200">
+          {% icon 'logo' 'h-10 w-auto brightness-200' %}
         </a>
         <p class="max-w-md text-steel-400 font-medium leading-relaxed">
           HummerLine — ведущий поставщик профессионального оборудования в Казахстане. Мы помогаем мастерам и компаниям достигать выдающихся результатов с помощью качественного инструмента.
         </p>
         <div class="flex gap-4">
-          <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-ember-500 transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-          <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-ember-500 transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-          <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-ember-500 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+          <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-ember-500 transition-colors">{% icon 'instagram' 'w-5 h-5' %}</a>
+          <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-ember-500 transition-colors">{% icon 'facebook' 'w-5 h-5' %}</a>
+          <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-ember-500 transition-colors">{% icon 'twitter' 'w-5 h-5' %}</a>
         </div>
       </div>
       
@@ -36,21 +36,21 @@
         <h4 class="font-display font-bold text-xl mb-8">Контакты</h4>
         <ul class="space-y-4">
           <li class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 text-ember-500"><i data-lucide="phone" class="w-5 h-5"></i></div>
+            <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 text-ember-500">{% icon 'phone' 'w-5 h-5' %}</div>
             <div>
               <div class="text-[10px] font-bold text-steel-500 uppercase tracking-widest mb-1">Телефон</div>
               <a href="tel:+77777777777" class="text-steel-200 hover:text-white font-bold transition-colors">+7 (777) 777-77-77</a>
             </div>
           </li>
           <li class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 text-ember-500"><i data-lucide="mail" class="w-5 h-5"></i></div>
+            <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 text-ember-500">{% icon 'mail' 'w-5 h-5' %}</div>
             <div>
               <div class="text-[10px] font-bold text-steel-500 uppercase tracking-widest mb-1">Email</div>
               <a href="mailto:info@hummerline.kz" class="text-steel-200 hover:text-white font-bold transition-colors">info@hummerline.kz</a>
             </div>
           </li>
           <li class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 text-ember-500"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+            <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 text-ember-500">{% icon 'map-pin' 'w-5 h-5' %}</div>
             <div>
               <div class="text-[10px] font-bold text-steel-500 uppercase tracking-widest mb-1">Адрес</div>
               <span class="text-steel-200 font-bold">г. Алматы, пр. Абая 10</span>

@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load static %}
+{% load static svg_icons %}
 
 {% block title %}HummerLine - Профессиональные решения{% endblock %}
 
@@ -19,7 +19,7 @@
       <div class="text-center lg:text-left">
         <div class="hero-reveal-wrap mb-8">
           <div class="hero-reveal-inner badge-hero">
-            <i data-lucide="sparkles" class="w-4 h-4 text-ember-600"></i>
+            {% icon 'sparkles' 'w-4 h-4 text-ember-600' %}
             <span>Премиальное оборудование для профи</span>
           </div>
         </div>
@@ -47,7 +47,7 @@
           <div class="hero-reveal-inner flex flex-wrap gap-6 justify-center lg:justify-start">
             <a href="{% url 'shop:product_list' %}" class="btn-primary-ember group">
               <span class="relative z-10 flex items-center gap-3">
-                Каталог товаров <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                Каталог товаров {% icon 'arrow-right' 'w-5 h-5 group-hover:translate-x-1 transition-transform' %}
               </span>
             </a>
             <a href="{% url 'shop:product_create' %}" class="btn-secondary-outline">
@@ -65,7 +65,7 @@
           <div id="float-card" class="absolute inset-0 bg-white/60 backdrop-blur-3xl rounded-5xl border border-white/80 shadow-display overflow-hidden p-6 flex flex-col z-10">
             <div class="flex items-center gap-4 mb-4">
               <div class="w-14 h-14 rounded-2xl bg-ember-500/10 flex items-center justify-center border border-ember-500/20 shadow-inner">
-                <i data-lucide="star" class="w-7 h-7 text-ember-600 fill-ember-600/20"></i>
+                {% icon 'star' 'w-7 h-7 text-ember-600 fill-ember-600/20' %}
               </div>
               <div>
                 <h3 class="font-bold text-steel-950 text-lg leading-tight">Рекомендуем</h3>
@@ -81,7 +81,7 @@
                     <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover transition-transform group-hover:scale-110">
                   {% else %}
                     <div class="w-full h-full flex items-center justify-center text-steel-300">
-                      <i data-lucide="image" class="w-6 h-6"></i>
+                      {% icon 'image' 'w-6 h-6' %}
                     </div>
                   {% endif %}
                 </div>
@@ -90,7 +90,7 @@
                   <div class="text-sm text-ember-600 font-bold mt-0.5">{{ product.price }} ₸</div>
                 </div>
                 <div class="w-8 h-8 rounded-full bg-steel-100/50 flex items-center justify-center text-steel-400 group-hover:bg-ember-50 group-hover:text-ember-500 transition-colors">
-                  <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                  {% icon 'arrow-up-right' 'w-4 h-4' %}
                 </div>
               </a>
               {% endfor %}
@@ -119,29 +119,30 @@
       </div>
       <a href="{% url 'shop:product_list' %}" class="section-reveal group flex items-center gap-3 text-ember-600 font-extrabold text-lg transition-all">
         <span class="border-b-2 border-ember-200 group-hover:border-ember-500 transition-colors pb-1">Смотреть все категории</span>
-        <i data-lucide="arrow-right" class="w-6 h-6 group-hover:translate-x-2 transition-transform"></i>
+        {% icon 'arrow-right' 'w-6 h-6 group-hover:translate-x-2 transition-transform' %}
       </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 h-auto lg:h-[700px]">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 h-auto">
       <!-- Big Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='stroitelstvo-i-remont' %}" 
          class="bento-card bento-card-base md:col-span-6 group bg-slate-50 border-slate-100 min-h-[400px]">
         <div class="relative z-20 max-w-sm">
           <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 text-ember-500 border border-slate-100">
-            <i data-lucide="hammer" class="w-6 h-6"></i>
+            {% icon 'hammer' 'w-6 h-6' %}
           </div>
           <h3 class="font-display text-4xl font-bold text-steel-950 mb-6 transition-colors group-hover:text-ember-600">Строительство И Ремонт</h3>
           <p class="text-steel-600 font-medium text-lg leading-relaxed">Все от фундамента до кровли. Лучшие бренды и проверенные материалы для серьезных задач.</p>
         </div>
         <div class="relative z-20 mt-8">
           <span class="inline-flex items-center gap-3 rounded-2xl bg-steel-950 px-8 py-4 text-sm font-bold text-white shadow-xl transition-all group-hover:bg-ember-600 group-hover:scale-105 active:scale-95">
-            Исследовать <i data-lucide="chevron-right" class="w-5 h-5 ml-1"></i>
+            Исследовать {% icon 'chevron-right' 'w-5 h-5 ml-1' %}
           </span>
         </div>
         {% if not SIMPLE_DESIGN %}
-        <div class="absolute right-0 bottom-0 w-2/3 h-2/3 pointer-events-none z-10 transition-transform duration-1000 group-hover:scale-110 group-hover:-rotate-12 opacity-80 group-hover:opacity-100">
-          <img src="{% static 'images/MainPage/construction.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-full h-full object-contain drop-shadow-[0_45px_55px_rgba(0,0,0,0.2)]">
+        <div class="absolute right-0 top-0 w-1/2 h-full pointer-events-none z-10 overflow-hidden">
+          <img src="{% static 'images/MainPage/construction-card.png' %}" loading="eager" decoding="async" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/20 to-transparent"></div>
         </div>
         {% endif %}
       </a>
@@ -149,42 +150,43 @@
       <!-- Small Vertical Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='mebel' %}" 
          class="bento-card bento-card-base md:col-span-6 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100 group flex flex-col min-h-[400px]">
-        <div class="relative z-20">
+        <div class="relative z-20 max-w-[280px]">
           <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 text-amber-500 border border-orange-100">
-            <i data-lucide="sofa" class="w-6 h-6"></i>
+            {% icon 'sofa' 'w-6 h-6' %}
           </div>
           <h3 class="font-display text-3xl font-bold text-steel-950 mb-4 transition-colors group-hover:text-ember-600">Мебель</h3>
           <p class="text-steel-600 font-medium leading-relaxed">Стильные и надежные решения для вашего интерьера.</p>
         </div>
         {% if not SIMPLE_DESIGN %}
-        <div class="absolute right-2 bottom-2 w-2/3 h-1/2 pointer-events-none z-10 transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-6">
-           <img src="{% static 'images/MainPage/furniture.png' %}" loading="eager" decoding="async" class="absolute right-0 bottom-0 w-[95%] h-auto object-contain drop-shadow-[0_45px_55px_rgba(0,0,0,0.15)]">
+        <div class="absolute right-0 top-0 w-1/2 h-full pointer-events-none z-10 overflow-hidden">
+           <img src="{% static 'images/MainPage/furniture-card.png' %}" loading="eager" decoding="async" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+           <div class="absolute inset-0 bg-gradient-to-r from-amber-50 via-amber-50/20 to-transparent"></div>
         </div>
         {% endif %}
         <div class="relative z-20 mt-auto">
            <div class="w-12 h-12 rounded-full bg-white border border-orange-100 flex items-center justify-center text-orange-500 shadow-sm opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0">
-             <i data-lucide="arrow-right" class="w-6 h-6"></i>
+             {% icon 'arrow-right' 'w-6 h-6' %}
            </div>
         </div>
       </a>
 
       <!-- Small Horizontal Card -->
       <a href="{% url 'shop:product_list_by_category' category_slug='kompyuternaya-tehnika' %}" 
-         class="bento-card bento-card-base md:col-span-12 bg-steel-950 mt-4 lg:p-16 flex flex-col md:flex-row items-center group border-white/5 min-h-[450px]">
+         class="bento-card bento-card-base md:col-span-12 bg-steel-950 mt-4 lg:p-16 flex flex-col md:flex-row items-center group border-white/5 min-h-[500px]">
         <div class="relative z-20 text-white max-w-xl mb-12 md:mb-0">
           <div class="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center mb-8 text-ember-400 backdrop-blur-xl">
-            <i data-lucide="cpu" class="w-8 h-8"></i>
+            {% icon 'cpu' 'w-8 h-8' %}
           </div>
           <h3 class="font-display text-5xl font-bold mb-8 transition-colors group-hover:text-ember-400">IT & Электроника</h3>
           <p class="text-white/50 text-xl leading-relaxed mb-10">Современные компьютеры, серверное оборудование и комплектующие для работы любой сложности.</p>
           <span class="inline-flex items-center gap-3 rounded-2xl bg-white text-steel-950 px-10 py-5 text-base font-black transition-all group-hover:bg-ember-500 group-hover:text-white group-hover:shadow-[0_20px_40px_rgba(234,88,12,0.3)]">
-            Открыть каталог <i data-lucide="monitor" class="w-6 h-6 ml-2"></i>
+            Открыть каталог {% icon 'monitor' 'w-6 h-6 ml-2' %}
           </span>
         </div>
-        <div class="relative w-full md:w-1/2 h-80 md:h-full flex items-center justify-center">
+        <div class="relative w-full md:w-3/5 h-80 md:h-full flex items-center justify-end">
           {% if not SIMPLE_DESIGN %}
-          <div class="absolute inset-0 bg-ember-500/30 blur-[140px] rounded-full scale-125 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <img src="{% static 'images/MainPage/electronics.png' %}" loading="eager" decoding="async" class="relative z-30 max-w-[90%] max-h-[90%] object-contain transition-all duration-1000 group-hover:scale-110 group-hover:-translate-y-8 group-hover:rotate-6 drop-shadow-[0_50px_60px_rgba(0,0,0,0.4)]">
+          <div class="absolute inset-0 bg-ember-500/20 blur-[120px] rounded-full scale-125 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <img src="{% static 'images/MainPage/electronics-card.png' %}" loading="eager" decoding="async" class="relative z-30 w-full h-auto object-contain transition-all duration-1000 group-hover:scale-105 drop-shadow-[0_30px_50px_rgba(0,0,0,0.5)]">
           {% endif %}
         </div>
       </a>
@@ -200,15 +202,15 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
       <div class="highlight-card highlight-card-base group">
         <div class="w-20 h-20 rounded-3xl bg-ember-100 border border-ember-200 flex items-center justify-center text-ember-600 mb-10 transition-all duration-500 group-hover:bg-ember-600 group-hover:text-white group-hover:scale-110 group-hover:rotate-6 shadow-sm">
-          {% if not SIMPLE_DESIGN %}<i data-lucide="truck" class="w-10 h-10"></i>{% endif %}
+          {% if not SIMPLE_DESIGN %}{% icon 'truck' 'w-10 h-10' %}{% endif %}
         </div>
         <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Быстрая доставка</h4>
         <p class="text-steel-500 text-lg leading-relaxed">Доставляем заказы по всему Казахстану в кратчайшие сроки с полным страхованием груза.</p>
       </div>
       
       <div class="highlight-card highlight-card-base group">
-        <div class="w-20 h-20 rounded-3xl bg-pine-100 border border-pine-200 flex items-center justify-center text-pine-600 mb-10 transition-all duration-500 group-hover:bg-pine-600 group-hover:text-white group-hover:scale-110 group-hover:-rotate-6 shadow-sm">
-          {% if not SIMPLE_DESIGN %}<i data-lucide="shield-check" class="w-10 h-10"></i>{% endif %}
+        <div class="w-20 h-20 rounded-3xl bg-white border border-slate-100 flex items-center justify-center text-steel-950 mb-10 transition-all duration-500 group-hover:bg-steel-950 group-hover:text-white group-hover:scale-110 group-hover:-rotate-6 shadow-sm">
+          {% if not SIMPLE_DESIGN %}{% icon 'shield-check' 'w-10 h-10' %}{% endif %}
         </div>
         <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Гарантия качества</h4>
         <p class="text-steel-500 text-lg leading-relaxed">Только оригинальная продукция от сертифицированных производителей и прямых поставщиков.</p>
@@ -216,7 +218,7 @@
       
       <div class="highlight-card highlight-card-base group">
         <div class="w-20 h-20 rounded-3xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-600 mb-10 transition-all duration-500 group-hover:bg-amber-600 group-hover:text-white group-hover:scale-110 group-hover:rotate-6 shadow-sm">
-          {% if not SIMPLE_DESIGN %}<i data-lucide="headset" class="w-10 h-10"></i>{% endif %}
+          {% if not SIMPLE_DESIGN %}{% icon 'headset' 'w-10 h-10' %}{% endif %}
         </div>
         <h4 class="font-display text-2xl font-bold text-steel-950 mb-4">Поддержка 24/7</h4>
         <p class="text-steel-500 text-lg leading-relaxed">Наши технические специалисты всегда готовы помочь вам с подбором оборудования.</p>

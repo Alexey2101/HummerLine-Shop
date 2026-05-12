@@ -23,7 +23,7 @@ function updateHeaderCart() {
 }
 
 // Добавление в корзину
-function addToCart(id, name, price, quantity = 1) {
+function addToCart(id, name, price, quantity = 1, btnEl = null) {
     let cart = getCart();
     const existing = cart.find(item => item.id === id);
     
@@ -34,7 +34,29 @@ function addToCart(id, name, price, quantity = 1) {
     }
     
     saveCart(cart);
-    alert('Товар добавлен в корзину');
+    
+    // Визуальное подтверждение
+    if (btnEl) {
+        if (window.AppAnimations) {
+            window.AppAnimations.iconTransition(btnEl, 1);
+            window.AppAnimations.createBurst(btnEl);
+            
+            // Возврат через 2 секунды
+            setTimeout(() => {
+                window.AppAnimations.iconTransition(btnEl, 0);
+            }, 2000);
+        } else {
+            const iconPlus = btnEl.querySelector('.icon-plus, .icon-cart');
+            const iconCheck = btnEl.querySelector('.icon-check');
+            if (iconPlus) iconPlus.classList.add('hidden');
+            if (iconCheck) iconCheck.classList.remove('hidden');
+            
+            setTimeout(() => {
+                if (iconPlus) iconPlus.classList.remove('hidden');
+                if (iconCheck) iconCheck.classList.add('hidden');
+            }, 2000);
+        }
+    }
 }
 
 // Удаление из корзины
@@ -113,19 +135,25 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Кнопка добавления в списке товаров
     document.querySelectorAll('.add-to-cart').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const el = e.target;
-            addToCart(el.dataset.id, el.dataset.name, el.dataset.price);
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.getAttribute('data-id');
+            const name = this.getAttribute('data-name');
+            const price = this.getAttribute('data-price');
+            addToCart(id, name, price, 1, this);
         });
     });
 
     // Кнопка добавления на карточке товара
     document.querySelectorAll('.add-to-cart-detail').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const el = e.target;
-            const qtyInput = document.getElementById(`qty-input-${el.dataset.id}`);
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.getAttribute('data-id');
+            const name = this.getAttribute('data-name');
+            const price = this.getAttribute('data-price');
+            const qtyInput = document.getElementById(`qty-input-${id}`);
             const qty = qtyInput ? qtyInput.value : 1;
-            addToCart(el.dataset.id, el.dataset.name, el.dataset.price, qty);
+            addToCart(id, name, price, qty, this);
         });
     });
 

@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load static %}
+{% load static svg_icons %}
 
 {% block title %}Мои объявления{% endblock %}
 
@@ -32,7 +32,7 @@
             <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" decoding="async" class="w-full h-48 object-cover transition duration-300 group-hover:scale-105">
           {% else %}
             <div class="w-full h-48 flex flex-col items-center justify-center text-steel-400">
-              <i data-lucide="image" class="w-8 h-8 opacity-50 mb-2"></i>
+              {% icon 'image' 'w-8 h-8 opacity-50 mb-2' %}
               <span class="text-sm">Нет фото</span>
             </div>
           {% endif %}
@@ -45,7 +45,7 @@
       </div>
       {% empty %}
       <div class="col-span-full py-16 text-center text-muted-foreground flex flex-col items-center gap-4">
-        <i data-lucide="package-open" class="w-16 h-16 text-steel-300"></i>
+        {% icon 'package-open' 'w-16 h-16 text-steel-300' %}
         <p class="text-xl font-medium text-steel-700">У вас пока нет активных объявлений.</p>
         <a href="{% url 'shop:product_create' %}" class="mt-4 px-6 py-3 bg-ember-500 text-white rounded-full font-bold hover:bg-ember-600 transition shadow-sm">
             Разместить первое объявление

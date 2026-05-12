@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load static %}
+{% load static svg_icons %}
 
 {% block title %}Корзина{% endblock %}
 
@@ -9,7 +9,7 @@
     <!-- Левая колонка (Список товаров) -->
     <div>
       <div class="inline-flex items-center gap-2 rounded-full border border-sand-200 bg-sand-50 px-4 py-2 text-sm font-semibold text-sand-800 shadow-sm backdrop-blur mb-6">
-        <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+        {% icon 'shopping-cart' 'w-4 h-4' %}
         Оформление
       </div>
       <h1 class="font-display text-4xl font-bold tracking-tight text-steel-950 sm:text-5xl border-b border-border/70 pb-6">
@@ -32,7 +32,7 @@
         </div>
 
         <button id="checkout-btn" style="display: none;" class="w-full inline-flex justify-center items-center gap-2 rounded-2xl bg-steel-950 px-6 py-4 text-center text-lg font-semibold text-white shadow-display transition hover:bg-steel-900">
-          Перейти к оформлению <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          Перейти к оформлению {% icon 'arrow-right' 'w-5 h-5' %}
         </button>
 
         <!-- Форма -->
@@ -69,7 +69,7 @@
             </div>
             
             <button type="submit" class="w-full inline-flex justify-center items-center gap-2 rounded-2xl bg-ember-500 mt-6 px-6 py-4 text-center text-lg font-semibold text-white shadow-display transition hover:bg-ember-600">
-              Подтвердить заказ <i data-lucide="check" class="w-5 h-5"></i>
+              Подтвердить заказ {% icon 'check' 'w-5 h-5' %}
             </button>
           </form>
           <div id="order-message" class="mt-4 text-center font-bold"></div>
